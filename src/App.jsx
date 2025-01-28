@@ -1,0 +1,10 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Header from "@layout/Header";
+
+const root = ReactDOM.createRoot(document.getElementById("header"));
+root.render(
+  <React.StrictMode>
+    <Header />
+  </React.StrictMode>
+);
