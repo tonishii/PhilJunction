@@ -1,5 +1,14 @@
 body {
     margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
 }
 
 .header {
@@ -69,4 +78,66 @@ body {
     color: #F6F7EB;
     outline: none;
     padding: 8px 0;
+}
+
+.post {
+    display: grid;
+    grid-template-columns: 300px 50px;
+    min-height: 400px;
+    padding: 10px 0px;
+}
+
+.post-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-sidebar {
+    background-color: #393E41;
+    border-radius: 0px 25px 25px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0px;
+}
+
+.post-header {
+    border-radius: 25px 0px 0px 0px;
+    background-color: #DAD8D7;
+}
+
+.post-header h1 {
+    margin: 20px;
+}
+
+.post-main {
+    background-color: #F6F7EB;
+    flex-grow: 1;
+}
+
+.post-main p {
+    padding: 10px 20px;
+}
+
+.post-footer {
+    border-radius: 0px 0px 0px 25px;
+    background-color: #E53E24;
+}
+
+.tag {
+    display: inline-block;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 4;
+    background-color: #CA2E16;
+    min-width: 50px;
+    text-align: center;
+}
+
+.invert {
+    transform: rotate(180deg);
+}
+
+.gray {
+    color: gray;
 }
