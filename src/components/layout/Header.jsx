@@ -9,11 +9,14 @@ export default function Header() {
         <Menu className='icon' />
       </Button>
 
+      <img className='header-logo' />
+      <h1 className="header-text">PhilJunction!</h1>
+
         <div className='search-bar'>
           <Search className='search-icon'/>
           <Input
             type='text'
-            placeholder='Search...'
+            placeholder='Search'
             className='search-input'
           />
         </div>
