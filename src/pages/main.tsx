@@ -1,4 +1,5 @@
 import Post from "@/components/post";
+
 export default function Main() {
   return (
     <main>

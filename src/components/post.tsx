@@ -1,5 +1,6 @@
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router";
 
 export default function Post({
   title,
@@ -17,7 +18,7 @@ export default function Post({
   const [vote, setVote] = useState<"up" | "down" | null>(null);
 
   function transformDate(datePosted: Date) {
-    return "A day ago.";
+    return "a day ago.";
   }
 
   function handleUpvote() {
@@ -41,10 +42,10 @@ export default function Post({
       <div className="post-body">
         <div className="post-header">
           <h1>
-            {title} &sdot;{" "}
+            {title} &sdot; {" "}
             <span className="gray">{transformDate(datePosted)}</span>
           </h1>
-          <p>Posted by {user}</p>
+          <p className="gray">Posted by {user}</p>
         </div>
         <div className="post-main">
           <p>{body}</p>
@@ -60,20 +61,23 @@ export default function Post({
 
       <div className="post-sidebar">
         <button
-          className={`sidebar-button ${vote === "up" ? "selected-up" : ""}`}
+          className={`gray-button ${
+            vote === "up" ? "selected-up" : ""
+          }`}
           onClick={handleUpvote}
         >
           <ThumbsUp className="icon" />
         </button>
 
-        <button
-          className={`sidebar-button ${
-            vote === "down" ? " selected-down" : ""
-          }`}
-          onClick={handleDownvote}
-        >
-          <ThumbsDown className="icon" />
-        </button>
+        <Link to="/profile">
+          <button
+            className={`gray-button ${
+              vote === "down" ? " selected-down" : ""
+            }`}
+            onClick={handleDownvote}>
+            <ThumbsDown className="icon" />
+          </button>
+        </Link>
       </div>
     </div>
   );

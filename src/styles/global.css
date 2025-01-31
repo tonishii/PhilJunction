@@ -20,13 +20,14 @@ main {
     background-color: #E94F37;
 }
 
-.header-text {
+.header-text,
+.profile-text {
     color: #F6F7EB;
     font-weight: bold;
     margin: 0;
 }
 
-.menu-button, .profile-button, .sidebar-button {
+.gray-button {
     display: flex;
     align-items: center;
     background: #393E41;
@@ -37,12 +38,12 @@ main {
     transition: background 0.3s , transform 0.15s ease;
 }
 
-.menu-button:hover, .profile-button:hover, .sidebar-button:hover {
+.gray-button:hover {
     background-color: #F6F7EB;
     color: #393E41;
 }
 
-.menu-button:active, .profile-button:active, .sidebar-button:active {
+.gray-button:active {
     transform: scale(0.95);
 }
 
@@ -53,7 +54,7 @@ main {
     transition: color 0.3s ease;
 }
 
-.menu-button:hover .icon, .profile-button:hover .icon, .sidebar-button:hover .icon {
+.gray-button:hover .icon {
     color: #393E41;
 }
 
@@ -91,8 +92,8 @@ main {
 
 .post {
     display: grid;
-    grid-template-columns: 300px 50px;
-    min-height: 400px;
+    grid-template-columns: 500px 50px;
+    min-height: 350px;
     padding: 10px 0px;
 }
 
@@ -115,8 +116,12 @@ main {
     background-color: #DAD8D7;
 }
 
-.post-header h1, p{
-    margin: 20px;
+.post-header h1 {
+    margin: 20px 20px 0px;
+}
+
+.post-header p {
+    margin: 0px 20px 20px;
 }
 
 .post-main {
@@ -125,28 +130,27 @@ main {
 }
 
 .post-main p {
-    padding: 10px 4px;
+    padding: 10px 20px;
 }
 
 .post-footer {
     border-radius: 0px 0px 0px 25px;
     background-color: #E53E24;
+    padding-left: 10px;
 }
 
 .tag {
+    color: #F6F7EB;
     display: inline-block;
     padding: 10px;
-    margin: 10px;
-    border-radius: 4;
+    margin: 10px 0px;
+    margin-left: 10px;
+    border-radius: 25px;
     background-color: #CA2E16;
     min-width: 50px;
     text-align: center;
 }
 
-.invert {
-    transform: rotate(180deg);
-}
-
 .gray {
-    color: gray;
+    color: #393E41;
 }
