@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    background-color: #222526;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -25,7 +26,7 @@ main {
     margin: 0;
 }
 
-.menu-button, .profile-button {
+.menu-button, .profile-button, .sidebar-button {
     display: flex;
     align-items: center;
     background: #393E41;
@@ -33,15 +34,15 @@ main {
     border-radius: 10px;
     padding: 5px 9px;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.15s ease;
+    transition: background 0.3s , transform 0.15s ease;
 }
 
-.menu-button:hover, .profile-button:hover {
+.menu-button:hover, .profile-button:hover, .sidebar-button:hover {
     background-color: #F6F7EB;
     color: #393E41;
 }
 
-.menu-button:active, .profile-button:active {
+.menu-button:active, .profile-button:active, .sidebar-button:active {
     transform: scale(0.95);
 }
 
@@ -52,8 +53,16 @@ main {
     transition: color 0.3s ease;
 }
 
-.menu-button:hover .icon, .profile-button:hover .icon {
+.menu-button:hover .icon, .profile-button:hover .icon, .sidebar-button:hover .icon {
     color: #393E41;
+}
+
+.selected-up .icon{
+    fill: green;
+}
+
+.selected-down .icon{
+    fill: #E94F37;
 }
 
 .search-bar {
@@ -63,7 +72,7 @@ main {
     border-radius: 10px;
     width: 100%;
     max-width: 400px;
-    padding: 4px 8px;
+    padding: 1px 9px;
     gap: 10px;
 }
 
@@ -106,7 +115,7 @@ main {
     background-color: #DAD8D7;
 }
 
-.post-header h1 {
+.post-header h1, p{
     margin: 20px;
 }
 
@@ -116,7 +125,7 @@ main {
 }
 
 .post-main p {
-    padding: 10px 20px;
+    padding: 10px 4px;
 }
 
 .post-footer {
