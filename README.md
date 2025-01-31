@@ -1,6 +1,6 @@
 # CCAPDEV-MCO
 Compilation of MCO submissions for CCAPDEV AY 2024-2025 Term 2. This forum web application caters specifically 
-to Philippine transportation enthusiasts to show their interests and experience with others. Front-end was mainly
+to Philippine transportation enthusiasts to show their interests and experience with other enthusiasts. Front-end was mainly
 written in React, node.js and mongoDB for the back-end.
 
 # Contributors
@@ -11,20 +11,30 @@ written in React, node.js and mongoDB for the back-end.
 
 # Dependencies
 If nvm is not yet installed, use this command:
-`curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash`
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+```
 
 If node.js is not yet installed, use this command:
-`nvm install 22`
+```bash
+nvm install 22
+```
 
 Once node.js is installed, run this command:
-`npm i`
+```bash
+npm i
+```
 
 # Verification
 To verify if nvm, node.js, and npm is already installed, use the repective commands:
-`nvm current`
-`node -v`
-`npm -v`
+```bash
+nvm current
+node -v
+npm -v
+```
 
 # Running the Application
 To run the website application, use this command:
-`npm run dev`
+```bash
+npm run dev
+```
