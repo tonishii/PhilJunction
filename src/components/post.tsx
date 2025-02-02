@@ -38,47 +38,47 @@ export default function Post({
   }
 
   return (
-    <div className="post">
-      <div className="post-body">
-        <div className="post-header">
-          <h1>
-            {title} &sdot; {" "}
-            <span className="gray">{transformDate(datePosted)}</span>
-          </h1>
-          <p className="gray">Posted by {user}</p>
+      <div className="post">
+        <div className="post-body">
+          <div className="post-header">
+            <h1>
+              <Link to="/postwindow" className="post-link">{title} &sdot;</Link> {" "}
+              <span className="gray">{transformDate(datePosted)}</span>
+            </h1>
+            <p className="gray">Posted by {user}</p>
+          </div>
+          <div className="post-main">
+            <p>{body}</p>
+          </div>
+          <div className="post-footer">
+            {tags.map((tag, i) => (
+              <span key={tag + i} className="tag">
+                {tag}
+              </span>
+            ))}
+          </div>
         </div>
-        <div className="post-main">
-          <p>{body}</p>
-        </div>
-        <div className="post-footer">
-          {tags.map((tag, i) => (
-            <span key={tag + i} className="tag">
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
 
-      <div className="post-sidebar">
-        <button
-          className={`gray-button ${
-            vote === "up" ? "selected-up" : ""
-          }`}
-          onClick={handleUpvote}
-        >
-          <ThumbsUp className="icon" />
-        </button>
-
-        <Link to="/profile">
+        <div className="post-sidebar">
           <button
             className={`gray-button ${
-              vote === "down" ? " selected-down" : ""
+              vote === "up" ? "selected-up" : ""
             }`}
-            onClick={handleDownvote}>
-            <ThumbsDown className="icon" />
+            onClick={handleUpvote}
+          >
+            <ThumbsUp className="icon" />
           </button>
-        </Link>
+
+          <Link to="/profile">
+            <button
+              className={`gray-button ${
+                vote === "down" ? " selected-down" : ""
+              }`}
+              onClick={handleDownvote}>
+              <ThumbsDown className="icon" />
+            </button>
+          </Link>
+        </div>
       </div>
-    </div>
   );
 }

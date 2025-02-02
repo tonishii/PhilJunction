@@ -154,3 +154,8 @@ main {
 .gray {
     color: #393E41;
 }
+
+.post-link {
+    text-decoration: none;
+    color: black;
+}
