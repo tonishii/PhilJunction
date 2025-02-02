@@ -159,3 +159,46 @@ main {
     text-decoration: none;
     color: black;
 }
+
+/* postwindow */
+.post-window-main {
+    display: flexbox;
+    flex-direction: row;
+    align-items: stretch;
+    padding: 0px 0px;
+}
+
+.post-window-container {
+    width: 50%;
+    background-color: black;
+    flex-direction: column;
+    padding: 10px 10px;
+}
+
+.post-window-header {
+    background-color: grey;
+    border-radius: 10px 10px 0px 0px;
+    padding: 5px 10px;
+}
+
+.post-window-header-text {
+    display: inline;
+    color: white;
+    font-weight: bold;
+}
+
+.post-window-content {
+    background-color: white;
+    padding: 5px 10px;
+}
+
+.post-window-footer {
+    background-color: gray;
+    border-radius: 0px 0px 10px 10px;
+    padding: 5px 10px;
+}
+
+.post-window-comments {
+    width: 50%;
+    background-color: rgb(41, 41, 41)
+}

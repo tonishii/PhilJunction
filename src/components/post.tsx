@@ -42,7 +42,7 @@ export default function Post({
         <div className="post-body">
           <div className="post-header">
             <h1>
-              <Link to="/postwindow" className="post-link">{title} &sdot;</Link> {" "}
+              <Link to="/post" className="post-link">{title} &sdot;</Link> {" "}
               <span className="gray">{transformDate(datePosted)}</span>
             </h1>
             <p className="gray">Posted by {user}</p>
