@@ -16,6 +16,7 @@ a {
     text-decoration: none;
 }
 
+/* header */
 .header {
     display: flex;
     justify-content: space-between;
@@ -36,6 +37,7 @@ a {
     align-items: center;
     gap: 10px;
 }
+
 .gray-button {
     display: flex;
     align-items: center;
@@ -67,14 +69,6 @@ a {
     color: #393E41;
 }
 
-.selected-up .icon{
-    fill: green;
-}
-
-.selected-down .icon{
-    fill: #E94F37;
-}
-
 .search-bar {
     display: flex;
     align-items: center;
@@ -99,7 +93,8 @@ a {
     padding: 8px 0;
 }
 
-.post {
+/* general post */
+.post-container {
     display: grid;
     grid-template-columns: 500px 50px;
     min-height: 350px;
@@ -118,6 +113,14 @@ a {
     flex-direction: column;
     align-items: center;
     padding: 10px 0px;
+}
+
+.selected-up .icon{
+    fill: green;
+}
+
+.selected-down .icon{
+    fill: #E94F37;
 }
 
 .post-header {
@@ -170,48 +173,30 @@ a {
 }
 
 /* postwindow */
-.post-window-main {
-    display: flexbox;
-    flex-direction: row;
-    align-items: stretch;
-    padding: 0px 0px;
-}
-
 .post-window-container {
-    width: 50%;
-    background-color: black;
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+.post-window-body {
+    display: flex;
     flex-direction: column;
-    padding: 10px 10px;
-}
-
-.post-window-header {
-    background-color: grey;
-    border-radius: 10px 10px 0px 0px;
-    padding: 5px 10px;
-}
-
-.post-window-header-text {
-    display: inline;
-    color: white;
-    font-weight: bold;
-}
-
-.post-window-content {
-    background-color: white;
-    padding: 5px 10px;
-}
-
-.post-window-footer {
-    background-color: gray;
-    border-radius: 0px 0px 10px 10px;
-    padding: 5px 10px;
+    width: 50%;
+    padding: 10px 0px 10px 10px;
 }
 
 .post-window-comments {
-    width: 50%;
-    background-color: rgb(41, 41, 41)
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    background-color: #393E41;
+    border-radius: 0px 25px 25px 0px;
+    padding: 10px;
+    margin: 10px 10px 10px 0px;
 }
 
+/* profile page */
 .profile-container {
     display: flex;
     align-items: start;

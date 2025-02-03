@@ -1,4 +1,4 @@
-import { ThumbsUp, ThumbsDown } from "lucide-react";
+import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 
@@ -17,11 +17,11 @@ export default function Post({
 }) {
   const [vote, setVote] = useState<"up" | "down" | null>(null);
 
-  function transformDate(datePosted: Date) {
+  function handleDate(datePosted: Date): string {
     return "a day ago.";
   }
 
-  function handleUpvote() {
+  function handleUpvote(): void {
     if (vote === "up") {
       setVote(null);
     } else {
@@ -29,7 +29,7 @@ export default function Post({
     }
   }
 
-  function handleDownvote() {
+  function handleDownvote(): void{
     if (vote === "down") {
       setVote(null);
     } else {
@@ -38,12 +38,12 @@ export default function Post({
   }
 
   return (
-      <div className="post">
+      <div className="post-container">
         <div className="post-body">
           <div className="post-header">
             <h1>
               <Link to="/post" className="post-link">{title} &sdot;</Link> {" "}
-              <span className="gray">{transformDate(datePosted)}</span>
+              <span className="gray">{handleDate(datePosted)}</span>
             </h1>
             <p className="gray">Posted by {username}</p>
           </div>
@@ -69,13 +69,17 @@ export default function Post({
             <ThumbsUp className="icon" />
           </button>
 
-          <Link to="/profile">
-            <button
-              className={`gray-button ${
-                vote === "down" ? " selected-down" : ""
-              }`}
-              onClick={handleDownvote}>
-              <ThumbsDown className="icon" />
+          <button
+            className={`gray-button ${
+              vote === "down" ? " selected-down" : ""
+            }`}
+            onClick={handleDownvote}>
+            <ThumbsDown className="icon" />
+          </button>
+
+          <Link to="/post">
+            <button className="gray-button">
+              <MessageCircle className="icon" />
             </button>
           </Link>
         </div>

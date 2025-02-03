@@ -36,7 +36,8 @@ root.render(
             body={postData.body}
             tags={postData.tags}
             datePosted={postData.datePosted}
-            username={postData.username}/>}
+            username={postData.username}
+            comments={postData.comments}/>}
           />
       </Routes>
     </Router>
