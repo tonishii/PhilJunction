@@ -1,5 +1,5 @@
 import Post from "@/components/post";
-import data from "@/post-data";
+import data from "@/assets/post-data";
 
 export default function Main() {
   return (
@@ -9,35 +9,35 @@ export default function Main() {
         body={data.body}
         tags={data.tags}
         datePosted={data.datePosted}
-        user={data.user}
+        username={data.username}
       />
       <Post
         title={data.title}
         body={data.body}
         tags={data.tags}
         datePosted={data.datePosted}
-        user={data.user}
+        username={data.username}
       />
       <Post
         title={data.title}
         body={data.body}
         tags={data.tags}
         datePosted={data.datePosted}
-        user={data.user}
+        username={data.username}
       />
       <Post
         title={data.title}
         body={data.body}
         tags={data.tags}
         datePosted={data.datePosted}
-        user={data.user}
+        username={data.username}
       />
       <Post
         title={data.title}
         body={data.body}
         tags={data.tags}
         datePosted={data.datePosted}
-        user={data.user}
+        username={data.username}
       />
     </main>
   );

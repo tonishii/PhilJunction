@@ -7,13 +7,13 @@ export default function Post({
   body,
   tags,
   datePosted,
-  user,
+  username,
 }: {
   title: string;
   body: string;
   tags: string[];
   datePosted: Date;
-  user: string;
+  username: string;
 }) {
   const [vote, setVote] = useState<"up" | "down" | null>(null);
 
@@ -45,7 +45,7 @@ export default function Post({
               <Link to="/post" className="post-link">{title} &sdot;</Link> {" "}
               <span className="gray">{transformDate(datePosted)}</span>
             </h1>
-            <p className="gray">Posted by {user}</p>
+            <p className="gray">Posted by {username}</p>
           </div>
           <div className="post-main">
             <p>{body}</p>

@@ -1,26 +1,41 @@
+import { Link } from "react-router";
+
 export default function Profile({
-  // icon,
+  icon,
   username,
   email,
   description
 }: {
-    // icon: string;
-    username?: string;
-    email?: string;
-    description?: string;
+    icon?: string | undefined;
+    username: string;
+    email?: string | undefined;
+    description?: string | undefined;
 }) {
   return (
-    <div>
-      {/* This is for future profile icon
-       <img src={icon} alt="icon" /> */}
-      <h1 className="profile-text">Profile</h1>
-      <h1>{username}</h1>
-      <p>{username}</p>
-      <p className="description-text">{description}</p>
+    <div className="profile-container">
+      <div className="profile-body">
+        <h1 className="profile-title">Profile</h1>
+        <img src={icon} alt="icon" className="profile-icon"/>
+        <h1 className="profile-username">{username}</h1>
+        <p className="profile-email">{email}</p>
+        <p className="profile-description">{description}</p>
+      </div>
 
-      <button className="gray-button"><span>Posts</span></button>
-      <button className="gray-button"><span>Comments</span></button>
-      <button className="gray-button"><span>Settings</span></button>
+      {/* TENTATIVE FIGURING OUT ROUTING */}
+      <div className="profile-sidebar">
+        <Link to="/profile">
+          <button className="gray-button"><span>Profile</span></button>
+        </Link>
+        <Link to="/profile/posts">
+          <button className="gray-button"><span>Posts</span></button>
+        </Link>
+        <Link to="/profile/comments">
+          <button className="gray-button"><span>Comments</span></button>
+        </Link>
+        <Link to="/profile/settings">
+          <button className="gray-button"><span>Settings</span></button>
+        </Link>
+      </div>
     </div>
   );
 }

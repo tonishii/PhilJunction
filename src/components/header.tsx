@@ -14,15 +14,16 @@ export default function Header() {
 
   return (
     <header className="header">
-      <button className="gray-button">
-        <Menu className="icon" />
-      </button>
-
-      <Link to="/">
+      <div className="header-left">
         <button className="gray-button">
-          <Home className="icon" />
+          <Menu className="icon" />
         </button>
-      </Link>
+        <Link to="/">
+          <button className="gray-button">
+            <Home className="icon" />
+          </button>
+        </Link>
+      </div>
 
       <img className="header-logo" />
       <h1 className="header-text">PhilJunction!</h1>

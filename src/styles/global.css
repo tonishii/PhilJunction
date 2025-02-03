@@ -12,6 +12,10 @@ main {
     padding-top: 20px;
 }
 
+a {
+    text-decoration: none;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -27,6 +31,11 @@ main {
     margin: 0;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 .gray-button {
     display: flex;
     align-items: center;
@@ -35,7 +44,7 @@ main {
     border-radius: 10px;
     padding: 5px 9px;
     cursor: pointer;
-    transition: background 0.3s , transform 0.15s ease;
+    transition: background 0.3s, transform 0.15s ease;
 }
 
 .gray-button:hover {
@@ -54,7 +63,7 @@ main {
     transition: color 0.3s ease;
 }
 
-.gray-button:hover .icon {
+.gray-button:hover .icon, .gray-button:hover span {
     color: #393E41;
 }
 
@@ -72,7 +81,7 @@ main {
     background-color: #393E41;
     border-radius: 10px;
     width: 100%;
-    max-width: 400px;
+    max-width: 250px;
     padding: 1px 9px;
     gap: 10px;
 }
@@ -201,4 +210,42 @@ main {
 .post-window-comments {
     width: 50%;
     background-color: rgb(41, 41, 41)
+}
+
+.profile-container {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    background-color: #2c2f33;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-body {
+    display: flex;
+    flex-direction: column;
+    background-color: #393E41;
+    padding: 25px;
+    border-radius: 10px 0px 10px 10px;
+    color: #DAD8D7;
+}
+
+.profile-icon {
+    border-radius: 50%;
+    margin: 10px auto;
+}
+
+.profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #E94F37;
+    border-radius: 0px 25px 25px 0px;
+    cursor: pointer;
+    padding: 20px;
+}
+
+.profile-sidebar span {
+    color: #F6F7EB;
 }
