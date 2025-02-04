@@ -25,8 +25,10 @@ export default function Header() {
         </Link>
       </div>
 
-      <img className="header-logo" />
-      <h1 className="header-text">PhilJunction!</h1>
+      <div className="header-logotext">
+        <img className="header-logo" src="/images/logo.ico"/>
+        <h1 className="header-text">PhilJunction!</h1>
+      </div>
 
       <div className="search-bar">
         <Search className="search-icon" />

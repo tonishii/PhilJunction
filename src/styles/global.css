@@ -25,6 +25,15 @@ a {
     background-color: #E94F37;
 }
 
+.header-logo {
+    height: 100%;
+    weight: 100%;
+}
+.header-logotext {
+    display: flex;
+    align-items:center;
+}
+
 .header-text,
 .profile-text {
     color: #F6F7EB;
