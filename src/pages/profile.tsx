@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { UserRoundPen } from "lucide-react";
 
 export default function Profile({
   icon,
@@ -11,11 +12,17 @@ export default function Profile({
     email?: string | undefined;
     description?: string | undefined;
 }) {
+  console.log(icon);
   return (
     <div className="profile-container">
       <div className="profile-body">
         <h1 className="profile-title">Profile</h1>
-        <img src={icon} alt="icon" className="profile-icon"/>
+        <div className="profile-icon-container">
+          <img src={icon} alt="icon" className="profile-icon"/>
+          <button className="edit-button">
+            <UserRoundPen className="icon"/>
+          </button>
+        </div>
         <h1 className="profile-username">{username}</h1>
         <p className="profile-email">{email}</p>
         <p className="profile-description">{description}</p>

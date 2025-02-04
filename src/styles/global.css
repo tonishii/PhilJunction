@@ -41,21 +41,17 @@ a {
 .gray-button {
     display: flex;
     align-items: center;
-    background: #393E41;
-    border: 1px solid #393E41;
+    background: #2c2f33;
+    border: 1px solid #2c2f33;
     border-radius: 10px;
     padding: 5px 9px;
     cursor: pointer;
     transition: background 0.3s, transform 0.15s ease;
 }
 
-.gray-button:hover {
+.gray-button:hover, .edit-button:hover {
     background-color: #F6F7EB;
-    color: #393E41;
-}
-
-.gray-button:active {
-    transform: scale(0.95);
+    color: #2c2f33;
 }
 
 .icon {
@@ -65,14 +61,21 @@ a {
     transition: color 0.3s ease;
 }
 
-.gray-button:hover .icon, .gray-button:hover span {
-    color: #393E41;
+.gray-button span {
+    color: #F6F7EB;
+    padding: 4px;
+}
+
+.gray-button:hover .icon,
+.gray-button:hover span,
+.edit-button:hover .icon {
+    color: #2c2f33;
 }
 
 .search-bar {
     display: flex;
     align-items: center;
-    background-color: #393E41;
+    background-color: #2c2f33;
     border-radius: 10px;
     width: 100%;
     max-width: 250px;
@@ -107,7 +110,7 @@ a {
 }
 
 .post-sidebar {
-    background-color: #393E41;
+    background-color: #2c2f33;
     border-radius: 0px 25px 25px 0px;
     display: flex;
     flex-direction: column;
@@ -191,6 +194,7 @@ a {
     flex-direction: column;
     width: 40%;
     background-color: #393E41;
+    color: #F6F7EB;
     border-radius: 0px 25px 25px 0px;
     padding: 10px;
     margin: 10px 10px 10px 0px;
@@ -216,9 +220,39 @@ a {
     color: #DAD8D7;
 }
 
+.profile-username, .profile-email {
+    margin: 0px;
+}
+
+.profile-title {
+    margin: 0px 0px 20px;
+}
+
+.profile-description {
+    margin: 20px 0px 0px;
+}
+
+.profile-icon-container {
+    display: inline-block;
+    position: relative;
+    margin: 0px 0px 20px;
+}
+
 .profile-icon {
     border-radius: 50%;
-    margin: 10px auto;
+    width: 70px;
+    height: 70px;
+}
+
+.edit-button {
+    position: absolute;
+    border-radius: 50%;
+    top: 40px;
+    left: 40px;
+    background-color: #2c2f33;
+    border: 1px solid #2c2f33;
+    padding: 7px;
+    cursor: pointer;
 }
 
 .profile-sidebar {
@@ -229,4 +263,9 @@ a {
     border-radius: 0px 25px 25px 0px;
     cursor: pointer;
     padding: 20px;
+}
+
+.profile-sidebar .gray-button {
+    justify-content: center;
+    width: 100%;
 }

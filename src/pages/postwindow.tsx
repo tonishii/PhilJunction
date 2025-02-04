@@ -1,4 +1,4 @@
-import type { PostComment } from "@/assets/post-data";
+import type { PostComment } from "@/assets/post-data.ts";
 
 export default function PostWindow({
   title,
