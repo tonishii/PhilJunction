@@ -11,8 +11,8 @@ import Main from "@/pages/main";
 import Profile from "@/pages/profile";
 import PostWindow from "./pages/postwindow";
 
-import profileData from "@/assets/profile-data.ts";
-import postData from "@/assets/post-data.ts";
+import profileData from "@/assets/profile-data";
+import postData from "@/assets/post-data";
 import profileIcon from "@/assets/profile-icon.png";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);

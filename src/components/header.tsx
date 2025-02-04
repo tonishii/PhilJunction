@@ -14,21 +14,17 @@ export default function Header() {
 
   return (
     <header className="header">
-      <div className="header-left">
-        <button className="gray-button">
-          <Menu className="icon" />
-        </button>
-        <Link to="/">
-          <button className="gray-button">
-            <Home className="icon" />
-          </button>
-        </Link>
-      </div>
+      <button className="gray-button">
+        <Menu className="icon" />
+      </button>
 
-      <div className="header-logotext">
-        <img className="header-logo" src="/images/logo.ico"/>
+      <Link to="/" className="header-link">
+        <button className="header-button">
+          <img className="header-logo" src="src/assets/logo.svg" alt="PhilJunction Logo" />
+        </button>
         <h1 className="header-text">PhilJunction!</h1>
-      </div>
+      </Link>
+
 
       <div className="search-bar">
         <Search className="search-icon" />

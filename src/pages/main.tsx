@@ -3,7 +3,7 @@ import data from "@/assets/post-data.ts";
 
 export default function Main() {
   return (
-    <main>
+    <main className="general-container">
       <Post
         title={data.title}
         body={data.body}

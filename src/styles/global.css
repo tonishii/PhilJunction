@@ -25,13 +25,22 @@ a {
     background-color: #E94F37;
 }
 
-.header-logo {
-    height: 100%;
-    weight: 100%;
+.header-link {
+  display: flex;
+  align-items: center;
 }
-.header-logotext {
-    display: flex;
-    align-items:center;
+
+.header-button {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0px;
+}
+
+.header-logo {
+    display: block;
+    width: 40px;
+    height: 40px;
 }
 
 .header-text,
@@ -39,12 +48,6 @@ a {
     color: #F6F7EB;
     font-weight: bold;
     margin: 0;
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
 .gray-button {
@@ -102,15 +105,19 @@ a {
     flex-grow: 1;
     color: #F6F7EB;
     outline: none;
-    padding: 8px 0;
+    padding: 9px 0px;
 }
 
 /* general post */
+.general-container {
+    gap: 30px;
+}
+
 .post-container {
     display: grid;
     grid-template-columns: 500px 50px;
     min-height: 350px;
-    padding: 10px 0px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .post-body {
@@ -120,7 +127,7 @@ a {
 
 .post-sidebar {
     background-color: #2c2f33;
-    border-radius: 0px 25px 25px 0px;
+    border-radius: 0px 10px 10px 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -136,7 +143,7 @@ a {
 }
 
 .post-header {
-    border-radius: 25px 0px 0px 0px;
+    border-radius: 10px 0px 0px 0px;
     background-color: #DAD8D7;
 }
 
@@ -158,7 +165,7 @@ a {
 }
 
 .post-footer {
-    border-radius: 0px 0px 0px 25px;
+    border-radius: 0px 0px 0px 10px;
     background-color: #E53E24;
     padding-left: 10px;
 }
@@ -198,13 +205,27 @@ a {
     padding: 10px 0px 10px 10px;
 }
 
+.comment {
+  background-color: #4E565A;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.comment p {
+  color: #F6F7EB;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
 .post-window-comments {
     display: flex;
     flex-direction: column;
     width: 40%;
     background-color: #393E41;
     color: #F6F7EB;
-    border-radius: 0px 25px 25px 0px;
+    border-radius: 0px 10px 10px 0px;
     padding: 10px;
     margin: 10px 10px 10px 0px;
 }
@@ -212,10 +233,10 @@ a {
 /* profile page */
 .profile-container {
     display: flex;
-    align-items: start;
     justify-content: center;
     background-color: #2c2f33;
     padding: 20px;
+    margin: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -226,7 +247,7 @@ a {
     background-color: #393E41;
     padding: 25px;
     border-radius: 10px 0px 10px 10px;
-    color: #DAD8D7;
+    color: #F6F7EB;
 }
 
 .profile-username, .profile-email {
@@ -269,7 +290,7 @@ a {
     flex-direction: column;
     gap: 10px;
     background-color: #E94F37;
-    border-radius: 0px 25px 25px 0px;
+    border-radius: 0px 10px 10px 0px;
     cursor: pointer;
     padding: 20px;
 }

@@ -12,7 +12,6 @@ export default function Profile({
     email?: string | undefined;
     description?: string | undefined;
 }) {
-  console.log(icon);
   return (
     <div className="profile-container">
       <div className="profile-body">
