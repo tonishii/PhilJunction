@@ -29,5 +29,6 @@
       "@components/*": ["src/components/*"]
     }
   },
+  "forceConsistentCasingInFileNames": true,
   "include": ["src", "src/assets"]
 }

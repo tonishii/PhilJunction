@@ -39,46 +39,45 @@ export default function Post({
 
   return (
       <div className="post-container">
-        <div className="post-body">
-          <div className="post-header">
-            <h1>
-              <Link to="/post" className="post-link">{title} &sdot;</Link> {" "}
-              <span className="gray">{handleDate(datePosted)}</span>
-            </h1>
-            <p className="gray">Posted by {username}</p>
+        <Link to="/post" className="post-link">
+          <div className="post-body">
+            <div className="post-header">
+              <h1>
+                {title} &sdot;{" "}
+                <span className="gray">{handleDate(datePosted)}</span>
+              </h1>
+              <p className="gray">Posted by {username}</p>
+            </div>
+            <div className="post-main">
+              <p>{body}</p>
+            </div>
+            <div className="post-footer">
+              {tags.map((tag, i) => (
+                <span key={tag + i} className="tag">
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="post-main">
-            <p>{body}</p>
-          </div>
-          <div className="post-footer">
-            {tags.map((tag, i) => (
-              <span key={tag + i} className="tag">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-
+        </Link>
         <div className="post-sidebar">
           <button
-            className={`gray-button ${
+            className={`round-button ${
               vote === "up" ? "selected-up" : ""
             }`}
             onClick={handleUpvote}
           >
             <ThumbsUp className="icon" />
           </button>
-
           <button
-            className={`gray-button ${
+            className={`round-button ${
               vote === "down" ? " selected-down" : ""
             }`}
             onClick={handleDownvote}>
             <ThumbsDown className="icon" />
           </button>
-
           <Link to="/post">
-            <button className="gray-button">
+            <button className="round-button">
               <MessageCircle className="icon" />
             </button>
           </Link>

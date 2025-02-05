@@ -1,19 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+
 import {
   BrowserRouter as Router,
   Routes,
   Route
 } from "react-router";
 
-import Header from "@/components/header";
-import Main from "@/pages/main";
-import Profile from "@/pages/profile";
-import PostWindow from "./pages/postwindow";
+import Header from "@/components/Header";
+import Main from "@/pages/Main";
+import PostWindow from "@/pages/PostWindow";
+import Profile from "@/pages/Profile";
+import ProfileInfo from "./pages/ProfileInfo";
+import UserPosts from  "@/pages/UserPosts";
+import UserComments from  "@/pages/UserComments";
+import Settings from  "@/pages/Settings";
 
 import profileData from "@/assets/profile-data";
 import postData from "@/assets/post-data";
-import profileIcon from "@/assets/profile-icon.png";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
@@ -23,13 +27,18 @@ root.render(
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/profile" element={
-          <Profile
-            icon={profileIcon}
-            username={profileData.username}
-            email={profileData.email}
-            description={profileData.description}/>
-          } />
+        <Route path="/profile" element={<Profile/>}>
+          <Route index element={
+            <ProfileInfo
+              icon={profileData.icon}
+              username={profileData.username}
+              email={profileData.email}
+              description={profileData.description}/>}
+            />
+          <Route path="/profile/posts" element={<UserPosts />} />
+          <Route path="/profile/comments" element={<UserComments />} />
+          <Route path="/profile/settings" element={<Settings />} />
+        </Route>
 
         <Route path="/post" element={
           <PostWindow
@@ -38,8 +47,9 @@ root.render(
             tags={postData.tags}
             datePosted={postData.datePosted}
             username={postData.username}
-            comments={postData.comments}/>}
-          />
+            comments={postData.comments}/>
+          }
+        />
       </Routes>
     </Router>
   </React.StrictMode>
