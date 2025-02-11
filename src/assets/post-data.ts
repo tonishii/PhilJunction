@@ -1,5 +1,6 @@
 interface PostComment {
   username: string;
+  replyTo: string
   id: number;
   content: string;
   replies: PostComment[];
@@ -23,11 +24,13 @@ const postData: Post = {
   comments: [
     {
       username: "Mio",
+      replyTo: "Fubuki",
       id: 1,
       content: "I like glasses too!",
       replies: [
         {
           username: "Fubuki",
+          replyTo: "Mio",
           id: 2,
           content: "I'm glad you like them too!",
           replies: []
@@ -36,16 +39,19 @@ const postData: Post = {
     },
     {
       username: "Marine",
+      replyTo: "Fubuki",
       id: 3,
       content: "I think glasses are cute!",
       replies: [
         {
           username: "Fubuki",
+          replyTo: "Marine",
           id: 4,
           content: "I'm glad you think so!",
           replies: [
             {
               username: "Marine",
+              replyTo: "Fubuki",
               id: 5,
               content: "ha ha ha",
               replies: []
@@ -56,6 +62,7 @@ const postData: Post = {
     },
     {
       username: "Aqua",
+      replyTo: "Fubuki",
       id: 6,
       content: "I think glasses are cool!",
       replies: []

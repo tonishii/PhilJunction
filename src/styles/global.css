@@ -222,6 +222,17 @@ a {
   padding: 5px;
 }
 
+.comment .comment-header {
+    font-weight: bold;
+    font-size: 18px;
+    color: lightblue;
+}
+
+.comment .comment-name {
+    font-size: 24px;
+    color: white;
+}
+
 .post-window-comments {
     display: flex;
     flex-direction: column;
