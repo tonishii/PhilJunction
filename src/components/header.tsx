@@ -1,4 +1,4 @@
-import { Menu, Search, User, Home } from "lucide-react";
+import { Menu, Search, User } from "lucide-react";
 import { Link } from "react-router";
 
 export default function Header() {
@@ -14,7 +14,7 @@ export default function Header() {
 
   return (
     <header className="header">
-      <button className="gray-button">
+      <button className="round-button">
         <Menu className="icon" />
       </button>
 
@@ -37,7 +37,7 @@ export default function Header() {
       </div>
 
       <Link to="/profile">
-        <button className="gray-button">
+        <button className="round-button">
           <User className="icon" />
         </button>
       </Link>
