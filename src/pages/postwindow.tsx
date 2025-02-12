@@ -23,7 +23,7 @@ export default function PostWindow({
   function handleComments(comment: PostComment): JSX.Element {
     return (
       <div className="comment">
-        <h1>{comment.username}</h1>
+        <div className="comment-header"><span className="comment-name">{comment.username}</span> replying to <span className="comment-name">{comment.replyTo}</span></div>
         <p>{comment.content}</p>
         {comment.replies.map(comment => (
           handleComments(comment)

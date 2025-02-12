@@ -1,4 +1,4 @@
-import Post from "@/components/Post";
+import Post from "@/components/post.tsx";
 import data from "@/assets/post-data.ts";
 
 export default function Main() {

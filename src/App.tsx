@@ -7,14 +7,15 @@ import {
   Route
 } from "react-router";
 
-import Header from "@/components/Header";
-import Main from "@/pages/Main";
-import PostWindow from "@/pages/PostWindow";
-import Profile from "@/pages/Profile";
+import Header from "@/components/header";
+import Main from "@/pages/main";
+import PostWindow from "@/pages/postwindow";
+import Profile from "@/pages/profile";
 import ProfileInfo from "./pages/ProfileInfo";
 import UserPosts from  "@/pages/UserPosts";
 import UserComments from  "@/pages/UserComments";
 import Settings from  "@/pages/Settings";
+import Login from "@/pages/login"
 
 import profileData from "@/assets/profile-data";
 import postData from "@/assets/post-data";
@@ -26,6 +27,7 @@ root.render(
     <Router>
       <Header />
       <Routes>
+        <Route path="/login" element={<Login/>} />
         <Route path="/" element={<Main />} />
         <Route path="/profile" element={<Profile/>}>
           <Route index element={

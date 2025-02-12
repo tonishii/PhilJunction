@@ -1,0 +1,53 @@
+.login-background {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("@/assets/signupbg.jpg");
+    width: 100vw;
+    height: 100vh;
+}
+
+.login-center {
+    background-color: hsla(0, 0%, 100%, 0.5);
+    min-height: 300px;
+    min-width: 500px;
+    border-radius: 10px 10px 10px 10px;
+    padding: 0px;
+}
+
+.login-header {
+    display: flex;
+    flex-flow: column;
+    background-color: #E94F3790;
+    border-radius: 10px 10px 0 0;
+    min-height: 100px;
+    min-width: 500px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-contents {
+    border-radius: 10px 10px 0 0;
+    min-height: 100px;
+    min-width: 500px;
+    text-align: center;
+}
+
+.login-header-text {
+    display: inline-flex;
+    justify-content: center;
+    font-family: Montserrat;
+    font-weight: 700;
+    font-size: 40px;
+    color: white;
+}
+
+.login-logo {
+    width: 50px;    
+    height: 50px;
+}
+
+.login-header > * {
+    width: 100%;
+}
