@@ -16,6 +16,7 @@ import UserPosts from  "@/pages/UserPosts";
 import UserComments from  "@/pages/UserComments";
 import Settings from  "@/pages/Settings";
 import Login from "@/pages/login"
+import SignUp from "@/pages/signup";
 
 import profileData from "@/assets/profile-data";
 import postData from "@/assets/post-data";
@@ -28,6 +29,7 @@ root.render(
       <Header />
       <Routes>
         <Route path="/login" element={<Login/>} />
+        <Route path="/signup" element={<SignUp/>} />
         <Route path="/" element={<Main />} />
         <Route path="/profile" element={<Profile/>}>
           <Route index element={

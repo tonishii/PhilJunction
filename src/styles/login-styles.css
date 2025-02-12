@@ -3,13 +3,15 @@
     align-items: center;
     justify-content: center;
     background-image: url("@/assets/signupbg.jpg");
-    width: 100vw;
+    max-width: 100vw;
     height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .login-center {
-    background-color: hsla(0, 0%, 100%, 0.5);
-    min-height: 300px;
+    background-color: hsla(0, 0%, 100%, 0.6);
+    min-height: 240px;
     min-width: 500px;
     border-radius: 10px 10px 10px 10px;
     padding: 0px;
@@ -20,7 +22,7 @@
     flex-flow: column;
     background-color: #E94F3790;
     border-radius: 10px 10px 0 0;
-    min-height: 100px;
+    min-height: 120px;
     min-width: 500px;
     text-align: center;
     align-items: center;
@@ -31,7 +33,15 @@
     border-radius: 10px 10px 0 0;
     min-height: 100px;
     min-width: 500px;
-    text-align: center;
+    text-align: right;
+    column-gap: 10px;
+    display: grid;
+    grid-template-columns: 180px 270px;
+    padding: 10px 10px;
+    align-items: center;
+    font-family: Montserrat;
+    font-weight: 550;
+    font-size: 20px;
 }
 
 .login-header-text {
@@ -43,6 +53,10 @@
     color: white;
 }
 
+.login-header-caption {
+    font-style: italic;
+    font-family: Montserrat;
+}
 .login-logo {
     width: 50px;    
     height: 50px;
@@ -50,4 +64,64 @@
 
 .login-header > * {
     width: 100%;
+}
+
+.login-button {
+    align-self: center;
+    min-height: 30px;
+    min-width: 200px;
+    opacity: 0.4;
+    border-width: 3px;
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: 530;
+    background-color: white;
+}
+
+.login-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 0px 20px 0px;
+}
+
+/* signup page */
+.signup-center {
+    background-color: hsla(0, 0%, 100%, 0.6);
+    min-height: 300px;
+    min-width: 550px;
+    border-radius: 10px 10px 10px 10px;
+    padding: 0 0 5px 0;
+}
+
+.signup-contents {
+    border-radius: 10px 10px 0 0;
+    min-height: 100px;
+    min-width: 500px;
+    text-align: right;
+    column-gap: 10px;
+    row-gap: 10px;
+    display: grid;
+    grid-template-columns: 200px 300px;
+    padding: 10px 10px;
+    align-items: center;
+    font-family: Montserrat;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.login-signup {
+    justify-content: center;
+    font-family: Montserrat;
+    font-size: 20px;
+    color: black;
+}
+
+.bolded-text {
+    font-weight: bolder;
+    color: white;
+}
+
+.link-tag {
+    align-self: center;
+    color: black;
 }

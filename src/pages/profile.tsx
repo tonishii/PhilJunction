@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 
 export default function Profile() {
   return (
@@ -20,6 +20,9 @@ export default function Profile() {
         <NavLink to="/profile/settings" className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
           <span>Settings</span>
         </NavLink>
+        <Link to="/login" className="sidebar-button">
+          <span>Sign Out</span>
+        </Link>
       </div>
     </div>
   );
