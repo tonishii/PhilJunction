@@ -1,4 +1,4 @@
-import type { PostComment } from "./post-data";
+import type { PostComment } from "@/mockdata/post-data";
 
 const userCommentData: PostComment[] = [
   {
