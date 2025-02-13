@@ -14,7 +14,7 @@ import Settings from "@/pages/profile/settings";
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
 
-import userCommentData from "./assets/user-comments-data";
+import userCommentData from "@/mockdata/user-comments-data";
 import profileData from "@/mockdata/profile-data";
 import postData from "@/mockdata/post-data";
 const root = ReactDOM.createRoot(document.getElementById("root")!);

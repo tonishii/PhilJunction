@@ -1,5 +1,6 @@
 import logo from "@/public/logo.svg";
-export default function Logo({ className }: { className: string }) {
+
+export default function Logo({ className }: { className?: string }) {
   return (
     <img
       className={className ?? "header-logo"}

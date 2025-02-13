@@ -1,4 +1,4 @@
-import postData from "@/assets/post-data.ts";
+import postData from "@/mockdata/post-data.ts";
 import Post from "@/components/post";
 
 export default function UserPosts() {
