@@ -1,4 +1,5 @@
 import { UserRoundPen } from "lucide-react";
+import { NavLink } from "react-router";
 
 export default function ProfileInfo({
   icon,
@@ -16,9 +17,11 @@ export default function ProfileInfo({
       <h1 className="profile-title">Profile</h1>
       <div className="profile-icon-container">
         <img src={icon} alt="icon" className="profile-icon"/>
-        <button className="edit-button">
-          <UserRoundPen className="icon"/>
-        </button>
+        <NavLink to="/profile/settings">
+          <button className="edit-button">
+            <UserRoundPen className="icon"/>
+          </button>
+        </NavLink>
       </div>
       <h1 className="profile-username">{username}</h1>
       <p className="profile-email">{email}</p>

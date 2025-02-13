@@ -1,0 +1,141 @@
+/* General Post */
+.general-container {
+    gap: 30px;
+}
+
+.post-link {
+    color: #2c2f33;
+}
+
+.post-container {
+    display: grid;
+    grid-template-columns: 500px 60px;
+    min-height: 350px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.post-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2c2f33;
+    border-radius: 0px 10px 10px 0px;
+    gap: 10px;
+    padding: 10px;
+}
+
+.selected-up .icon{
+    fill: green;
+}
+
+.selected-down .icon{
+    fill: #E94F37;
+}
+
+.post-header {
+    border-radius: 10px 0px 0px 0px;
+    background-color: #DAD8D7;
+}
+
+.post-header h1 {
+    margin: 20px 20px 0px;
+}
+
+.post-header p {
+    margin: 0px 20px 20px;
+}
+
+.post-main {
+    background-color: #F6F7EB;
+    flex-grow: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.post-main p {
+    padding: 10px 20px;
+}
+
+.post-footer {
+    border-radius: 0px 0px 0px 10px;
+    background-color: #E53E24;
+    padding-left: 10px;
+}
+
+.tag {
+    color: #F6F7EB;
+    display: inline-block;
+    padding: 10px;
+    margin: 10px 0px;
+    margin-left: 10px;
+    border-radius: 25px;
+    background-color: #CA2E16;
+    min-width: 50px;
+    text-align: center;
+}
+
+/* Post Window */
+.post-window-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+.post-window-body {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 10px 0px 10px 10px;
+}
+
+.comment {
+  background-color: #4E565A;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.comment p {
+  color: #F6F7EB;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+.comment .comment-header {
+    font-weight: bold;
+    font-size: 18px;
+    color: lightblue;
+}
+
+.comment .comment-name {
+    font-size: 24px;
+    color: white;
+}
+
+.post-window-comments {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    background-color: #393E41;
+    color: #F6F7EB;
+    border-radius: 0px 10px 10px 0px;
+    padding: 20px;
+    margin: 10px 10px 10px 0px;
+}
+
+.post-window-comments-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.post-window-comments-header h1 {
+    margin: 0;
+}

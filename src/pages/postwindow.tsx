@@ -1,4 +1,9 @@
+import '@/styles/post-styles.css'
+
 import type { PostComment } from "@/assets/post-data";
+import Comment from '@/components/comment';
+import { CornerDownLeft } from "lucide-react";
+import { Link } from "react-router";
 
 export default function PostWindow({
   title,
@@ -18,18 +23,6 @@ export default function PostWindow({
 
   function handleDate(datePosted: Date): string {
     return "a day ago"
-  }
-
-  function handleComments(comment: PostComment): JSX.Element {
-    return (
-      <div className="comment">
-        <div className="comment-header"><span className="comment-name">{comment.username}</span> replying to <span className="comment-name">{comment.replyTo}</span></div>
-        <p>{comment.content}</p>
-        {comment.replies.map(comment => (
-          handleComments(comment)
-        ))}
-      </div>
-    );
   }
 
   return (
@@ -54,10 +47,16 @@ export default function PostWindow({
       </div>
 
       <div className="post-window-comments">
-        <h1>Comments</h1>
-        {comments.map(comment => (
-          handleComments(comment)
-        ))}
+        <div className="post-window-comments-header">
+          <h1>Comments</h1>
+          <Link to="/">
+            <button className="round-button">
+              <CornerDownLeft className="icon" />
+            </button>
+          </Link>
+        </div>
+
+        {comments.map(comment => <Comment comment={comment} /> )}
       </div>
     </div>
   );

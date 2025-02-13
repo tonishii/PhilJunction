@@ -1,3 +1,5 @@
+import '@/styles/post-styles.css'
+
 import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";

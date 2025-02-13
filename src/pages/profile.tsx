@@ -1,3 +1,4 @@
+import '@/styles/profile-styles.css'
 import { Link, NavLink, Outlet } from "react-router";
 
 export default function Profile() {

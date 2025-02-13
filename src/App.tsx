@@ -18,6 +18,7 @@ import Settings from  "@/pages/Settings";
 import Login from "@/pages/login"
 import SignUp from "@/pages/signup";
 
+import userCommentData from "./assets/user-comments-data";
 import profileData from "@/assets/profile-data";
 import postData from "@/assets/post-data";
 
@@ -40,7 +41,7 @@ root.render(
               description={profileData.description}/>}
             />
           <Route path="/profile/posts" element={<UserPosts />} />
-          <Route path="/profile/comments" element={<UserComments />} />
+          <Route path="/profile/comments" element={<UserComments userComments={userCommentData}/>} />
           <Route path="/profile/settings" element={<Settings />} />
         </Route>
 
