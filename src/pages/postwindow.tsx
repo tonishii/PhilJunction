@@ -58,7 +58,7 @@ export default function PostWindow({
           </button>
         </div>
 
-        {comments.map(comment => <Comment comment={comment} /> )}
+        {comments.map(comment => <Comment comment={comment}/> )}
       </div>
     </div>
   );

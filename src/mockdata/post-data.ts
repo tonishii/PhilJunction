@@ -72,12 +72,22 @@ const postData: Post = {
       username: "Fubuki",
       replyTo: "self",
       id: 7,
+      postDate: new Date(),
       content: "If from Pitx, which gate am I going to use to go home in Las Pinas",
       replies: [ 
         {
           username: "CavitexUser",
           replyTo: "Fubuki",
           id: 8,
+          postDate: new Date(),
+          content: "gate 8",
+          replies: []
+        },
+        {
+          username: "CavitexUser",
+          replyTo: "Fubuki",
+          id: 8,
+          postDate: new Date(),
           content: "gate 8",
           replies: []
         }
