@@ -5,6 +5,7 @@ const userCommentData: PostComment[] = [
     username: "Fubuki",
     replyTo: "Mio",
     id: 1,
+    postDate: new Date(),
     content: "I like glasses too!",
     replies: []
   },
@@ -12,6 +13,7 @@ const userCommentData: PostComment[] = [
     username: "Fubuki",
     replyTo: "Marine",
     id: 3,
+    postDate: new Date(),
     content: "I think glasses are cute!",
     replies: []
   },
@@ -19,6 +21,7 @@ const userCommentData: PostComment[] = [
     username: "Fubuki",
     replyTo: "Aqua",
     id: 6,
+    postDate: new Date(),
     content: "Wow?!?!?!",
     replies: []
   }

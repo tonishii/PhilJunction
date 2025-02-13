@@ -1,9 +1,9 @@
 import '@/styles/post-styles.css'
 
-import type { PostComment } from "@/assets/post-data";
+import type { PostComment } from "@/mockdata/post-data";
 import Comment from '@/components/comment';
 import { CornerDownLeft } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function PostWindow({
   title,
@@ -20,6 +20,8 @@ export default function PostWindow({
   username: string;
   comments: PostComment[];
 }) {
+
+  let navigate = useNavigate();
 
   function handleDate(datePosted: Date): string {
     return "a day ago"
@@ -49,11 +51,11 @@ export default function PostWindow({
       <div className="post-window-comments">
         <div className="post-window-comments-header">
           <h1>Comments</h1>
-          <Link to="/">
-            <button className="round-button">
-              <CornerDownLeft className="icon" />
-            </button>
-          </Link>
+          <button 
+            className="round-button"
+            onClick={() => navigate(-1)}>
+            <CornerDownLeft className="icon" />
+          </button>
         </div>
 
         {comments.map(comment => <Comment comment={comment} /> )}

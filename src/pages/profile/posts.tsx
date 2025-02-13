@@ -1,16 +1,14 @@
 import postData from "@/mockdata/post-data.ts";
-import Post from "@/components/post";
+import SmallPost from "@/components/smallpost";
 
 export default function UserPosts() {
   return (
     <div className="user-posts-container">
       {[...Array(20)].map(() =>
-        <Post
+        <SmallPost
           title={postData.title}
           body={postData.body}
           tags={postData.tags}
-          datePosted={postData.datePosted}
-          username={postData.username}
         />
       )}
     </div>

@@ -11,12 +11,14 @@ import ProfileInfo from "./pages/profile/info";
 import UserPosts from "@/pages/profile/posts";
 import UserComments from "@/pages/profile/comments";
 import Settings from "@/pages/profile/settings";
-import Login from "./pages/login";
-import SignUp from "./pages/signup";
+import Login from "@/pages/login";
+import SignUp from "@/pages/signup";
+import AuthLayout from "@/pages/authlayout";
 
 import userCommentData from "@/mockdata/user-comments-data";
 import profileData from "@/mockdata/profile-data";
 import postData from "@/mockdata/post-data";
+
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 root.render(
@@ -25,8 +27,6 @@ root.render(
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
         <Route path="/profile" element={<Profile />}>
           <Route
             index
@@ -39,9 +39,14 @@ root.render(
               />
             }
           />
-          <Route path="/profile/posts" element={<UserPosts />} />
-          <Route path="/profile/comments" element={<UserComments userComments={userCommentData}/>} />
-          <Route path="/profile/settings" element={<Settings />} />
+          <Route path="posts" element={<UserPosts />} />
+          <Route path="comments" element={<UserComments userComments={userCommentData}/>} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+        
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<SignUp />} />
         </Route>
 
         <Route

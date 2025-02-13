@@ -2,9 +2,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("@/public/signupbg.jpg");
   max-width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  
+  background-image: url("@/public/signupbg.jpg");
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -39,7 +41,6 @@
   grid-template-columns: 180px 270px;
   padding: 10px 10px;
   align-items: center;
-  font-family: Montserrat;
   font-weight: 550;
   font-size: 20px;
 }
@@ -47,7 +48,6 @@
 .login-header-text {
   display: inline-flex;
   justify-content: center;
-  font-family: Montserrat;
   font-weight: 700;
   font-size: 40px;
   color: white;
@@ -55,8 +55,8 @@
 
 .login-header-caption {
   font-style: italic;
-  font-family: Montserrat;
 }
+
 .login-logo {
   width: 50px;
   height: 50px;
@@ -72,7 +72,6 @@
   min-width: 200px;
   opacity: 0.4;
   border-width: 3px;
-  font-family: Montserrat;
   font-size: 20px;
   font-weight: 530;
   background-color: white;
@@ -104,14 +103,12 @@
   grid-template-columns: 200px 300px;
   padding: 10px 10px;
   align-items: center;
-  font-family: Montserrat;
   font-weight: 500;
   font-size: 20px;
 }
 
 .login-signup {
   justify-content: center;
-  font-family: Montserrat;
   font-size: 20px;
   color: black;
 }
@@ -122,6 +119,5 @@
 }
 
 .link-tag {
-  align-self: center;
   color: black;
 }

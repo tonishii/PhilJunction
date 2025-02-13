@@ -1,5 +1,5 @@
 import Comment from "@/components/comment"
-import { PostComment } from "@/assets/post-data"
+import { PostComment } from "@/mockdata/post-data"
 
 export default function UserComments({
   userComments,
