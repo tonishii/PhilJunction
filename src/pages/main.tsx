@@ -1,5 +1,5 @@
 import Post from "@/components/post.tsx";
-import data from "@/assets/post-data.ts";
+import data from "@/mockdata/post-data.ts";
 
 export default function Main() {
   return (
