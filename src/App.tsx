@@ -11,10 +11,11 @@ import ProfileInfo from "./pages/profile/info";
 import UserPosts from "@/pages/profile/posts";
 import UserComments from "@/pages/profile/comments";
 import Settings from "@/pages/profile/settings";
+import Login from "./pages/login";
+import SignUp from "./pages/signup";
 
 import profileData from "@/mockdata/profile-data";
 import postData from "@/mockdata/post-data";
-
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 root.render(
@@ -23,6 +24,8 @@ root.render(
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/profile" element={<Profile />}>
           <Route
             index

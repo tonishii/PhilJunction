@@ -1,7 +1,6 @@
 import { Menu, Search, User } from "lucide-react";
 import { Link } from "react-router";
-
-import logo from "@/public/logo.svg";
+import Logo from "@/components/logo";
 
 export default function Header() {
   function handleSearch(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -24,12 +23,7 @@ export default function Header() {
 
       <Link to="/" className="header-link">
         <button className="header-button">
-          <img
-            className="header-logo"
-            src={logo}
-            alt="PhilJunction Logo"
-            role="img"
-          />
+          <Logo />
         </button>
         <h1 className="header-text">PhilJunction!</h1>
       </Link>
