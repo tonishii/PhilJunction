@@ -20,7 +20,12 @@ export default function Header() {
 
       <Link to="/" className="header-link">
         <button className="header-button">
-          <img className="header-logo" src="src/assets/logo.svg" alt="PhilJunction Logo" />
+          <img
+            className="header-logo"
+            src="logo.svg"
+            alt="PhilJunction Logo"
+            role="img"
+          />
         </button>
         <h1 className="header-text">PhilJunction!</h1>
       </Link>
