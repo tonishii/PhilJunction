@@ -1,5 +1,6 @@
 import '@/styles/post-styles.css'
 
+import ImageCarousel from './imagecarousel';
 import type { Post } from '@/mockdata/post-data';
 import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
 import { useState } from "react";
@@ -66,6 +67,10 @@ export default function Post({
             </div>
             <div className="post-main">
               <p>{post.body}</p>
+              <div className="matchWidth">
+                <ImageCarousel images={post.images} />
+              </div>
+              
             </div>
             <div className="post-footer">
               {post.tags.map((tag, i) => (

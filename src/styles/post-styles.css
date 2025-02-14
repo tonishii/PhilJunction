@@ -240,3 +240,8 @@
   border-right: 4px solid #393E41;
   width: 20%
 }
+
+.matchWidth {
+  width: 100%;
+  object-fit: content;
+}
