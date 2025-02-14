@@ -1,4 +1,4 @@
-import { Menu, Search, User } from "lucide-react";
+import { Menu, Search, User, FilePen } from "lucide-react";
 import { Link } from "react-router";
 import Logo from "@/components/logo";
 
@@ -17,9 +17,18 @@ export default function Header() {
 
   return (
     <header className="header">
-      <button className="round-button">
-        <Menu className="icon" />
-      </button>
+      <div className="header-leftmost">
+        <Link to="/profile/settings">
+          <button className="round-button">
+            <Menu className="icon" />
+          </button>
+        </Link>
+        <Link to="/holler">
+          <button className="round-button">
+            <FilePen className="icon" />
+          </button>
+        </Link>
+      </div>
 
       <Link to="/" className="header-link">
         <button className="header-button">

@@ -7,6 +7,12 @@
   background-color: #E94F37;
 }
 
+.header-leftmost {
+  display: flex;
+  align-items: left;
+  background-color: #E94F37;
+}
+
 .header-link {
   display: flex;
   align-items: center;
@@ -55,7 +61,6 @@
   min-height: 100px;
   padding: 10px;
   border-radius: 10px;
-
   padding-left: 10px;
   border-left-width: 3px;
   border-left-style: solid;

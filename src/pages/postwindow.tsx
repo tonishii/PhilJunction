@@ -6,6 +6,7 @@ import ImageCarousel from '@/components/imagecarousel';
 import { useNavigate } from "react-router";
 import { ThumbsUp, ThumbsDown, MessageCircle, CornerDownLeft } from "lucide-react";
 import { useState } from "react";
+import moment from 'moment';
 
 export default function PostWindow({
   post,
@@ -30,10 +31,11 @@ export default function PostWindow({
     setCommentValue(event.target.value);
   };
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   function handleDate(datePosted: Date): string {
-    return "a day ago"
+
+    return moment(datePosted).fromNow();
   }
 
   function handleUpvote(): void {
@@ -50,7 +52,7 @@ export default function PostWindow({
     }
   }
 
-  function handleDownvote(): void{
+  function handleDownvote(): void {
     if (vote === "down") {
       setVote(null);
       setDislikeCount(dislikeCount - 1);
@@ -107,7 +109,7 @@ export default function PostWindow({
           ))}
         </div>
 
-        <ImageCarousel images={post.images} maxImages={3}/>
+        <ImageCarousel images={post.images} maxImages={3} />
 
         <p>{post.body}</p>
       </div>
@@ -116,9 +118,8 @@ export default function PostWindow({
         <div className="post-button">
           <span className='count'>{likeCount}</span>
           <button
-            className={`round-button ${
-              vote === "up" ? "selected-up" : ""
-            }`}
+            className={`round-button ${vote === "up" ? "selected-up" : ""
+              }`}
             onClick={handleUpvote}
           >
             <ThumbsUp className="icon" />
@@ -127,9 +128,8 @@ export default function PostWindow({
 
         <div className="post-button">
           <button
-            className={`round-button ${
-              vote === "down" ? " selected-down" : ""
-            }`}
+            className={`round-button ${vote === "down" ? " selected-down" : ""
+              }`}
             onClick={handleDownvote}>
             <ThumbsDown className="icon" />
           </button>
@@ -156,7 +156,7 @@ export default function PostWindow({
 
       <div className="post-window-comments">
         <h1>Comments</h1>
-        {comments.map(comment => <Comment comment={comment} isReplyable={true}/> )}
+        {comments.map(comment => <Comment comment={comment} isReplyable={true} />)}
       </div>
     </div>
   );
