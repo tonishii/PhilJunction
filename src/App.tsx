@@ -7,13 +7,14 @@ import Header from "@/components/header";
 import Main from "@/pages/main";
 import PostWindow from "@/pages/postwindow";
 import Profile from "@/pages/profile/layout";
-import ProfileInfo from "./pages/profile/info";
+import ProfileInfo from "@/pages/profile/info";
 import UserPosts from "@/pages/profile/posts";
 import UserComments from "@/pages/profile/comments";
 import Settings from "@/pages/profile/settings";
 import Login from "@/pages/login";
 import SignUp from "@/pages/signup";
 import AuthLayout from "@/pages/authlayout";
+import SearchPage from "@/pages/searchpage";
 
 import userCommentData from "@/mockdata/user-comments-data";
 import profileData from "@/mockdata/profile-data";
@@ -43,7 +44,7 @@ root.render(
           <Route path="comments" element={<UserComments userComments={userCommentData}/>} />
           <Route path="settings" element={<Settings />} />
         </Route>
-        
+        <Route path="/search" element={<SearchPage />} />
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp />} />
