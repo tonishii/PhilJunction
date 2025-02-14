@@ -1,5 +1,5 @@
 import "@/styles/create-post.css"
-import { CirclePlus, Send, X } from "lucide-react";
+import { CirclePlus, Send, X, Paperclip } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import ReactMarkdown from 'react-markdown'
 
@@ -43,18 +43,20 @@ export default function CreatePost() {
 
     return (
         <main>
-            <div className="container">
+            <div className="create-post-container">
                 <div className="post-container new-post">
                     <div className="post-body">
                         <div className="create-post-header">
                             <textarea name="title" id="title" placeholder="Title..." onInput={handleTitleEdit} />
                         </div>
+
                         <div className="create-post-main">
-                            <textarea name="editor" id="editor" placeholder="start typing here..." onInput={handleEditorEdit} onBlur={() => setIsEditingPost(false)} onFocus={() => setIsEditingPost(true)} />
-                            <div className={`content-container ${isEditingPost ? "zback" : ""}`} onClick={handleClickContent}>
+                            <textarea name="editor" id="editor" placeholder="Start typing here..." onInput={handleEditorEdit} onBlur={() => setIsEditingPost(false)} onFocus={() => setIsEditingPost(true)} />
+                            <div className={`content-container zback`} onClick={handleClickContent}>
                                 <ReactMarkdown children={content} />
                             </div>
                         </div>
+
                         <div className="create-post-footer">
                             <div className="new-tag-section">
                                 <CirclePlus id="addTags" onClick={handleAddTags} />
@@ -74,13 +76,21 @@ export default function CreatePost() {
 
                         </div>
                     </div>
+
                     <div className="post-sidebar">
                         <div className='sidebar-button'>
                             <button
                                 className={`round-button`}
-                                onClick={submit}
-                            >
+                                onClick={submit}>
                                 <Send className="icon" />
+                            </button>
+                        </div>
+
+                        <div className='sidebar-button'>
+                            <button
+                                className={`round-button`}
+                                onClick={submit}>
+                                <Paperclip className="icon" />
                             </button>
                         </div>
                     </div>

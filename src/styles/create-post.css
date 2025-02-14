@@ -1,4 +1,4 @@
-.container {
+.create-post-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -9,7 +9,6 @@
 .new-post {
     height: 100%;
 }
-
 
 .editor-container, .result-container {
     width: 100%;
@@ -42,6 +41,7 @@
     word-wrap: break-word;
     word-break: break-all;
     resize: none;
+    outline: none;
     font-size: 1.5em;
     font-weight: 700;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -53,6 +53,10 @@
     flex-grow: 1;
     position: relative;
     height: 350px;
+}
+
+.create-post-main textarea {
+    outline: none;
 }
 
 #editor {
