@@ -26,13 +26,7 @@ export default function SearchPage() {
         <div className="search-list">
             <span className="search-results">Results:</span>
             <div className="search-posts">
-                <Post
-                    title={postData.title}
-                    body={postData.body}
-                    tags={postData.tags}
-                    datePosted={postData.datePosted}
-                    username={postData.username}
-                />
+                <Post post={postData}/>
             </div>
         </div>
     </div>

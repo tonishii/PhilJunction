@@ -45,6 +45,7 @@ root.render(
           <Route path="settings" element={<Settings />} />
         </Route>
         <Route path="/search" element={<SearchPage />} />
+
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp />} />
@@ -52,16 +53,7 @@ root.render(
 
         <Route
           path="/post"
-          element={
-            <PostWindow
-              title={postData.title}
-              body={postData.body}
-              tags={postData.tags}
-              datePosted={postData.datePosted}
-              username={postData.username}
-              comments={postData.comments}
-            />
-          }
+          element={<PostWindow post={postData}/>}
         />
       </Routes>
     </Router>
