@@ -9,15 +9,10 @@ export default function Comment({
 }: {
   comment: PostComment
 }) {
-  const [menuVisible, setMenuVisible] = useState(false);
-  const toggleMenu = () => setMenuVisible(!menuVisible);
-
   const editComment = () => {
-
   };
 
   const deleteComment = () => {
-
   };
 
   function handleDate(date: Date) {
@@ -25,6 +20,10 @@ export default function Comment({
   }
 
   function handleComments(comment: PostComment): JSX.Element {
+    const [menuVisible, setMenuVisible] = useState(false);
+
+    const toggleMenu = () => setMenuVisible(!menuVisible);
+
     return (
       <div className="comment-container">
         <div className="comment-header">
@@ -42,7 +41,7 @@ export default function Comment({
               <button
                 className="ellipsis-button"
                 onClick={toggleMenu}>
-                  <Ellipsis className="icon"/>
+                <Ellipsis className="icon" />
               </button>
               {menuVisible && <div className="dropdown-menu">
                 <ul>
@@ -53,18 +52,25 @@ export default function Comment({
             </div>
           </div>
 
-          <div className="comment-reply">
-            reply to <span>&nbsp;{comment.replyTo}</span>
-          </div>
+          {comment.replyTo && (
+            <div className="comment-reply">
+              reply to <span>&nbsp;{comment.replyTo}</span>
+            </div>
+          )}
         </div>
 
         <p>{comment.content}</p>
-        {comment.replies.map(comment => (
-          handleComments(comment)
-        ))}
+
+        {comment.replies.length > 0 && (
+          <div className="replies-container">
+            {comment.replies.map((reply, index) => (
+              <Comment key={index} comment={reply} />
+            ))}
+          </div>
+        )}
       </div>
     );
   }
 
-  return (handleComments(comment))
+  return handleComments(comment);
 }
