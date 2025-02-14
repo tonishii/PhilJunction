@@ -1,6 +1,6 @@
 export default function Settings() {
   return (
-    <div>
+    <div className="settings-container">
       <h2>Edit Profile</h2>
       <ul>
         <li>Change character avatar</li>

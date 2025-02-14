@@ -107,9 +107,14 @@
 }
 
 /* User-comment history*/
-.user-comment-container {
-    background-color: #F6F7EB;
-    width: 400px;
-    height: 200px;
+.user-comments-container {
+    width: 100%;
+    height: 100%;
     overflow: hidden;
+}
+
+.settings-container {
+    height: 100%;
+    width: 100%;
+    align-content: left;
 }
