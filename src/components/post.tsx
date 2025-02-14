@@ -5,6 +5,7 @@ import type { Post } from '@/mockdata/post-data';
 import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
+import moment from 'moment';
 
 export default function Post({
   post,
@@ -23,7 +24,7 @@ export default function Post({
   const [commentCount] = useState(post.comments.length);
 
   function handleDate(datePosted: Date): string {
-    return "a day ago.";
+    return moment(datePosted).fromNow();
   }
 
   function handleUpvote(): void {
@@ -40,7 +41,7 @@ export default function Post({
     }
   }
 
-  function handleDownvote(): void{
+  function handleDownvote(): void {
     if (vote === "down") {
       setVote(null);
       setDislikeCount(dislikeCount - 1);
@@ -55,67 +56,65 @@ export default function Post({
   }
 
   return (
-      <div className="post-container">
-        <div className="post-body">
-          <div className="post-header">
-            <Link to="/post" className="post-link">
-              <h1>
-                {post.title} &sdot;{" "}
-                <span className="gray">{handleDate(post.postDate)}</span>
-              </h1>
-            </Link>
-            <p className="gray">Posted by {post.username}</p>
-          </div>
-
-          <div className="post-main">
-            <p>{post.body}</p>
-            <div className="matchWidth">
-              <ImageCarousel images={post.images} maxImages={1}/>
-            </div>
-
-          </div>
-          <div className="post-footer">
-            {post.tags.map((tag, i) => (
-              <span key={tag + i} className="tag">
-                {tag}
-              </span>
-            ))}
-          </div>
+    <div className="post-container">
+      <div className="post-body">
+        <div className="post-header">
+          <Link to="/post" className="post-link">
+            <h1>
+              {post.title} &sdot;{" "}
+              <span className="gray">{handleDate(post.postDate)}</span>
+            </h1>
+          </Link>
+          <p className="gray">Posted by {post.username}</p>
         </div>
 
-        <div className="post-sidebar">
-          <div className='post-button'>
-            <span className='count'>{likeCount}</span>
-            <button
-              className={`round-button ${
-                vote === "up" ? "selected-up" : ""
-              }`}
-              onClick={handleUpvote}
-            >
-              <ThumbsUp className="icon" />
-            </button>
+        <div className="post-main">
+          <p>{post.body}</p>
+          <div className="matchWidth">
+            <ImageCarousel images={post.images} maxImages={1} />
           </div>
 
-          <div className="post-button">
-            <button
-              className={`round-button ${
-                vote === "down" ? " selected-down" : ""
-              }`}
-              onClick={handleDownvote}>
-              <ThumbsDown className="icon" />
-            </button>
-            <span className='count'>{dislikeCount}</span>
-          </div>
-
-          <div className="post-button">
-            <Link to="/post">
-              <button className="round-button">
-                <MessageCircle className="icon" />
-              </button>
-            </Link>
-            <span className='count'>{commentCount}</span>
-          </div>
+        </div>
+        <div className="post-footer">
+          {post.tags.map((tag, i) => (
+            <span key={tag + i} className="tag">
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
+
+      <div className="post-sidebar">
+        <div className='post-button'>
+          <span className='count'>{likeCount}</span>
+          <button
+            className={`round-button ${vote === "up" ? "selected-up" : ""
+              }`}
+            onClick={handleUpvote}
+          >
+            <ThumbsUp className="icon" />
+          </button>
+        </div>
+
+        <div className="post-button">
+          <button
+            className={`round-button ${vote === "down" ? " selected-down" : ""
+              }`}
+            onClick={handleDownvote}>
+            <ThumbsDown className="icon" />
+          </button>
+          <span className='count'>{dislikeCount}</span>
+        </div>
+
+        <div className="post-button">
+          <Link to="/post">
+            <button className="round-button">
+              <MessageCircle className="icon" />
+            </button>
+          </Link>
+          <span className='count'>{commentCount}</span>
+        </div>
+      </div>
+    </div>
   );
 }
