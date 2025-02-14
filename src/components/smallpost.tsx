@@ -13,7 +13,7 @@ export default function SmallPost({
     <div className="smallpost-container">
       <Link to="/post" className="post-link">
         <div className="smallpost-header">
-          <h1>{post.title}</h1>
+          <p>{post.title}</p>
 
           <div className="tag-list">
             {post.tags.map((tag, i) => (
