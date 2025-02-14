@@ -1,5 +1,5 @@
 import "@/styles/create-post.css"
-import { CirclePlus, Send } from "lucide-react";
+import { CirclePlus, Send, X } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import ReactMarkdown from 'react-markdown'
 
@@ -7,7 +7,7 @@ export default function CreatePost() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [newTag, setNewTag] = useState("");
-    const [tags, setTags] = useState([]);
+    const [tags, setTags] = useState<string[]>([]);
     const [isEditingPost, setIsEditingPost] = useState(false);
 
     function handleTitleEdit(event: ChangeEvent<HTMLTextAreaElement>) {
@@ -24,8 +24,15 @@ export default function CreatePost() {
     }
 
     function handleAddTags() {
+        setTags([...tags, newTag])
+        setNewTag("");
+    }
 
-
+    function handleRemoveTag(index: number) {
+        console.log(index);
+        const copy = [...tags];
+        copy.splice(index, 1)
+        setTags(copy);
     }
 
     function submit() {
@@ -51,11 +58,17 @@ export default function CreatePost() {
                         <div className="create-post-footer">
                             <div className="new-tag-section">
                                 <CirclePlus id="addTags" onClick={handleAddTags} />
-                                <input type="text" name="tag" id="tag" value={newTag} onChange={(e) => setNewTag(e.target.value)} />
+                                <input type="text" name="tag" id="tag" value={newTag} onChange={(e) => setNewTag(e.target.value)} onKeyUp={(e) => { if (e.code === "Enter") handleAddTags() }} />
                             </div>
                             <div className="tags-section">
                                 {
-
+                                    tags.map((tag, index) => (
+                                        <div className="create-tag">
+                                            <div className="wrap-tag">
+                                                {tag}<X className="remove-tag" onClick={() => handleRemoveTag(index)} />
+                                            </div>
+                                        </div>
+                                    ))
                                 }
                             </div>
 
