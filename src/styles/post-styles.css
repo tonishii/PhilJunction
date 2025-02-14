@@ -46,7 +46,7 @@
 }
 
 .count {
-    color: #F6F7EB; 
+    color: #F6F7EB;
     font-size: 0.9rem;
 }
 
@@ -157,52 +157,6 @@
 
 .post-window-comments-header h1 {
     margin: 0;
-}
-
-.comment {
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-}
-
-.comment p {
-  color: #F6F7EB;
-  margin-bottom: 10px;
-}
-
-.comment-padding {
-    padding-left: 10px;
-    border-left-width: 3px;
-    border-left-style: solid;
-    border-color: #4E565A;
-}
-
-.comment .comment-header {
-    font-weight: bold;
-    font-size: 18px;
-    color: lightblue;
-}
-
-.comment .comment-name {
-    font-size: 24px;
-    color: white;
-}
-
-.comment .comment-reply {
-    font-size: 12px;
-    color: white;
-    font-weight: 400;
-}
-
-.comment-reply-name {
-    font-size: 12px;
-    font-weight: bold;
-    color: #ffa500;
-}
-
-.comment-icons {
-    color: white;
 }
 
 /* Small Post */
