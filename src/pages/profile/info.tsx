@@ -14,7 +14,6 @@ export default function ProfileInfo({
 }) {
   return(
     <div>
-      <h1 className="profile-title">Profile</h1>
       <div className="profile-icon-container">
         <img src={icon} alt="icon" className="profile-icon"/>
         <NavLink to="/profile/settings">

@@ -3,12 +3,11 @@ import Toggleswitch from "@/components/toggleswitch"
 export default function Settings() {
   return (
     <div className="settings-container">
-      <h2>Edit Profile</h2>
       <section>
         <label htmlFor="username">Username</label>
         <input type="text" id="username" name="username"></input>
 
-        <label htmlFor="email">email</label>
+        <label htmlFor="email">Email</label>
         <input type="text" id="email" name="email"></input>
 
         <label htmlFor="bio">Bio</label>
@@ -20,7 +19,7 @@ export default function Settings() {
         <label htmlFor="theme">Select theme light or dark</label>
         <Toggleswitch name="theme" />
 
-        <label htmlFor="font-style">Customize Font style</label>
+        <label htmlFor="font-style">Customize font-style</label>
         <select name="font-style" id="font-style">
           <option value="times">times</option>
           <option value="roman">roman</option>

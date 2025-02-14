@@ -9,8 +9,8 @@
 .user-posts-container {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  margin-top: 70px;
+  gap: 20px;
+  margin-top: 20px;
 }
 
 .post-link {
@@ -189,8 +189,8 @@
 /* Small Post */
 .smallpost-container {
   min-height: 150px;
-  min-height: 200px;
-  max-width: 300px;
+  min-width: 250px;
+  max-width: 350px;
 }
 
 .smallpost-header {

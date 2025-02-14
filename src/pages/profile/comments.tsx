@@ -8,7 +8,6 @@ export default function UserComments({
 }) {
   return (
     <div className="user-comments-container">
-      <h1>History</h1>
       {userComments.map((comment) =>
         <Comment comment={comment} />
       )}

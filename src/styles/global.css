@@ -20,8 +20,7 @@ a {
     text-decoration: none;
 }
 
-.header-text,
-.profile-text {
+.header-text {
     color: #F6F7EB;
     font-weight: bold;
     margin: 0;
