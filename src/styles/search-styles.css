@@ -22,7 +22,6 @@
     display: flex;
     align-items: center;
     justify-content: end;
-
     color: #F6F7EB;
     background-color: #2c2f33;
     padding: 7px 10px;
@@ -40,7 +39,40 @@
     gap: 10px;
     border: none;
     color: #F6F7EB;
+    max-width: 430px;
     outline: none;
+}
+
+.tags-input {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: #2c2f33;
+    border-radius: 10px;
+    padding: 7px 10px;
+    gap: 5px;
+    border: none;
+    color: #F6F7EB;
+    outline: none;
+    max-width: 430px;
+}
+
+.tags-input input {
+    border: none;
+    background: transparent;
+    color: #F6F7EB;
+    outline: none;
+    flex: 1;
+    min-width: 100px;
+}
+
+.tag button {
+    background: none;
+    border: none;
+    color: #F6F7EB;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 14px;
 }
 
 .search-body select {

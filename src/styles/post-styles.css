@@ -88,8 +88,8 @@
 }
 
 .tag {
-  color: #F6F7EB;
   display: inline-block;
+  color: #F6F7EB;
   border-radius: 25px;
   background-color: #CA2E16;
   min-width: 50px;
@@ -188,8 +188,9 @@
 
 /* Small Post */
 .smallpost-container {
+  min-height: 150px;
   min-height: 200px;
-  max-width: 400px;
+  max-width: 300px;
 }
 
 .smallpost-header {
@@ -217,15 +218,15 @@
 }
 
 .smallpost-body {
-    display: -webkit-box;
-    border-radius: 0px 0px 10px 10px;
-    background-color: #23272A;
-    padding: 10px 20px;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    max-height: 80px;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  display: -webkit-box;
+  border-radius: 0px 0px 10px 10px;
+  background-color: #23272A;
+  padding: 10px 20px;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  max-height: 80px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .smallpost-body p {
