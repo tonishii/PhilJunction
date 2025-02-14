@@ -7,7 +7,7 @@ export default function CreatePost() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [newTag, setNewTag] = useState("");
-    const [tags, setTags] = useState([]);
+    const [tags, setTags] = useState<string[]>([]);
     const [images, setImages] = useState([]);
     const [isEditingPost, setIsEditingPost] = useState(false);
 
@@ -73,9 +73,10 @@ export default function CreatePost() {
                                     type="text"
                                     name="tag"
                                     id="tag"
-                                    value={newTag}
                                     placeholder="Add a tag..."
-                                    onChange={(e) => setNewTag(e.target.value)} />
+                                    value={newTag}
+                                    onChange={(e) => setNewTag(e.target.value)}
+                                    onKeyUp={(e) => { if (e.code === "Enter") handleAddTags() }} />
                             </div>
                             <div className="tags-section">
                                 {
@@ -88,18 +89,6 @@ export default function CreatePost() {
                                     ))
                                 }
                             </div>
-                            <div className="new-tag-section">
-                                <CirclePlus id="addTags" onClick={handleAddTags} />
-                                <input
-                                    type="text"
-                                    name="tag"
-                                    id="tag"
-                                    placeholder="Add a tag..."
-                                    value={newTag}
-                                    onChange={(e) => setNewTag(e.target.value)}
-                                    onKeyUp={(e) => { if (e.code === "Enter") handleAddTags() }} />
-                            </div>
-
                         </div>
                     </div>
 

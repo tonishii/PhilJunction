@@ -51,11 +51,7 @@
     background-color: #F6F7EB;
     flex-grow: 1;
     position: relative;
-<<<<<<< HEAD
-    padding: 10px;
-=======
     height: 350px;
->>>>>>> bdfab90e74ae5fd70344628b3d327c5e35f40591
 }
 
 .create-post-main textarea {
@@ -120,8 +116,6 @@
     opacity: 0.8;
 }
 
-<<<<<<< HEAD
-=======
 .tags-section {}
 
 .wrap-tag {
@@ -151,4 +145,11 @@
     opacity: 0.8;
     cursor: pointer;
 }
->>>>>>> bdfab90e74ae5fd70344628b3d327c5e35f40591
+
+.content-container h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.content-container p {
+    margin: 0;
+}
