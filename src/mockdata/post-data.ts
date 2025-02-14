@@ -21,7 +21,7 @@ const postData: Post = {
   title: "Las Pinas - DLSU Manila",
   body: "Hello. Can you tell any possible way of commuting from Las Pinas to DLSU-Manila? Also may I know the details of commute such as: complete steps of commuting, price each transpo, and average total duration.",
   tags: ["Manila", "Hololive", "Glasses"],
-  postDate: new Date(),
+  postDate: new Date("February 10, 2020"),
   username: "Fubuki",
   images: ["src/mockdata/images-1/LRT-1.jpg", "src/mockdata/images-1/LRT-2.jpg", "src/mockdata/images-1/MRT-3.jpg"],
   comments: [
