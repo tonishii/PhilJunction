@@ -2,9 +2,9 @@ import '@/styles/post-styles.css'
 
 import type { Post } from "@/mockdata/post-data";
 import Comment from '@/components/comment';
-import { CornerDownLeft } from "lucide-react";
-import { useNavigate, Link } from "react-router";
-import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
+import ImageCarousel from '@/components/imagecarousel';
+import { useNavigate } from "react-router";
+import { ThumbsUp, ThumbsDown, MessageCircle, CornerDownLeft } from "lucide-react";
 import { useState } from "react";
 
 export default function PostWindow({
@@ -22,7 +22,13 @@ export default function PostWindow({
   const [vote, setVote] = useState<"up" | "down" | null>(initialVote);
   const [likeCount, setLikeCount] = useState(initialLikes);
   const [dislikeCount, setDislikeCount] = useState(initialDislikes);
+  const [comments, setComments] = useState(post.comments);
   const [commentCount] = useState(post.comments.length);
+  const [commentValue, setCommentValue] = useState("");
+
+  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCommentValue(event.target.value);
+  };
 
   let navigate = useNavigate();
 
@@ -58,6 +64,22 @@ export default function PostWindow({
     }
   }
 
+  function handleAddComment(event: React.KeyboardEvent<HTMLInputElement>): void {
+    if (event.key === "Enter" && commentValue.trim() !== "") {
+      const newComment = {
+        username: "JamesPH", // TENTATIVE NO USER LOGIC YET
+        replyTo: post.username,
+        postDate: new Date(),
+        id: comments.length + 1,
+        content: commentValue,
+        replies: []
+      };
+
+      setComments([...comments, newComment]);
+      setCommentValue("");
+    }
+  }
+
   return (
     <div className="post-window-container">
       <div className="post-window-header">
@@ -69,7 +91,7 @@ export default function PostWindow({
           <button
             className="round-button"
             onClick={() => navigate(-1)}>
-            <CornerDownLeft className="icon" />
+            <CornerDownLeft className="icon black" />
           </button>
         </div>
 
@@ -77,51 +99,64 @@ export default function PostWindow({
       </div>
 
       <div className="post-window-main">
-         {post.tags.map((tag, i) => (
-          <span key={tag + i} className="tag">
-            {tag}
-          </span>
-        ))}
-        <div className="post-image-container">
-          {post.images.map(imagePath => (
-            <img src={imagePath} alt="post image" className="post-image" />
+        <div className="tag-list">
+          {post.tags.map((tag, i) => (
+            <span key={tag + i} className="tag">
+              {tag}
+            </span>
           ))}
         </div>
+
+        <ImageCarousel images={post.images}/>
+
         <p>{post.body}</p>
       </div>
 
       <div className="post-window-footer">
-        <span className='count'>{likeCount}</span>
-        <button
-          className={`round-button ${
-            vote === "up" ? "selected-up" : ""
-          }`}
-          onClick={handleUpvote}
-        >
-          <ThumbsUp className="icon" />
-        </button>
+        <div className="post-button">
+          <span className='count'>{likeCount}</span>
+          <button
+            className={`round-button ${
+              vote === "up" ? "selected-up" : ""
+            }`}
+            onClick={handleUpvote}
+          >
+            <ThumbsUp className="icon" />
+          </button>
+        </div>
 
-        <button
-          className={`round-button ${
-            vote === "down" ? " selected-down" : ""
-          }`}
-          onClick={handleDownvote}>
-          <ThumbsDown className="icon" />
-        </button>
-        <span className='count'>{dislikeCount}</span>
+        <div className="post-button">
+          <button
+            className={`round-button ${
+              vote === "down" ? " selected-down" : ""
+            }`}
+            onClick={handleDownvote}>
+            <ThumbsDown className="icon" />
+          </button>
+          <span className='count'>{dislikeCount}</span>
+        </div>
 
-        <button className="round-button">
-          <MessageCircle className="icon" />
-        </button>
-        <span className='count'>{commentCount}</span>
+        <div className="post-button">
+          <button className="round-button">
+            <MessageCircle className="icon" />
+          </button>
+          <span className='count'>{commentCount}</span>
+        </div>
 
-        <button className='addcomment-button'>Add a Comment</button>
+        <input
+          type="text"
+          placeholder="Add a Comment"
+          id="comment-input"
+          className="comment-input"
+          onChange={handleCommentChange}
+          onKeyDown={handleAddComment}
+          value={commentValue}
+        />
       </div>
 
       <div className="post-window-comments">
         <h1>Comments</h1>
-
-        {post.comments.map(comment => <Comment comment={comment}/> )}
+        {comments.map(comment => <Comment comment={comment} isReplyable={true}/> )}
       </div>
     </div>
   );

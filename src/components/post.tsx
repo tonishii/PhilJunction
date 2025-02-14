@@ -10,18 +10,16 @@ export default function Post({
   initialVote = null,
   initialLikes = 0,
   initialDislikes = 0,
-  initialComments = 0,
 }: {
   post: Post;
   initialVote?: "up" | "down" | null;
   initialLikes?: number;
   initialDislikes?: number;
-  initialComments?: number;
 }) {
   const [vote, setVote] = useState<"up" | "down" | null>(initialVote);
   const [likeCount, setLikeCount] = useState(initialLikes);
   const [dislikeCount, setDislikeCount] = useState(initialDislikes);
-  const [commentCount] = useState(initialComments);
+  const [commentCount] = useState(post.comments.length);
 
   function handleDate(datePosted: Date): string {
     return "a day ago.";
@@ -80,7 +78,7 @@ export default function Post({
         </Link>
 
         <div className="post-sidebar">
-          <div className='sidebar-button'>
+          <div className='post-button'>
             <span className='count'>{likeCount}</span>
             <button
               className={`round-button ${
@@ -92,7 +90,7 @@ export default function Post({
             </button>
           </div>
 
-          <div className="sidebar-button">
+          <div className="post-button">
             <button
               className={`round-button ${
                 vote === "down" ? " selected-down" : ""
@@ -103,7 +101,7 @@ export default function Post({
             <span className='count'>{dislikeCount}</span>
           </div>
 
-          <div className="sidebar-button">
+          <div className="post-button">
             <Link to="/post">
               <button className="round-button">
                 <MessageCircle className="icon" />

@@ -2,12 +2,14 @@ import "@/styles/component-styles.css";
 
 import { useState } from "react";
 import { PostComment } from "@/mockdata/post-data";
-import { Ellipsis } from "lucide-react";
+import { Ellipsis, MessageCircle } from "lucide-react";
 
 export default function Comment({
   comment,
+  isReplyable = false,
 }: {
-  comment: PostComment
+  comment: PostComment;
+  isReplyable?: boolean;
 }) {
   const editComment = () => {
   };
@@ -37,18 +39,23 @@ export default function Comment({
               </span>
             </div>
 
-            <div className="comment-menu">
-              <button
-                className="ellipsis-button"
-                onClick={toggleMenu}>
-                <Ellipsis className="icon" />
-              </button>
-              {menuVisible && <div className="dropdown-menu">
-                <ul>
-                  <li><button onClick={editComment}>Edit</button></li>
-                  <li><button onClick={deleteComment}>Delete</button></li>
-                </ul>
-              </div>}
+            <div className="comment-sidebuttons">
+              {isReplyable && <button className="round-button">
+                <MessageCircle className="icon" />
+              </button>}
+              <div className="comment-menu">
+                <button
+                  className="ellipsis-button"
+                  onClick={toggleMenu}>
+                  <Ellipsis className="icon" />
+                </button>
+                {menuVisible && <div className="dropdown-menu">
+                  <ul>
+                    <li><button onClick={editComment}>Edit</button></li>
+                    <li><button onClick={deleteComment}>Delete</button></li>
+                  </ul>
+                </div>}
+              </div>
             </div>
           </div>
 
@@ -64,7 +71,7 @@ export default function Comment({
         {comment.replies.length > 0 && (
           <div className="replies-container">
             {comment.replies.map((reply, index) => (
-              <Comment key={index} comment={reply} />
+              <Comment key={index} comment={reply} isReplyable={true} />
             ))}
           </div>
         )}
