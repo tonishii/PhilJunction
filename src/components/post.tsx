@@ -62,7 +62,7 @@ export default function Post({
             <div className="post-header">
               <h1>
                 {post.title} &sdot;{" "}
-                <span className="gray">{handleDate(post.datePosted)}</span>
+                <span className="gray">{handleDate(post.postDate)}</span>
               </h1>
               <p className="gray">Posted by {post.username}</p>
             </div>

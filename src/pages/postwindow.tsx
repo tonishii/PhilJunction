@@ -63,7 +63,7 @@ export default function PostWindow({
       <div className="post-window-header">
         <div className="post-window-header-info">
           <h1>{post.title} &sdot; {" "}
-            <span className="gray">{handleDate(post.datePosted)}</span>
+            <span className="gray">{handleDate(post.postDate)}</span>
           </h1>
 
           <button
