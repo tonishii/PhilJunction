@@ -29,7 +29,7 @@ export default function Header() {
       </Link>
 
       <div className="search-bar">
-        <Search className="search-icon" />
+        <Link to="/search"><Search className="search-icon" /></Link>
         <input
           type="text"
           placeholder="Search"

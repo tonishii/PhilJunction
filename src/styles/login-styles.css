@@ -121,3 +121,12 @@
 .link-tag {
   color: black;
 }
+
+.login-contents input, .signup-contents input {
+  border-radius: 5px 5px 5px 5px;
+  background-color: hsla(0, 0%, 70%, 0.5);
+}
+
+.login-contents input:focus, .signup-contents input:focus {
+  background-color: white;
+}
