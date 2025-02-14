@@ -4,7 +4,7 @@
   justify-content: center;
   max-width: 100vw;
   min-height: 100vh;
-  
+
   background-image: url("@/public/signupbg.jpg");
   background-size: cover;
   background-repeat: no-repeat;
@@ -62,7 +62,7 @@
   height: 50px;
 }
 
-.login-header > * {
+.login-header>* {
   width: 100%;
 }
 
@@ -120,6 +120,7 @@
 
 .link-tag {
   color: black;
+  grid-column: 2;
 }
 
 .login-contents input, .signup-contents input {
