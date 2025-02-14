@@ -1,42 +1,76 @@
-import { PostComment } from "@/mockdata/post-data"
-import { PencilRuler, Reply } from "lucide-react"
+import "@/styles/component-styles.css";
+
+import { useState } from "react";
+import { PostComment } from "@/mockdata/post-data";
+import { Ellipsis } from "lucide-react";
 
 export default function Comment({
   comment,
 }: {
   comment: PostComment
 }) {
+  const editComment = () => {
+  };
+
+  const deleteComment = () => {
+  };
 
   function handleDate(date: Date) {
     return "A day ago";
   }
 
   function handleComments(comment: PostComment): JSX.Element {
+    const [menuVisible, setMenuVisible] = useState(false);
+
+    const toggleMenu = () => setMenuVisible(!menuVisible);
+
     return (
-      <div className="comment comment-padding">
+      <div className="comment-container">
         <div className="comment-header">
-          <span className="comment-name">
-            {comment.username}
-          </span> 
-          <span className="comment-date">
-            &nbsp;&sdot; {handleDate(comment.postDate)}
-          </span>
-          <span className="comment-icons">  <Reply /><PencilRuler /></span>
-          <div className="comment-reply"> 
-            reply to 
-            <span className="comment-reply-name">
-              &nbsp;{comment.replyTo}
-            </span>
+          <div className="comment-info">
+            <div>
+              <span className="comment-name">
+                {comment.username}
+              </span>
+              <span className="comment-date">
+                &nbsp;&sdot; {handleDate(comment.postDate)}
+              </span>
+            </div>
+
+            <div className="comment-menu">
+              <button
+                className="ellipsis-button"
+                onClick={toggleMenu}>
+                <Ellipsis className="icon" />
+              </button>
+              {menuVisible && <div className="dropdown-menu">
+                <ul>
+                  <li><button onClick={editComment}>Edit</button></li>
+                  <li><button onClick={deleteComment}>Delete</button></li>
+                </ul>
+              </div>}
+            </div>
           </div>
+
+          {comment.replyTo && (
+            <div className="comment-reply">
+              reply to <span>&nbsp;{comment.replyTo}</span>
+            </div>
+          )}
         </div>
-    
+
         <p>{comment.content}</p>
-        {comment.replies.map(comment => (
-          handleComments(comment)
-        ))}
+
+        {comment.replies.length > 0 && (
+          <div className="replies-container">
+            {comment.replies.map((reply, index) => (
+              <Comment key={index} comment={reply} />
+            ))}
+          </div>
+        )}
       </div>
     );
   }
 
-  return (handleComments(comment))
+  return handleComments(comment);
 }
