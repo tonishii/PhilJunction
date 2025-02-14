@@ -6,6 +6,13 @@
     height: 70vh;
 }
 
+.create-post-header {
+    padding: 1em;
+    line-height: 1.5em;
+    border-radius: 10px 0px 0px 0px;
+    background-color: #DAD8D7;
+}
+
 .new-post {
     height: 100%;
 }
@@ -26,14 +33,6 @@
     background-color: red;
 }
 
-.create-post-header {
-    padding: 1em;
-    line-height: 1.5em;
-    border-radius: 10px 0px 0px 0px;
-    background-color: #DAD8D7;
-}
-
-
 .create-post-header textarea {
     border: none;
     background-color: transparent;
@@ -52,6 +51,7 @@
     background-color: #F6F7EB;
     flex-grow: 1;
     position: relative;
+    padding: 10px;
 }
 
 .create-post-main textarea {
@@ -90,11 +90,12 @@
     padding: 10px;
     gap: 4px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
 }
 
 .create-post-footer input[type="text"] {
     border: none;
+    outline: none;
     border-radius: 5px;
     padding: 0.5em;
 }
@@ -113,3 +114,4 @@
 #addTags:hover {
     opacity: 0.8;
 }
+

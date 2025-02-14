@@ -8,6 +8,7 @@ export default function CreatePost() {
     const [content, setContent] = useState("");
     const [newTag, setNewTag] = useState("");
     const [tags, setTags] = useState([]);
+    const [images, setImages] = useState([]);
     const [isEditingPost, setIsEditingPost] = useState(false);
 
     function handleTitleEdit(event: ChangeEvent<HTMLTextAreaElement>) {
@@ -40,12 +41,20 @@ export default function CreatePost() {
                 <div className="post-container new-post">
                     <div className="post-body">
                         <div className="create-post-header">
-                            <textarea name="title" id="title" placeholder="Title..." onInput={handleTitleEdit} />
+                            <textarea
+                                name="title"
+                                id="title"
+                                placeholder="Add a Title..."
+                                onInput={handleTitleEdit} />
                         </div>
 
                         <div className="create-post-main">
-                            <textarea name="editor" id="editor" placeholder="Start typing here..." onInput={handleEditorEdit} onBlur={() => setIsEditingPost(false)} onFocus={() => setIsEditingPost(true)} />
-                            <div className={`content-container zback`} onClick={handleClickContent}>
+                            <textarea
+                                name="editor"
+                                id="editor"
+                                placeholder="Start typing here..."
+                                onInput={handleEditorEdit} onBlur={() => setIsEditingPost(false)} onFocus={() => setIsEditingPost(true)} />
+                            <div className={`content-container  ${isEditingPost ? "zback" : ""}`} onClick={handleClickContent}>
                                 <ReactMarkdown children={content} />
                             </div>
                         </div>
@@ -53,7 +62,13 @@ export default function CreatePost() {
                         <div className="create-post-footer">
                             <div className="new-tag-section">
                                 <CirclePlus id="addTags" onClick={handleAddTags} />
-                                <input type="text" name="tag" id="tag" value={newTag} onChange={(e) => setNewTag(e.target.value)} />
+                                <input
+                                    type="text"
+                                    name="tag"
+                                    id="tag"
+                                    value={newTag}
+                                    placeholder="Add a tag..."
+                                    onChange={(e) => setNewTag(e.target.value)} />
                             </div>
                             <div className="tags-section">
                                 {
