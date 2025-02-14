@@ -14,6 +14,7 @@ import Settings from "@/pages/profile/settings";
 import Login from "@/pages/login";
 import SignUp from "@/pages/signup";
 import AuthLayout from "@/pages/authlayout";
+import CreatePost from "./pages/createpost";
 
 import userCommentData from "@/mockdata/user-comments-data";
 import profileData from "@/mockdata/profile-data";
@@ -40,10 +41,10 @@ root.render(
             }
           />
           <Route path="posts" element={<UserPosts />} />
-          <Route path="comments" element={<UserComments userComments={userCommentData}/>} />
+          <Route path="comments" element={<UserComments userComments={userCommentData} />} />
           <Route path="settings" element={<Settings />} />
         </Route>
-        
+
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp />} />
@@ -62,6 +63,8 @@ root.render(
             />
           }
         />
+
+        <Route path="/holler" element={<CreatePost />} />
       </Routes>
     </Router>
   </React.StrictMode>
