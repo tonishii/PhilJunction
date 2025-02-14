@@ -1,25 +1,18 @@
 import '@/styles/post-styles.css'
 
+import type { Post } from '@/mockdata/post-data';
 import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 
 export default function Post({
-  title,
-  body,
-  tags,
-  datePosted,
-  username,
+  post,
   initialVote = null,
   initialLikes = 0,
   initialDislikes = 0,
   initialComments = 0,
 }: {
-  title: string;
-  body: string;
-  tags: string[];
-  datePosted: Date;
-  username: string;
+  post: Post;
   initialVote?: "up" | "down" | null;
   initialLikes?: number;
   initialDislikes?: number;
@@ -68,16 +61,16 @@ export default function Post({
           <div className="post-body">
             <div className="post-header">
               <h1>
-                {title} &sdot;{" "}
-                <span className="gray">{handleDate(datePosted)}</span>
+                {post.title} &sdot;{" "}
+                <span className="gray">{handleDate(post.datePosted)}</span>
               </h1>
-              <p className="gray">Posted by {username}</p>
+              <p className="gray">Posted by {post.username}</p>
             </div>
             <div className="post-main">
-              <p>{body}</p>
+              <p>{post.body}</p>
             </div>
             <div className="post-footer">
-              {tags.map((tag, i) => (
+              {post.tags.map((tag, i) => (
                 <span key={tag + i} className="tag">
                   {tag}
                 </span>
@@ -85,7 +78,7 @@ export default function Post({
             </div>
           </div>
         </Link>
-        
+
         <div className="post-sidebar">
           <div className='sidebar-button'>
             <span className='count'>{likeCount}</span>

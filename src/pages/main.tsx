@@ -10,24 +10,14 @@ export default function Main() {
       <div></div>
       <div className="general-container">
         {[...Array(20)].map(() =>
-          <Post
-            title={postData.title}
-            body={postData.body}
-            tags={postData.tags}
-            datePosted={postData.datePosted}
-            username={postData.username}
-          />
+          <Post post={postData}/>
         )}
       </div>
 
       <div className="popular-posts-list">
         <span className="popular-posts-header">Trending Posts <Flame className="icon"/></span>
         {[...Array(5)].map(() =>
-          <SmallPost
-            title={postData.title}
-            body={postData.body}
-            tags={postData.tags}
-          />
+          <SmallPost post={postData}/>
         )}
       </div>
     </div>

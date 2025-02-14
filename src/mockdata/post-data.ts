@@ -13,6 +13,7 @@ interface Post {
   tags: string[];
   datePosted: Date;
   username: string;
+  images: string[];
   comments: PostComment[];
 }
 
@@ -22,6 +23,7 @@ const postData: Post = {
   tags: ["Manila", "Hololive", "Glasses"],
   datePosted: new Date(),
   username: "Fubuki",
+  images: ["src/mockdata/images-1/LRT-1.jpg", "src/mockdata/images-1/LRT-2.jpg", "src/mockdata/images-1/MRT-3.jpg"],
   comments: [
     {
       username: "JamesPH",
@@ -80,7 +82,7 @@ const postData: Post = {
       id: 7,
       postDate: new Date(),
       content: "If from Pitx, which gate am I going to use to go home in Las Pinas",
-      replies: [ 
+      replies: [
         {
           username: "CavitexUser",
           replyTo: "Fubuki",
@@ -103,4 +105,4 @@ const postData: Post = {
 }
 
 export default postData;
-export type { PostComment };
+export type { PostComment, Post };

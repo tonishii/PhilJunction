@@ -42,7 +42,7 @@
 }
 
 .selected-down .icon{
-    fill: #E94F37;
+    fill: #CA2E16;
 }
 
 .count {
@@ -71,13 +71,8 @@
 
 .post-main {
     background-color: #F6F7EB;
-    flex-grow: 1;
     text-overflow: ellipsis;
     overflow: hidden;
-}
-
-.post-main p {
-    margin: 0;
     padding: 10px 20px;
 }
 
@@ -92,7 +87,7 @@
 }
 
 .tag {
-    color: #cfcfcf;
+    color: #F6F7EB;
     display: inline-block;
     padding: 5px 15px;
     border-radius: 25px;
@@ -125,34 +120,67 @@
 /* Post Window */
 .post-window-container {
     display: flex;
-    justify-content: center;
-    margin: 10px;
+    flex-direction: column;
+    margin: 2rem auto;
+    width: 1000px;
 }
 
-.post-window-body {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-    padding: 10px 0px 10px 10px;
-}
-
-
-.post-window-comments {
-    display: flex;
-    flex-direction: column;
-    width: 40%;
-    background-color: #393E41;
-    color: #F6F7EB;
-    border-radius: 0px 10px 10px 0px;
+.post-window-header {
+    background-color: #DAD8D7;
+    border-radius: 10px 10px 0px 0px;
     padding: 20px;
-    margin: 10px 10px 10px 0px;
 }
 
-.post-window-comments-header {
+.post-window-header-info {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
+}
+
+.post-window-header h1, p {
+    margin: 0;
+}
+
+.post-window-main {
+    background-color: #F6F7EB;
+    padding: 10px 20px;
+}
+
+.post-image-container {
+    display: flex;
+    justify-content: center;
+    margin: 1rem auto;
+    gap: 5px;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.post-image:hover {
+  filter: brightness(90%);
+}
+
+.post-window-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #E53E24;
+    padding: 10px;
+    gap: 4px;
+}
+
+.post-window-comments {
+    display: flex;
+    flex-direction: column;
+    background-color: #393E41;
+    color: #F6F7EB;
+    border-radius: 0px 0px 10px 10px;
+    padding: 20px;
 }
 
 .post-window-comments-header h1 {
@@ -183,7 +211,7 @@
 
 .tag-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(60px, auto));
+    grid-template-columns: repeat(auto-fit, minmax(60px, 100px));
     gap: 4px;
     margin: 4px;
     overflow: hidden;

@@ -1,25 +1,22 @@
 import '@/styles/post-styles.css'
 
 import { Link } from "react-router";
-
+import type { Post } from '@/mockdata/post-data';
+;
 export default function SmallPost({
-  title,
-  body,
-  tags,
+  post,
 }: {
-  title: string;
-  body: string;
-  tags: string[];
+  post: Post;
 }) {
 
   return (
     <div className="smallpost-container">
       <Link to="/post" className="post-link">
         <div className="smallpost-header">
-          <h1>{title}</h1>
+          <h1>{post.title}</h1>
 
           <div className="tag-list">
-            {tags.map((tag, i) => (
+            {post.tags.map((tag, i) => (
               <span key={tag + i} className="tag">
                 {tag}
               </span>
@@ -28,7 +25,7 @@ export default function SmallPost({
         </div>
 
         <div className="smallpost-body">
-          <p>{body}</p>
+          <p>{post.body}</p>
         </div>
       </Link>
     </div>
