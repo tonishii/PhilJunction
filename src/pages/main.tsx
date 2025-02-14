@@ -7,7 +7,8 @@ import { Flame } from "lucide-react";
 export default function Main() {
   return (
     <div className="main-container">
-      <div></div>
+      <div className="left-container">
+      </div>
       <div className="general-container">
         {[...Array(20)].map(() =>
           <Post post={postData}/>
