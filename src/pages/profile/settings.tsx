@@ -1,25 +1,42 @@
+import Toggleswitch from "@/components/toggleswitch"
+
 export default function Settings() {
   return (
     <div className="settings-container">
       <h2>Edit Profile</h2>
-      <ul>
-        <li>Change character avatar</li>
-        <li>Change username</li>
-        <li>Change bio</li>
-        <li>Change email</li>
-      </ul>
+      <section>
+        <label htmlFor="username">Username</label>
+        <input type="text" id="username" name="username"></input>
+
+        <label htmlFor="email">email</label>
+        <input type="text" id="email" name="email"></input>
+
+        <label htmlFor="bio">Bio</label>
+        <textarea name="bio" id="bio"></textarea>
+      </section>
+
       <h2>Web Interface</h2>
-      <ul>
-        <li>Select theme light or dark</li>
-        <li>Customize Font style</li>
-        <li>Customize font-size</li>
-      </ul>
-      <h2></h2>
+      <section>
+        <label htmlFor="theme">Select theme light or dark</label>
+        <Toggleswitch name="theme" />
+
+        <label htmlFor="font-style">Customize Font style</label>
+        <select name="font-style" id="font-style">
+          <option value="times">times</option>
+          <option value="roman">roman</option>
+          <option value="new">new</option>
+        </select>
+
+        <label htmlFor="font-size">Customize font-size</label>
+        <input type="number" name="font-size" id="font-size" />
+      </section>
+
       <h2>User Privacy</h2>
-      <ul>
-        <li>Allow username publicly displayed? </li>
-      </ul>
-      
+      <section>
+        <label htmlFor="anonymous">Allow username publicly displayed? </label>
+        <Toggleswitch name="anonymous" />
+      </section>
+
     </div>
   )
 }
