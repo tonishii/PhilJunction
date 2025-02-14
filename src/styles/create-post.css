@@ -51,7 +51,11 @@
     background-color: #F6F7EB;
     flex-grow: 1;
     position: relative;
+<<<<<<< HEAD
     padding: 10px;
+=======
+    height: 350px;
+>>>>>>> bdfab90e74ae5fd70344628b3d327c5e35f40591
 }
 
 .create-post-main textarea {
@@ -88,7 +92,7 @@
     background-color: #E53E24;
     overflow: hidden;
     padding: 10px;
-    gap: 4px;
+    gap: 1em;
     display: flex;
     align-items: center;
 }
@@ -104,6 +108,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    padding-top: 0.5em;
 }
 
 #addTags {
@@ -115,3 +120,35 @@
     opacity: 0.8;
 }
 
+<<<<<<< HEAD
+=======
+.tags-section {}
+
+.wrap-tag {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.create-tag {
+    color: #cfcfcf;
+    display: inline-block;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 15px;
+    border-radius: 25px;
+    margin: 0.5em;
+    background-color: #CA2E16;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.remove-tag {
+    width: 1em;
+}
+
+.remove-tag:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+>>>>>>> bdfab90e74ae5fd70344628b3d327c5e35f40591
