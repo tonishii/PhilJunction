@@ -56,31 +56,32 @@ export default function Post({
 
   return (
       <div className="post-container">
-        <Link to="/post" className="post-link">
-          <div className="post-body">
-            <div className="post-header">
+        <div className="post-body">
+          <div className="post-header">
+            <Link to="/post" className="post-link">
               <h1>
                 {post.title} &sdot;{" "}
                 <span className="gray">{handleDate(post.postDate)}</span>
               </h1>
-              <p className="gray">Posted by {post.username}</p>
-            </div>
-            <div className="post-main">
-              <p>{post.body}</p>
-              <div className="matchWidth">
-                <ImageCarousel images={post.images} />
-              </div>
-              
-            </div>
-            <div className="post-footer">
-              {post.tags.map((tag, i) => (
-                <span key={tag + i} className="tag">
-                  {tag}
-                </span>
-              ))}
-            </div>
+            </Link>
+            <p className="gray">Posted by {post.username}</p>
           </div>
-        </Link>
+
+          <div className="post-main">
+            <p>{post.body}</p>
+            <div className="matchWidth">
+              <ImageCarousel images={post.images} maxImages={1}/>
+            </div>
+
+          </div>
+          <div className="post-footer">
+            {post.tags.map((tag, i) => (
+              <span key={tag + i} className="tag">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
 
         <div className="post-sidebar">
           <div className='post-button'>

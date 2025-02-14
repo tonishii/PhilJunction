@@ -107,7 +107,7 @@ export default function PostWindow({
           ))}
         </div>
 
-        <ImageCarousel images={post.images}/>
+        <ImageCarousel images={post.images} maxImages={3}/>
 
         <p>{post.body}</p>
       </div>

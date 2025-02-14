@@ -5,8 +5,10 @@ import { ChevronRight, ChevronLeft } from "lucide-react";
 
 export default function ImageCarousel({
   images,
+  maxImages,
 }: {
-  images: string[]
+  images: string[];
+  maxImages: number;
 }) {
   const [currImageIndex, setImageIndex] = useState(0);
   const totalImages = images.length;
@@ -22,10 +24,9 @@ export default function ImageCarousel({
   function getNextImages(images: JSX.Element[], currentInd: number) {
     if (totalImages === 0) return [];
 
-    return Array.from({ length: Math.min(3, totalImages) }, (_, i) =>
+    return Array.from({ length: Math.min(maxImages, totalImages) }, (_, i) =>
       images[(currentInd + i) % totalImages]
     );
-
   }
 
   const imageElements: JSX.Element[] = images.map(imagePath => <img src={imagePath} alt="post image" className="post-image" />)
