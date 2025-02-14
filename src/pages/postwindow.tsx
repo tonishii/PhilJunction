@@ -110,12 +110,12 @@ export default function PostWindow({
         </button>
         <span className='count'>{dislikeCount}</span>
 
-        <Link to="/post">
-          <button className="round-button">
-            <MessageCircle className="icon" />
-          </button>
-        </Link>
+        <button className="round-button">
+          <MessageCircle className="icon" />
+        </button>
         <span className='count'>{commentCount}</span>
+
+        <button className='addcomment-button'>Add a Comment</button>
       </div>
 
       <div className="post-window-comments">
