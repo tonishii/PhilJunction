@@ -9,15 +9,19 @@ import { useEffect } from "react";
 export default function Main() {
   const data = [postData, post1, post2, post3, post4, post5, post6];
 
-
   useEffect(() => {
-    async function test() {
-      const res = await fetch("http://localhost:3001/");
-      console.log(res);
-    }
+    async function t() {
 
-    test();
-  }, []);
+      const res = await fetch("http://localhost:3001/databaseblahblah");
+      if (!res.ok) {
+        throw new Error("bro something happeened");
+      } else {
+        const json = await res.json();
+        console.log(json);
+      }
+    }
+    t();
+  }, [])
 
   return (
     <div className="main-container">
@@ -25,7 +29,7 @@ export default function Main() {
       </div>
       <div className="general-container">
         {[...Array(20)].map(() =>
-          <Post post={data[
+          <Post key={Math.random() * data.length} post={data[
             Math.floor(Math.random() * data.length)]} />
         )}
       </div>
