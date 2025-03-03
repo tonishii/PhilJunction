@@ -4,9 +4,21 @@ import { post1, post2, post3, post4, post5, post6 } from "@/mockdata/more-post-d
 import postData from "@/mockdata/post-data.ts";
 
 import { Flame } from "lucide-react";
+import { useEffect } from "react";
 
 export default function Main() {
-  const data = [postData, post1, post2, post3, post4, post5, post6]
+  const data = [postData, post1, post2, post3, post4, post5, post6];
+
+
+  useEffect(() => {
+    async function test() {
+      const res = await fetch("http://localhost:3001/");
+      console.log(res);
+    }
+
+    test();
+  }, []);
+
   return (
     <div className="main-container">
       <div className="left-container">
