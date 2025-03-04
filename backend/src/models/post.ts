@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const postSchema = new mongoose.Schema({
   // username: { type: String, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true },
   title: { type: String, required: true },
   postDate: { type: Date, default: Date.now },
-  body: { type: String, required: true},
+  body: { type: String, required: true },
   images: [{ data: Buffer, contentType: String }],
   tags: [{ type: String }],
 
@@ -15,4 +15,4 @@ const postSchema = new mongoose.Schema({
 })
 
 const Posts = mongoose.model("Post", postSchema);
-export default Post;
+export default Posts;
