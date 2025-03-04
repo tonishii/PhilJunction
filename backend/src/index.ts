@@ -7,7 +7,7 @@ import mongoose, { connect, disconnect, model, MongooseOptions, Schema } from "m
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 const databaseURL = "mongodb://localhost:27017/LR2TDB";
 const mongoOptions: MongooseOptions = {};
