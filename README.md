@@ -37,3 +37,5 @@ To run the website application, use this command:
 ```bash
 npm run dev
 ```
+
+run this command for both front-end and back-end. Front-end should run a vite server, and back-end should run nodemon.
