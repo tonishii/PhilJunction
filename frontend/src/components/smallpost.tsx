@@ -2,7 +2,7 @@ import '@/styles/post-styles.css'
 
 import { Link } from "react-router";
 import type { Post } from '@/mockdata/post-data';
-;
+
 export default function SmallPost({
   post,
 }: {

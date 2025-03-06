@@ -1,4 +1,4 @@
-import { Post, PostComment } from "./post-data"
+import { Post } from "./post-data"
 
 const post1: Post = {
     title: "How to get to Sm North Edsa From SM South?",

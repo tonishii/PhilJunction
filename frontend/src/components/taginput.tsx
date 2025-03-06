@@ -32,7 +32,7 @@ export default function TagInput({
         <div className="tags-input">
             {tags.map((tag, i) => (
                 <span key={tag + i} className="tag">
-                    {tag} <button onClick={() => handleRemoveTag(i)}><X size={10}/></button>
+                    {tag} <button onClick={() => handleRemoveTag(i)}><X size={15}/></button>
                 </span>
             ))}
             <input

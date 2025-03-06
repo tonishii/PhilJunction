@@ -5,6 +5,7 @@ import type { Post } from '@/mockdata/post-data';
 import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
+import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
 
 export default function Post({
@@ -69,7 +70,7 @@ export default function Post({
         </div>
 
         <div className="post-main">
-          <p>{post.body}</p>
+          <ReactMarkdown className="post-body" children={post.body} />
           <div className="matchWidth">
             <ImageCarousel images={post.images} maxImages={1} />
           </div>

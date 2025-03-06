@@ -78,8 +78,8 @@
 }
 
 .post-footer {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(60px, 100px));
+  display: flex;
+  flex-wrap: wrap;
   border-radius: 0px 0px 0px 10px;
   background-color: #E53E24;
   overflow: hidden;
@@ -88,13 +88,15 @@
 }
 
 .tag {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   color: #F6F7EB;
   border-radius: 25px;
   background-color: #CA2E16;
   min-width: 50px;
+  height: 30px;
   text-align: center;
-  padding: 3px 5px;
+  padding: 5px 7px;
   font-size: 0.9rem;
 }
 
@@ -148,6 +150,14 @@
 .post-window-main {
   background-color: #F6F7EB;
   padding: 10px 20px;
+}
+
+.post-body>*{
+  margin: 0;
+}
+
+.post-body {
+  height: auto;
 }
 
 .post-window-footer {
