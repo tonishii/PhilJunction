@@ -38,11 +38,6 @@ a {
     transition: background 0.3s;
 }
 
-.round-button span {
-    color: #F6F7EB;
-    padding: 4px;
-}
-
 .round-button:hover,
 .edit-button:hover {
     background-color: #F6F7EB;
@@ -69,5 +64,13 @@ a {
 }
 
 .black {
+    color: #2c2f33;
+}
+
+.active {
+    background-color: #F6F7EB;
+}
+
+.active .icon {
     color: #2c2f33;
 }

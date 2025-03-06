@@ -1,15 +1,18 @@
 import "@/styles/create-post.css"
-import { CirclePlus, Send, X, Paperclip } from "lucide-react";
+import { Send, Paperclip, Bold, Italic, Underline } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import ReactMarkdown from 'react-markdown'
+import TagInput from "@/components/taginput";
 
 export default function CreatePost() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [newTag, setNewTag] = useState("");
     const [tags, setTags] = useState<string[]>([]);
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState<string[]>([]);
     const [isEditingPost, setIsEditingPost] = useState(false);
+    const [isBold, setBold] = useState(false);
+    const [isItalic, setItalic] = useState(false);
+    const [isUnderline, setUnderline] = useState(false);
 
     function handleTitleEdit(event: ChangeEvent<HTMLTextAreaElement>) {
         setTitle(event.target.value)
@@ -24,17 +27,14 @@ export default function CreatePost() {
         document.getElementById("editor")?.focus();
     }
 
-    function handleAddTags() {
-        setTags([...tags, newTag])
-        setNewTag("");
+    function handleAttachImage(event: ChangeEvent<HTMLInputElement>) {
+        if (event.target.files) {
+            const fileArray = Array.from(event.target.files).map((file) => URL.createObjectURL(file)
+        );
+        setImages([...images, ...fileArray]);
     }
+}
 
-    function handleRemoveTag(index: number) {
-        console.log(index);
-        const copy = [...tags];
-        copy.splice(index, 1)
-        setTags(copy);
-    }
 
     function submit() {
         console.log({
@@ -60,35 +60,31 @@ export default function CreatePost() {
                                 name="editor"
                                 id="editor"
                                 placeholder="Start typing here..."
-                                onInput={handleEditorEdit} onBlur={() => setIsEditingPost(false)} onFocus={() => setIsEditingPost(true)} />
+                                onInput={handleEditorEdit}
+                                onBlur={() => setIsEditingPost(false)}
+                                onFocus={() => setIsEditingPost(true)} />
                             <div className={`content-container  ${isEditingPost ? "zback" : ""}`} onClick={handleClickContent}>
                                 <ReactMarkdown children={content} />
+                            </div>
+
+                            <div className="image-preview">
+                                {images.map((img, index) => (
+                                    <img key={index} src={img} alt={`attachment-${index}`} className="post-image" />
+                                ))}
                             </div>
                         </div>
 
                         <div className="create-post-footer">
-                            <div className="new-tag-section">
-                                <CirclePlus id="addTags" onClick={handleAddTags} />
-                                <input
-                                    type="text"
-                                    name="tag"
-                                    id="tag"
-                                    placeholder="Add a tag..."
-                                    value={newTag}
-                                    onChange={(e) => setNewTag(e.target.value)}
-                                    onKeyUp={(e) => { if (e.code === "Enter") handleAddTags() }} />
-                            </div>
-                            <div className="tags-section">
-                                {
-                                    tags.map((tag, index) => (
-                                        <div className="create-tag">
-                                            <div className="wrap-tag">
-                                                {tag}<X className="remove-tag" onClick={() => handleRemoveTag(index)} />
-                                            </div>
-                                        </div>
-                                    ))
-                                }
-                            </div>
+                            <TagInput tags={tags} setTags={setTags} />
+
+                            <input
+                                type="file"
+                                accept="image/*"
+                                style={{ display: "none" }}
+                                id="fileInput"
+                                multiple
+                                onChange={handleAttachImage}
+                            />
                         </div>
                     </div>
 
@@ -104,8 +100,32 @@ export default function CreatePost() {
                         <div className='sidebar-button'>
                             <button
                                 className={`round-button`}
-                                onClick={submit}>
+                                onClick={() => document.getElementById("fileInput")?.click()}>
                                 <Paperclip className="icon" />
+                            </button>
+                        </div>
+
+                        <div className='sidebar-button'>
+                            <button
+                                className={`round-button ${isBold ? "active" : "" }`}
+                                onClick={() => setBold(!isBold)}>
+                                <Bold className="icon" />
+                            </button>
+                        </div>
+
+                        <div className='sidebar-button'>
+                            <button
+                                className={`round-button ${isItalic ? "active" : "" }`}
+                                onClick={() => setItalic(!isItalic)}>
+                                <Italic className="icon" />
+                            </button>
+                        </div>
+
+                        <div className='sidebar-button'>
+                            <button
+                                className={`round-button ${isUnderline ? "active" : "" }`}
+                                onClick={() => setUnderline(!isUnderline)}>
+                                <Underline className="icon" />
                             </button>
                         </div>
                     </div>

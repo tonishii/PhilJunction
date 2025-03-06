@@ -55,6 +55,19 @@
   padding: 9px 0px;
 }
 
+.create-post-button {
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  height: 40px;
+  padding: 7px 10px;
+  gap: 5px;
+  background-color: transparent;
+  color: #F6F7EB;
+  border: 1px solid #F6F7EB;
+  cursor: pointer;
+}
+
 /* Comment */
 .comment-container {
   min-width: 250px;
