@@ -46,7 +46,6 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-
 .create-post-main {
     background-color: #F6F7EB;
     flex-grow: 1;
@@ -56,6 +55,8 @@
 
 .create-post-main textarea {
     outline: none;
+    font-size: 1em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #editor {

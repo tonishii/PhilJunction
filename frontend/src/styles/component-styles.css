@@ -55,6 +55,10 @@
   padding: 9px 0px;
 }
 
+.search-input::placeholder {
+  color: #F6F7EB;
+}
+
 .create-post-button {
   display: flex;
   align-items: center;
@@ -241,6 +245,10 @@
   outline: none;
   flex: 1;
   min-width: 100px;
+}
+
+.tags-input input::placeholder {
+  color: #F6F7EB;
 }
 
 .tag button {

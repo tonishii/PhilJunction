@@ -24,9 +24,9 @@
 }
 
 .post-body {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .post-sidebar {
@@ -90,14 +90,18 @@
 .tag {
   display: flex;
   align-items: center;
+  justify-content: center;
   color: #F6F7EB;
   border-radius: 25px;
   background-color: #CA2E16;
-  min-width: 50px;
+  min-width: 100px;
+  width: max-content;
+  max-width: 200px;
   height: 30px;
   text-align: center;
   padding: 5px 7px;
   font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .popular-posts-list {
@@ -183,6 +187,10 @@
   padding: 5px 7px;
 }
 
+.comment-input::placeholder {
+  color: #F6F7EB;
+}
+
 .post-window-comments {
   display: flex;
   flex-direction: column;
@@ -239,7 +247,7 @@
   overflow: hidden;
 }
 
-.smallpost-body p {
+.smallpost-body>* {
   color: #cfcfcf;
   margin: 0;
 }
