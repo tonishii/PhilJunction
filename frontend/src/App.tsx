@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
-
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 
 import Header from "@/components/header";
@@ -21,10 +20,16 @@ import userCommentData from "@/mockdata/user-comments-data";
 import profileData from "@/mockdata/profile-data";
 import postData from "@/mockdata/post-data";
 
-const root = ReactDOM.createRoot(document.getElementById("root")!);
+function App() {
+  // USE FOR TESTING
+  // useEffect(() => {
+  //   fetch("http://localhost:3001/")
+  //     .then((res) => res.text())
+  //     .then((data) => console.log("[RESPONSE]:", data))
+  //     .catch((error) => console.error("[ERROR] Failed to connect:", error));
+  // }, []);
 
-root.render(
-  <React.StrictMode>
+  return (
     <Router>
       <Header />
       <Routes>
@@ -46,22 +51,21 @@ root.render(
           <Route path="settings" element={<Settings />} />
         </Route>
         <Route path="/search" element={<SearchPage />} />
-
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp />} />
         </Route>
-
-        <Route
-          path="/post"
-          element={
-            <PostWindow post={postData}
-            />
-          }
-        />
-
+        <Route path="/post" element={<PostWindow post={postData} />} />
         <Route path="/holler" element={<CreatePost />} />
       </Routes>
     </Router>
+  );
+};
+
+const root = ReactDOM.createRoot(document.getElementById("root")!);
+
+root.render(
+  <React.StrictMode>
+    <App />
   </React.StrictMode>
 );

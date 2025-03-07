@@ -1,115 +1,118 @@
 import "@/styles/create-post.css"
-import { Send, Paperclip, Bold, Italic, Underline } from "lucide-react";
+import { BadgePlus, ImagePlus, X } from "lucide-react";
 import { ChangeEvent, useState } from "react";
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown from 'react-markdown';
 import TagInput from "@/components/taginput";
 
 export default function CreatePost() {
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const [tags, setTags] = useState<string[]>([]);
-    const [images, setImages] = useState<string[]>([]);
-    const [isBold, setBold] = useState(false);
-    const [isItalic, setItalic] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>([]);
 
-    function handleTitleEdit(event: ChangeEvent<HTMLTextAreaElement>) {
-        setTitle(event.target.value)
+  function handleTitleEdit(event: ChangeEvent<HTMLTextAreaElement>) {
+    setTitle(event.target.value);
+  }
+
+  function handleEditorEdit(event: ChangeEvent<HTMLTextAreaElement>) {
+    setContent(event.target.value);
+  }
+
+  function handleAttachImage(event: ChangeEvent<HTMLInputElement>) {
+    if (event.target.files) {
+      const fileArray = Array.from(event.target.files).map((file) => URL.createObjectURL(file));
+      setImages([...images, ...fileArray]);
     }
+  }
 
-    function handleEditorEdit(event: ChangeEvent<HTMLTextAreaElement>) {
-        setContent(event.target.value);
-    }
+  function submit() {
+    console.log({
+      title, content, images, tags
+    });
+  }
 
-    function handleAttachImage(event: ChangeEvent<HTMLInputElement>) {
-        if (event.target.files) {
-            const fileArray = Array.from(event.target.files).map((file) => URL.createObjectURL(file));
-            setImages([...images, ...fileArray]);
-        }
-    }
-
-
-    function submit() {
-        console.log({
-            title, content, tags
-        })
-    }
-
-    return (
-        <main>
-            <div className="create-post-container">
-                <div className="post-container new-post">
-                    <div className="post-body">
-                        <div className="create-post-header">
-                            <textarea
-                                name="title"
-                                id="title"
-                                placeholder="Add a Title..."
-                                onInput={handleTitleEdit} />
-                        </div>
-
-                        <div className="create-post-main">
-                            <textarea
-                                name="editor"
-                                id="editor"
-                                placeholder="Start typing here..."
-                                onInput={handleEditorEdit}/>
-
-                            <div className="image-preview">
-                                {images.map((img, index) => (
-                                    <img key={index} src={img} alt={`attachment-${index}`} className="post-image" />
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="create-post-footer">
-                            <TagInput tags={tags} setTags={setTags} />
-
-                            <input
-                                type="file"
-                                accept="image/*"
-                                style={{ display: "none" }}
-                                id="fileInput"
-                                multiple
-                                onChange={handleAttachImage}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="post-sidebar">
-                        <div className='sidebar-button'>
-                            <button
-                                className={`round-button`}
-                                onClick={submit}>
-                                <Send className="icon" />
-                            </button>
-                        </div>
-
-                        <div className='sidebar-button'>
-                            <button
-                                className={`round-button`}
-                                onClick={() => document.getElementById("fileInput")?.click()}>
-                                <Paperclip className="icon" />
-                            </button>
-                        </div>
-
-                        <div className='sidebar-button'>
-                            <button
-                                className={`round-button ${isBold ? "active" : "" }`}
-                                onClick={() => setBold(!isBold)}>
-                                <Bold className="icon" />
-                            </button>
-                        </div>
-
-                        <div className='sidebar-button'>
-                            <button
-                                className={`round-button ${isItalic ? "active" : "" }`}
-                                onClick={() => setItalic(!isItalic)}>
-                                <Italic className="icon" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
+  return (
+    <main>
+      <div className="create-post-container">
+          <div className="post-body">
+            <div className="create-post-header">
+              <textarea
+                name="title"
+                id="title"
+                placeholder="Add a Title..."
+                onChange={handleTitleEdit}
+                maxLength={100}/>
+              <span
+                className={
+                  `title-counter ${
+                    title.length == 100 ? "title-max" :
+                    title.length > 40 ? "title-overflow" : ""
+                  } `}>
+                  {title.length + "/40 "}
+                  {title.length == 100 ? <b>Max!!</b> :
+                   title.length > 40 ? <i>Overflow!</i> : ""}
+              </span>
             </div>
-        </main>
-    )
+
+            <div className="create-post-main">
+              <div className="textarea-wrapper">
+                <i className="textarea-header">Editor</i>
+                <textarea
+                  name="editor"
+                  id="editor"
+                  placeholder="Start typing here..."
+                  onChange={handleEditorEdit}/>
+              </div>
+
+              <ReactMarkdown className="create-post-body" children={content}/>
+
+              <div className="image-preview">
+                {images.map((img, index) => (
+                  <div key={index} className="create-post-image">
+                    <button onClick={() => setImages(images.filter((_, i) => i !== index))}><X size={12}/></button>
+
+                    <img
+                      key={index}
+                      src={img}
+                      alt={`attachment-${index}`}
+                      className="post-image" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="create-post-footer">
+              <TagInput tags={tags} setTags={setTags} />
+
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                id="fileInput"
+                multiple
+                onChange={handleAttachImage}
+              />
+            </div>
+          </div>
+
+          <div className="post-sidebar">
+            <div className='sidebar-button'>
+              <button
+                className={`round-button`}
+                onClick={submit}>
+                <BadgePlus className="icon" />
+              </button>
+            </div>
+
+            <div className='sidebar-button'>
+              <button
+                className={`round-button`}
+                onClick={() => document.getElementById("fileInput")?.click()}>
+                <ImagePlus className="icon" />
+              </button>
+            </div>
+          </div>
+      </div>
+    </main>
+  )
 }

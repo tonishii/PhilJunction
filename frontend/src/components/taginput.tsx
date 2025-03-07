@@ -24,15 +24,12 @@ export default function TagInput({
         }
     }
 
-    function handleRemoveTag(index: number) {
-        setTags(tags.filter((_, i) => i !== index));
-    }
-
     return (
         <div className="tags-input">
-            {tags.map((tag, i) => (
-                <span key={tag + i} className="tag">
-                    {tag} <button onClick={() => handleRemoveTag(i)}><X size={15}/></button>
+            {tags.map((tag, index) => (
+                <span key={tag + index} className="tag">
+                    {tag}
+                    <button onClick={() => setTags(tags.filter((_, i) => i !== index))}><X size={15}/></button>
                 </span>
             ))}
             <input

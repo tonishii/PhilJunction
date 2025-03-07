@@ -29,7 +29,7 @@ export default function ImageCarousel({
     );
   }
 
-  const imageElements: JSX.Element[] = images.map(imagePath => <img src={imagePath} alt="post image" className="post-image" />)
+  const imageElements: JSX.Element[] = images.map((imagePath, index) => <img key={imagePath + index} src={imagePath} alt="post image" className="post-image" />)
   const imagesToShow = getNextImages(imageElements, currImageIndex);
 
   return (
