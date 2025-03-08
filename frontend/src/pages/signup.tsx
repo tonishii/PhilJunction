@@ -1,5 +1,5 @@
 import '@/styles/login-styles.css'
-import { redirect } from "react-router";
+import { redirect, useNavigate  } from "react-router";
 
 interface NewUserData {
   username: string,
@@ -9,46 +9,45 @@ interface NewUserData {
 }
 
 export default function SignUp() {
+  const navigate = useNavigate(); 
 
   const register = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
-    
-    /*for (let [key, value] of formData.entries()) {
+    for (let [key, value] of formData.entries()) {
       console.log(key, value);
-    } */
+    }
 
     const data = Object.fromEntries(formData.entries());
     console.log(data);
 
-    /*
-    if (data.newPW !== data.confirmPW) {
-      alert("check pw");
+    if(formData.get("password") !== formData.get("confirmPW")) {
+      alert("bro check your pw");
       return;
-    }*/
+    }
 
     try {
       const response = await fetch('http://localhost:3001/register', {
-        method: "POST",
+        method: 'POST',
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(Object.fromEntries(formData.entries())),
       });
 
       const result = await response.json();
 
       if(response.ok) {
-        redirect("/");
+        navigate("/");
       }
       else {
         const errorMessage = JSON.stringify(result, null, 2);
         alert(`Error: ${errorMessage || "Error"}`);
       }
     }
-    catch {
-      console.log('yikes');
+    catch (error: any) {
+      console.log('yikes', error);
     }
   }
 

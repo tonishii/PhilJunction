@@ -14,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 const databaseURL = "mongodb://localhost:27017/LR2TDB";
+const db = mongoose.connect(databaseURL);
 const mongoOptions: MongooseOptions = {};
 
 interface IUser {
@@ -34,20 +35,26 @@ app.get("/", async (req: Request, res: Response) => {
 });
 
 app.post("/register", async (req: Request, res: Response): Promise<any> => {
-  const { newUsername, newEmail, newPW, confirmPW } = req.body;
+  const { username, email, password, confirmPW } = req.body;
 
-  if (!newUsername || !newEmail || !newPW || !confirmPW)
-    return res.status(401).json({ message: req.body });
+  if (!username || !email || !password || !confirmPW)
+    return res.status(400).json({ message: req.body });
   
-  if(newPW !== confirmPW)
+  if(password !== confirmPW)
     return res.status(400).json({message: 'Passwords do not match.'});
 
+  const user = await User.findOne({ username, email, password }).exec();
+  if(user)
+    return res.status(400).json({message: 'Account already exists.'});
+  
   try {
     await User.create({...req.body})
     return res.status(201).json({ message: 'User registered successfully'});
   }
-  catch {
-    return res.status(500).json({ message: 'Internal server error.' });
+  catch (error: any) {
+    console.error("Error during registration:", error);
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error.", error: error.message });
   }
 }); 
 
