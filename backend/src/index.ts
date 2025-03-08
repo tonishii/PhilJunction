@@ -42,12 +42,12 @@ app.post("/register", async (req: Request, res: Response): Promise<any> => {
   
   if(password !== confirmPW)
     return res.status(400).json({message: 'Passwords do not match.'});
-
-  const user = await User.findOne({ username, email, password }).exec();
-  if(user)
-    return res.status(400).json({message: 'Account already exists.'});
   
   try {
+    const user = await User.findOne({ username, email, password }).exec();
+    if(user)
+      return res.status(400).json({message: 'Account already exists.'});
+  
     await User.create({...req.body})
     return res.status(201).json({ message: 'User registered successfully'});
   }
@@ -57,6 +57,22 @@ app.post("/register", async (req: Request, res: Response): Promise<any> => {
     return res.status(500).json({ message: "Internal server error.", error: error.message });
   }
 }); 
+
+app.post("/login", async (req: Request, res: Response): Promise<any> => {
+  const { username, password } = req.body;
+  console.log(username, password);
+  try {
+    const user = await User.findOne({ username, password }).exec();
+    if(user)
+      return res.status(201).json({ message: 'User login successfully'});
+    else
+      return res.status(400).json({message: 'Account does not exist.'});
+    }
+  catch (error: any) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error.", error: error.message });
+  }
+});
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

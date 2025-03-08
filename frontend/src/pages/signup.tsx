@@ -19,11 +19,11 @@ export default function SignUp() {
       console.log(key, value);
     }
 
-    const data = Object.fromEntries(formData.entries());
-    console.log(data);
+    /*const data = Object.fromEntries(formData.entries());
+    console.log(data);*/
 
     if(formData.get("password") !== formData.get("confirmPW")) {
-      alert("bro check your pw");
+      alert("Invalid: Passwords do not match.");
       return;
     }
 
@@ -43,11 +43,11 @@ export default function SignUp() {
       }
       else {
         const errorMessage = JSON.stringify(result, null, 2);
-        alert(`Error: ${errorMessage || "Error"}`);
+        alert(`${errorMessage || "Server Error"}`);
       }
     }
     catch (error: any) {
-      console.log('yikes', error);
+      console.log(error);
     }
   }
 
