@@ -8,7 +8,7 @@
 .profile-container {
     display: flex;
     justify-content: center;
-    background-color: #2c2f33;
+    background-color: var(--profile-container); /* #2c2f33 dark|light #e7e4e0 */
     min-height: 350px;
     min-width: 600px;
     max-width: 800px;
@@ -23,12 +23,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #393E41;
+    background-color: var(--profile-body-bgcolor); /* #393E41 dark|light #c6c1be */
     min-width: 500px;
     max-width: 800px;
     padding: 25px;
     border-radius: 10px;
-    color: #F6F7EB;
+    color: var(--profile-body-color); /* #F6F7EB dark|light #090814 */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -75,7 +75,7 @@
 .sidebar-button {
     display: block;
     padding: 10px 15px;
-    color: #F6F7EB;
+    color: var(--sidebar-button); /* #F6F7EB dark|light #090814 */
     text-decoration: none;
 }
 
@@ -85,7 +85,7 @@
 }
 
 .sidebar-button.active {
-    color: #2c2f33;
+    color: #E94F37; /* previous: #374f6*/
     background-color: #F6F7EB;
     border-left: 4px solid #E94F37;
     padding-left: 20px;
@@ -122,18 +122,18 @@
 }
 
 .settings-container input {
-    background-color: #2c2f33;
+    background-color: var(--settings-container-input-bgcolor); /* #2c2f33 dark|light #e7e4e0 */
     border-radius: 10px;
-    color: #F6F7EB;
+    color: var(--settings-container-input-color); /* #d3d0cc dark|light #2c2f33 */
     padding: 7px 10px;
     border: none;
     outline: none;
 }
 
 .settings-container textarea {
-    background-color: #2c2f33;
+    background-color: var(--settings-container-textarea-bgcolor); /* #2c2f33 dark|light #e7e4e0 */
     border-radius: 10px;
-    color: #F6F7EB;
+    color: var(--settings-container-textarea-color); /* #d3d0cc dark|light #2c2f33 */
     padding: 7px 10px;
     border: none;
     resize: none;
@@ -142,12 +142,12 @@
 }
 
 .settings-container select {
-    background-color: #2c2f33;
+    background-color: var(--settings-container-select-bgcolor); /* #2c2f33 dark|light #e7e4e0 */
     border-radius: 10px;
     padding: 7px 10px;
     font-size: 0.9rem;
     gap: 10px;
     border: none;
-    color: #F6F7EB;
+    color: var(--settings-container-select-color); /* #d3d0cc dark|light #2c2f33 */
     outline: none;
 }

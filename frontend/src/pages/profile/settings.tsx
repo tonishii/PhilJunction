@@ -16,7 +16,7 @@ export default function Settings() {
 
       <h2>Web Interface</h2>
       <section>
-        <label htmlFor="theme">Select theme light or dark</label>
+        <label htmlFor="theme">Enable dark theme</label>
         <Toggleswitch name="theme" />
 
         <label htmlFor="font-style">Customize font-style</label>
