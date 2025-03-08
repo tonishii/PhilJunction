@@ -33,9 +33,22 @@ app.get("/", async (req: Request, res: Response) => {
   res.send("Express + TypeScript Serverrrrr");
 });
 
-app.post("/register", async (req: Request, res: Response) => {
-  const { username, email, password, confirmPassword } = req.body;
+app.post("/register", async (req: Request, res: Response): Promise<any> => {
+  const { newUsername, newEmail, newPW, confirmPW } = req.body;
+
+  if (!newUsername || !newEmail || !newPW || !confirmPW)
+    return res.status(401).json({ message: req.body });
   
+  if(newPW !== confirmPW)
+    return res.status(400).json({message: 'Passwords do not match.'});
+
+  try {
+    await User.create({...req.body})
+    return res.status(201).json({ message: 'User registered successfully'});
+  }
+  catch {
+    return res.status(500).json({ message: 'Internal server error.' });
+  }
 }); 
 
 app.listen(port, () => {

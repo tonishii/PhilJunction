@@ -14,16 +14,27 @@ export default function SignUp() {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
+    
+    /*for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    } */
 
-    if(formData.get("password") !== formData.get("confirmPW")) {
-      alert("bro check your pw");
+    const data = Object.fromEntries(formData.entries());
+    console.log(data);
+
+    /*
+    if (data.newPW !== data.confirmPW) {
+      alert("check pw");
       return;
-    }
+    }*/
 
     try {
-      const response = await fetch('https://localhost:3001/register', {
-        method: 'POST',
-        body: JSON.stringify(formData),
+      const response = await fetch('http://localhost:3001/register', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
 
       const result = await response.json();
@@ -32,7 +43,8 @@ export default function SignUp() {
         redirect("/");
       }
       else {
-        alert("Error connecting to DB.");
+        const errorMessage = JSON.stringify(result, null, 2);
+        alert(`Error: ${errorMessage || "Error"}`);
       }
     }
     catch {
