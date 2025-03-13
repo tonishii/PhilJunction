@@ -1,9 +1,10 @@
 import "@/styles/login-styles.css";
 
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export default function Login() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const login = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -11,8 +12,8 @@ export default function Login() {
     const formData = new FormData(e.target as HTMLFormElement);
 
     try {
-      const response = await fetch('http://localhost:3001/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3001/login", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -21,18 +22,16 @@ export default function Login() {
 
       const result = await response.json();
 
-      if(response.ok) {
+      if (response.ok) {
         navigate("/");
-      }
-      else {
+      } else {
         const errorMessage = JSON.stringify(result, null, 2);
-        alert(`${errorMessage || "Server Error"}`);
+        toast.error(`${errorMessage || "Server Error"}`);
       }
-    }
-    catch (error: any) {
+    } catch (error: unknown) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <form className="login-contents" onSubmit={login}>
@@ -40,7 +39,9 @@ export default function Login() {
       <input type="text" id="uname" name="username" />
       <label htmlFor="pwrd">Password: </label>
       <input type="password" id="pwrd" name="password" />
-      <button className="round-button" type="submit">Log In</button>
+      <button className="round-button" type="submit">
+        Log In
+      </button>
     </form>
   );
 }

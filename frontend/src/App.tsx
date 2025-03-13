@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { ToastContainer } from "react-toastify";
 
 import Header from "@/components/header";
 import Main from "@/pages/main";
@@ -19,6 +19,7 @@ import CreatePost from "./pages/createpost";
 import userCommentData from "@/mockdata/user-comments-data";
 import profileData from "@/mockdata/profile-data";
 import postData from "@/mockdata/post-data";
+import React from "react";
 
 function App() {
   // USE FOR TESTING
@@ -32,6 +33,7 @@ function App() {
   return (
     <Router>
       <Header />
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/profile" element={<Profile />}>
@@ -47,7 +49,10 @@ function App() {
             }
           />
           <Route path="posts" element={<UserPosts />} />
-          <Route path="comments" element={<UserComments userComments={userCommentData} />} />
+          <Route
+            path="comments"
+            element={<UserComments userComments={userCommentData} />}
+          />
           <Route path="settings" element={<Settings />} />
         </Route>
         <Route path="/search" element={<SearchPage />} />
@@ -60,7 +65,7 @@ function App() {
       </Routes>
     </Router>
   );
-};
+}
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
