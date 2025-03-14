@@ -127,14 +127,26 @@
 
 .comment-menu {
   position: relative;
-  margin: 0;
+  padding: 5px;
+  margin: 5px;
 }
 
 .comment-sidebuttons {
   display: flex;
   align-items: center;
-  background-color: #595e66; 
-  border-radius: 10px; 
+  background-color: #595e66;
+  border-radius: 10px;
+}
+
+.reply-button {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 7px;
+  margin: 5px;
+  cursor: pointer;
 }
 
 .ellipsis-button {
@@ -145,12 +157,26 @@
 }
 
 .dropdown-menu {
+  border: 2px solid #4E565A;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
   position: absolute;
   background-color: #2c2f33;
   border-radius: 10px;
   right: 0px;
   top: 25px;
   z-index: 10;
+}
+
+.dropdown-menu input {
+  margin: 5px;
+  border: none;
+  background-color: transparent;
+  color: #F6F7EB;
+  outline: none;
+  border-radius: 5px;
+  padding: 5px 7px;
 }
 
 .dropdown-menu ul {
@@ -165,15 +191,10 @@
 
 .dropdown-menu li button {
   color: #F6F7EB;
-  border-radius: 10px;
   background-color: transparent;
   padding: 5px 9px;
   border: none;
   cursor: pointer;
-}
-
-.dropdown-menu li button:hover {
-  background-color: #4E565A;
 }
 
 /* Image Carousel */

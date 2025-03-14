@@ -157,6 +157,7 @@
 .post-window-main {
   background-color: #F6F7EB;
   padding: 10px 20px;
+  min-height: 200px;
 }
 
 .post-body>*{
@@ -165,6 +166,7 @@
 
 .post-body {
   height: auto;
+  margin: 20px 0px;
 }
 
 .post-window-footer {

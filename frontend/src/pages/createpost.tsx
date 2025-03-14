@@ -1,5 +1,5 @@
 import "@/styles/create-post.css"
-import { BadgePlus, ImagePlus, X } from "lucide-react";
+import { Send, ImagePlus, X } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import TagInput from "@/components/taginput";
@@ -142,7 +142,7 @@ export default function CreatePost() {
               <button
                 className={`round-button`}
                 onClick={submitPost}>
-                <BadgePlus className="icon" />
+                <Send className="icon" />
               </button>
             </div>
 

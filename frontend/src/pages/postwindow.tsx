@@ -4,7 +4,7 @@ import Comment from '@/components/comment';
 import ImageCarousel from '@/components/imagecarousel';
 import { useNavigate } from "react-router";
 import { ThumbsUp, ThumbsDown, MessageCircle, CornerDownLeft } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
 import { IPost } from '@/models/postType';
@@ -30,9 +30,6 @@ export default function PostWindow({
   const [comments, setComments] = useState(post.comments);
   const [commentCount] = useState(post.comments.length);
   const [commentValue, setCommentValue] = useState("");
-
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
-  const newCommentRef = useRef<HTMLDivElement | null>(null);
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentValue(event.target.value);
@@ -102,7 +99,7 @@ export default function PostWindow({
           setCommentValue("");
         } else {
           const errorData = await res.json();
-          toast.error(errorData.message || "Server Error");
+          toast.error("Server error:", errorData.message);
         }
       } catch (error) {
         toast.error("An error occurred while submitting the comment.");
@@ -110,13 +107,32 @@ export default function PostWindow({
     }
   }
 
-  useEffect(() => {
-    if (!isFirstLoad && newCommentRef.current) {
-      newCommentRef.current.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      setIsFirstLoad(false);
-    }
-  }, [comments]);
+  const handleAddReply = (newReply: IComment, commentID: string) => {
+    newReply.commentID = commentID;
+    setComments((prevComments) =>
+      prevComments.map((comment) =>
+        comment.commentID === newReply.replyTo
+          ? { ...comment, replies: [...comment.replies, newReply] }
+          : comment
+      )
+    );
+  };
+
+  const handleDeleteComment = (commentID: string) => {
+    setComments((prevComments) =>
+      prevComments.filter((comment) => comment.commentID !== commentID)
+    );
+  };
+
+  const handleEditComment = (commentID: string, updatedBody: string) => {
+    setComments((prevComments) =>
+      prevComments.map((comment) =>
+        comment.commentID === commentID
+          ? { ...comment, body: updatedBody }
+          : comment
+      )
+    );
+  };
 
   return (
     <div className="post-window-container">
@@ -191,9 +207,14 @@ export default function PostWindow({
 
       <div className="post-window-comments">
         <h1>Comments</h1>
-        {comments.map(comment => <Comment comment={comment} isReplyable={true} />)}
-
-        <div ref={newCommentRef}/>
+        {comments.map((comment) =>
+          <Comment
+            comment={comment}
+            isReplyable={true}
+            onAddReply={handleAddReply}
+            onDeleteComment={handleDeleteComment}
+            onEditComment={handleEditComment} />
+        )}
       </div>
     </div>
   );

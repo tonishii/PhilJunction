@@ -71,33 +71,4 @@ router.get("/retrieveposts", async (req, res) => {
   }
 });
 
-router.post("/submitcomment", async (req, res): Promise<any> => {
-  try {
-    const { username, body, replyTo } = req.body;
-
-    if (!body || !replyTo ) {
-      return res.status(400).json({ message: "Body and replied to are required. "})
-    }
-
-    const user = await User.findOne({ username: username });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found or authentication required." });
-    }
-
-    const newComment = new Comment({
-      userId: user._id,
-      username: username,
-      body: body,
-      replyTo: replyTo,
-      replies: [],
-    });
-
-    const savedComment = await newComment.save();
-    return res.status(201).json({ message: "Comment created successfully.", comment: savedComment });
-  } catch (err: any) {
-    return res.status(500).json({ message: "Internal server error.", error: err.message });
-  }
-});
-
 export default router;
