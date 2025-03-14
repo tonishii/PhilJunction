@@ -157,7 +157,7 @@ export default function PostWindow({
 
       <div className="post-window-comments">
         <h1>Comments</h1>
-        {comments.map(comment => <Comment comment={comment} isReplyable={true} />)}
+        {comments.map((comment, i) => <Comment comment={comment} isReplyable={true} key={i} />)}
       </div>
     </div>
   );
