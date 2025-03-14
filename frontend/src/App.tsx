@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router";
+import { BrowserRouter as Router, Routes, Route } from "react-router";
 import { ToastContainer } from "react-toastify";
 
 // Components

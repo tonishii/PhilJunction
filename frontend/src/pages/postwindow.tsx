@@ -43,8 +43,6 @@ export default function PostWindow() {
     fetchData();
   }, [postId]);
 
-
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const newCommentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
