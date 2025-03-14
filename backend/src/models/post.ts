@@ -10,7 +10,8 @@ export interface IPost extends mongoose.Document {
   likes?: number;
   dislikes?: number;
   comments?: mongoose.Types.ObjectId[];
-} 
+  publicId: string;
+}
 
 const postSchema = new mongoose.Schema({
   // username: { type: String, required: true },
@@ -23,6 +24,7 @@ const postSchema = new mongoose.Schema({
   likes: { type: Number, default: 0 },
   dislikes: { type: Number, default: 0 },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+  publicId: { type: String, required: true }
 });
 
 const Post = mongoose.model<IPost>("Post", postSchema);

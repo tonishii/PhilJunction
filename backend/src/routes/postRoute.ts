@@ -10,6 +10,15 @@ const router = express.Router();
 const storage = multer.memoryStorage();  // Store the files in memory (Buffer)
 const upload = multer({ storage: storage });
 
+function createPostId(): string {
+  const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  let newId = "";
+  for (let i = 0; i < 10; i++) {
+    newId += alphabet.charAt(Math.floor(alphabet.length * Math.random()));
+  }
+  return newId;
+}
+
 router.post("/submitpost", upload.array('images'), async (req: Request, res: Response): Promise<any> => {
   // Destructure the fields from the request body
   const { postTitle, postContent, tags } = req.body;
@@ -25,9 +34,9 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
   // Prepare the images to be saved in the database (allowing no images)
   const images = files.length > 0
     ? files.map((file: Express.Multer.File) => ({
-        data: file.buffer,    // file.buffer contains the file content
-        contentType: file.mimetype,  // MIME type of the file
-      }))
+      data: file.buffer,    // file.buffer contains the file content
+      contentType: file.mimetype,  // MIME type of the file
+    }))
     : [];  // If no files, assign an empty array
 
 
@@ -45,6 +54,7 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
       body: postContent,
       images,
       tags: JSON.parse(tags),  // Store tags as an array of strings
+      publicId: createPostId()
     });
 
     await newPost.save();
