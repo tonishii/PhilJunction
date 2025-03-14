@@ -2,13 +2,14 @@ import "@/styles/component-styles.css";
 
 import { useState } from "react";
 import { Ellipsis, MessageCircle } from "lucide-react";
-import { IComment } from "@/models/commentType";
+import { IComment, ICommentTree } from "@/models/commentType";
+import moment from "moment";
 
 export default function Comment({
   comment,
   isReplyable = false,
 }: {
-  comment: IComment;
+  comment: ICommentTree;
   isReplyable?: boolean;
 }) {
   const editComment = () => {
@@ -17,8 +18,8 @@ export default function Comment({
   const deleteComment = () => {
   };
 
-  function handleDate(date: Date) {
-    return "A day ago";
+  function handleDate(datePosted: Date) {
+    return moment(datePosted).fromNow();
   }
 
   function handleComments(comment: IComment): JSX.Element {

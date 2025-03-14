@@ -1,6 +1,7 @@
 import { IComment } from "./commentType";
 
 export interface IPost {
+  postID: string;
   username: string;
   title: string;
   postDate: Date;
@@ -9,6 +10,6 @@ export interface IPost {
   tags: string[];
   likes: number;
   dislikes: number;
-  comments: IComment[];
+  comments: string[];
   publicId: string;
 }

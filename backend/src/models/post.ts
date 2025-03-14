@@ -2,6 +2,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IPost extends mongoose.Document {
   userId: mongoose.Types.ObjectId;
+  username: string;
   title: string;
   postDate?: Date;
   body: string;
@@ -16,6 +17,7 @@ export interface IPost extends mongoose.Document {
 const postSchema = new mongoose.Schema({
   // username: { type: String, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  username: { type: String, required: true },
   title: { type: String, required: true },
   postDate: { type: Date, default: Date.now },
   body: { type: String, required: true },

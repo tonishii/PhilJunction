@@ -3,19 +3,20 @@ import mongoose from 'mongoose';
 export interface IComment extends mongoose.Document {
   userId: mongoose.Types.ObjectId;
   body: string;
+  username: string;
   postDate?: Date;
-  replyTo?: mongoose.Types.ObjectId | null;
+  replyTo: string;
   replies?: mongoose.Types.ObjectId[];
+  topLevel: boolean;
 }
 
 const commentSchema = new mongoose.Schema({
-  // username: { type: String, required: true },\
+  username: { type: String, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   body: { type: String, required: true },
-  postDate: { type: Date, default: Date.now },
-  // replyTo: { type: String, default: null },
-  replyTo: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
+  replyTo: { type: String, required: true },
   replies: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+  topLevel: { type: Boolean, required: true }
 }, { timestamps: true }
 );
 

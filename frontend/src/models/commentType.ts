@@ -3,6 +3,17 @@ export interface IComment {
   username: string;
   body: string;
   postDate: Date;
+  topLevel: boolean;
+  replies: string[];
   replyTo: string;
-  replies: IComment[];
+}
+
+export interface ICommentTree {
+  commentID: string;
+  username: string;
+  body: string;
+  postDate: Date;
+  topLevel: boolean;
+  replies: ICommentTree[];
+  replyTo: string;
 }

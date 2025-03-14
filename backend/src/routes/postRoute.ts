@@ -5,15 +5,16 @@ import multer from 'multer';
 
 import User from "../models/user";
 import Post from "../models/post";
+import Comment from "../models/comment";
 
 const router = express.Router();
 const storage = multer.memoryStorage();  // Store the files in memory (Buffer)
 const upload = multer({ storage: storage });
 
-function createPostId(): string {
+function createId(length: number): string {
   const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   let newId = "";
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < length; i++) {
     newId += alphabet.charAt(Math.floor(alphabet.length * Math.random()));
   }
   return newId;
@@ -50,17 +51,17 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
     // Create the new post and save it to the database
     const newPost = new Post({
       userId: user._id,  // Assuming user is logged in and their ID is available
+      username: user.username,
       title: postTitle,
       body: postContent,
       images,
       tags: JSON.parse(tags),  // Store tags as an array of strings
-      publicId: createPostId()
+      publicId: createId(10)
     });
 
     await newPost.save();
-    return res.status(201).json({ message: 'Post created successfully' });
+    return res.status(201).json({ message: 'Post created successfully.' });
   } catch (error: any) {
-    console.error("Error:", error);
     return res.status(500).json({ message: "Internal server error.", error: error.message });
   }
 });
@@ -68,7 +69,6 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
 router.get("/retrieveposts", async (req, res) => {
   try {
     const data = await Post.find({}).limit(10).exec();
-    console.log(data);
     res.json(data)
   }
   catch (error: any) {
@@ -91,5 +91,61 @@ router.get("/retrievepost/:id", async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 })
+
+router.get("/retrievecomment/:id", async (req: Request, res: Response) => {
+  try {
+    const data = await Comment.findOne({ _id: req.params.id });
+    if (!data) {
+      res.status(404).json({ message: "Comment not found." });
+      return;
+    }
+
+    res.status(200).json(data);
+  } catch (e: unknown) {
+    console.log(e);
+    res.status(500).json({ message: "server error" });
+  }
+})
+
+router.post("/submitcomment", async (req, res): Promise<any> => {
+  try {
+    const { username, body, postId, topLevel, replyTo } = req.body;
+    console.log(username, body, postId, topLevel, replyTo)
+
+    if (!body || !replyTo) {
+      return res.status(400).json({ message: "Body and replied to are required. " })
+    }
+
+    const user = await User.findOne({ username: replyTo });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found or authentication required." });
+    }
+
+    const relatedPost = Post.findOne({ publicId: postId });
+
+    if (!relatedPost) {
+      return res.status(404).json({ message: "Post not found." });
+    }
+
+    const newComment = new Comment({
+      userId: user._id,
+      username: username,
+      body: body,
+      replyTo: replyTo,
+      replies: [],
+      topLevel: topLevel
+    });
+
+    const savedComment = await newComment.save();
+    console.log("hi")
+    await relatedPost.updateOne({ $push: { comments: savedComment._id } });
+
+    return res.status(201).json({ message: "Comment created successfully.", comment: savedComment });
+  } catch (err: any) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal server error.", error: err.message });
+  }
+});
 
 export default router;
