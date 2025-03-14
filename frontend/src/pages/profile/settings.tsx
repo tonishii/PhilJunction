@@ -1,8 +1,9 @@
 import Toggleswitch from "@/components/toggleswitch"
 import { useLocalStorage } from "@/hook/storage";
 import { SyntheticEvent, useEffect } from "react";
+import { IUser } from "@/models/userType";
 
-export default function Settings() {
+export default function Settings({ user }: { user: IUser; }) {
 
   const [theme, setTheme] = useLocalStorage("theme", "light");
 

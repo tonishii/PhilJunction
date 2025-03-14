@@ -13,6 +13,7 @@ export default defineConfig({
       "@profile": path.resolve(__dirname, "src/pages/profile"),
       "@mockdata": path.resolve(__dirname, "src/mockdata"),
       "@styles": path.resolve(__dirname, "src/styles"),
+      "@models": path.resolve(__dirname, "src/models"),
     },
   },
   server: {

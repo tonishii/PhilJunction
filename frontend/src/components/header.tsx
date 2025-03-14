@@ -18,12 +18,12 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header-leftmost">
-        <Link to="/profile/settings">
+        <Link to="user/settings">
           <button className="round-button">
             <Menu className="icon" />
           </button>
         </Link>
-        <Link to="/holler">
+        <Link to="holler">
           <button className="create-post-button">
             <BadgePlus className="icon" />
             <span>Create a Post</span>
@@ -39,7 +39,7 @@ export default function Header() {
       </Link>
 
       <div className="search-bar">
-        <Link to="/search"><Search className="search-icon" /></Link>
+        <Link to="search"><Search className="search-icon" /></Link>
         <input
           type="text"
           placeholder="Search"
@@ -49,7 +49,7 @@ export default function Header() {
         />
       </div>
 
-      <Link to="/profile">
+      <Link to="user">
         <button className="round-button">
           <User className="icon" />
         </button>

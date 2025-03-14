@@ -7,8 +7,8 @@ export interface IPost extends mongoose.Document {
   body: string;
   images?: { data: Buffer; contentType: string }[];
   tags?: string[];
-  likes?: mongoose.Types.ObjectId[];
-  dislikes?: mongoose.Types.ObjectId[];
+  likes?: number;
+  dislikes?: number;
   comments?: mongoose.Types.ObjectId[];
 } 
 

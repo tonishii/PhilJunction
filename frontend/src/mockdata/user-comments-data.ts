@@ -1,28 +1,28 @@
-import type { PostComment } from "@/mockdata/post-data";
+import { Comment } from "@/models/commentType";
 
-const userCommentData: PostComment[] = [
+const userCommentData: Comment[] = [
   {
     username: "Fubuki",
     replyTo: "Mio",
-    id: 1,
+    commentID: "1",
     postDate: new Date(),
-    content: "I like glasses too!",
+    body: "I like glasses too!",
     replies: []
   },
   {
     username: "Fubuki",
     replyTo: "Marine",
-    id: 3,
+    commentID: "3",
     postDate: new Date(),
-    content: "I think glasses are cute!",
+    body: "I think glasses are cute!",
     replies: []
   },
   {
     username: "Fubuki",
     replyTo: "Aqua",
-    id: 6,
+    commentID: "6",
     postDate: new Date(),
-    content: "Wow?!?!?!",
+    body: "Wow?!?!?!",
     replies: []
   }
 ];
