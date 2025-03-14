@@ -1,6 +1,5 @@
 import Post from "@/components/post.tsx";
 import SmallPost from "@/components/smallpost";
-import { useLocalStorage } from "@/hook/storage";
 import { IPost } from "@/models/postType";
 
 import { Flame } from "lucide-react";
