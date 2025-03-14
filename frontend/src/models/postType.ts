@@ -1,5 +1,3 @@
-import { IComment } from "./commentType";
-
 export interface IPost {
   postID: string;
   username: string;

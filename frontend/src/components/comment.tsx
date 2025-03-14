@@ -2,14 +2,14 @@ import "@/styles/component-styles.css";
 
 import { useState } from "react";
 import { Ellipsis, MessageCircle } from "lucide-react";
-import { IComment, ICommentTree } from "@/models/commentType";
+import { IComment } from "@/models/commentType";
 import moment from "moment";
 
 export default function Comment({
   comment,
   isReplyable = false,
 }: {
-  comment: ICommentTree;
+  comment: IComment;
   isReplyable?: boolean;
 }) {
   const editComment = () => {

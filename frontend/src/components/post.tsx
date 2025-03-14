@@ -1,6 +1,6 @@
 import '@/styles/post-styles.css'
 
-import ImageCarousel from './imagecarousel';
+// import ImageCarousel from './imagecarousel';
 import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";

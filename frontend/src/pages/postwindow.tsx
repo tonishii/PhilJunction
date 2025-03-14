@@ -1,7 +1,7 @@
 import "@/styles/post-styles.css";
 
 import Comment from "@/components/comment";
-import ImageCarousel from "@/components/imagecarousel";
+// import ImageCarousel from "@/components/imagecarousel";
 import { useNavigate, useParams } from "react-router";
 import {
   ThumbsUp,
@@ -9,11 +9,11 @@ import {
   MessageCircle,
   CornerDownLeft,
 } from "lucide-react";
-import { memo, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import moment from "moment";
 import { IPost } from "@/models/postType";
-import { IComment, ICommentTree } from "@/models/commentType";
+import { ICommentTree } from "@/models/commentType";
 import { toast } from 'react-toastify';
 
 export default function PostWindow() {
@@ -68,13 +68,13 @@ export default function PostWindow() {
   function handleUpvote(): void {
     if (vote === "up") {
       setVote(null);
-      setLikeCount(likeCount - 1);
+      // setLikeCount(likeCount - 1);
     } else {
       setVote("up");
-      setLikeCount(likeCount + 1);
+      // setLikeCount(likeCount + 1);
 
       if (vote === "down") {
-        setDislikeCount(dislikeCount - 1);
+        // setDislikeCount(dislikeCount - 1);
       }
     }
   }
@@ -82,13 +82,13 @@ export default function PostWindow() {
   function handleDownvote(): void {
     if (vote === "down") {
       setVote(null);
-      setDislikeCount(dislikeCount - 1);
+      // setDislikeCount(dislikeCount - 1);
     } else {
       setVote("down");
-      setDislikeCount(dislikeCount + 1);
+      // setDislikeCount(dislikeCount + 1);
 
       if (vote === "up") {
-        setLikeCount(likeCount - 1);
+        // setLikeCount(likeCount - 1);
       }
     }
   }
