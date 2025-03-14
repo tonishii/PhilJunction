@@ -1,12 +1,12 @@
 import '@/styles/post-styles.css'
 
 import ImageCarousel from './imagecarousel';
-import type { Post } from '@/mockdata/post-data';
 import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
+import { IPost } from '@/models/postType';
 
 export default function Post({
   post,
@@ -14,7 +14,7 @@ export default function Post({
   initialLikes = 0,
   initialDislikes = 0,
 }: {
-  post: Post;
+  post: IPost;
   initialVote?: "up" | "down" | null;
   initialLikes?: number;
   initialDislikes?: number;
@@ -72,7 +72,7 @@ export default function Post({
         <div className="post-main">
           <ReactMarkdown className="post-body" children={post.body} />
           <div className="matchWidth">
-            <ImageCarousel images={post.images} maxImages={1} />
+            {/* <ImageCarousel images={post.images} maxImages={1} /> WARNING PLEASE FIX THIS IS BLOB!!!*/}
           </div>
 
         </div>

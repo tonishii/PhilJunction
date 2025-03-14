@@ -1,14 +1,10 @@
 import '@/styles/post-styles.css'
 
 import { Link } from "react-router";
-import type { Post } from '@/mockdata/post-data';
 import ReactMarkdown from 'react-markdown';
+import { IPost } from '@/models/postType';
 
-export default function SmallPost({
-  post,
-}: {
-  post: Post;
-}) {
+export default function SmallPost({ post }: { post: IPost; }) {
 
   return (
     <div className="smallpost-container">

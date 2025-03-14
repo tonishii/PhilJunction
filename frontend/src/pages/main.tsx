@@ -1,15 +1,13 @@
 import Post from "@/components/post.tsx";
 import SmallPost from "@/components/smallpost";
 import { useLocalStorage } from "@/hook/storage";
-import { post1, post2, post3, post4, post5, post6 } from "@/mockdata/more-post-data";
-import postData from "@/mockdata/post-data.ts";
-import { Post as mockPosts } from "@/mockdata/post-data.ts";
+import { IPost } from "@/models/postType";
 
 import { Flame } from "lucide-react";
 import { useState, useEffect } from 'react';
 
 export default function Main() {
-  const [posts, setPosts] = useState<mockPosts[]>([]);
+  const [posts, setPosts] = useState<IPost[]>([]);
   useEffect(() => {
     const getPosts = async () => {
       try {

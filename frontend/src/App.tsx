@@ -18,10 +18,6 @@ import SignUp from "@pages/signup";
 // Profile Pages
 import Profile from "@pages/profile";
 
-// Mock Data
-import postData from "@mockdata/post-data";
-
-
 function App() {
   // USE FOR TESTING
   // useEffect(() => {
@@ -45,7 +41,7 @@ function App() {
           <Route path="signup" element={<SignUp />} />
         </Route>
 
-        <Route path="post" element={<PostWindow post={postData} />} />
+        {/* <Route path="post" element={<PostWindow post={post} />} /> THIS IS DYNAMIC POST*/}
         <Route path="holler" element={<CreatePost />} />
       </Routes>
     </Router>

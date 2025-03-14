@@ -2,13 +2,6 @@ import "@/styles/login-styles.css";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
-// interface NewUserData {
-//   username: string;
-//   email: string;
-//   password: string;
-//   confirmPW: string;
-// }
-
 export default function SignUp() {
   const navigate = useNavigate();
 
@@ -64,10 +57,6 @@ export default function SignUp() {
       <button className="round-button" type="submit">
         Sign Up
       </button>
-      {/* 
-      <Link to="/" className="link-tag">
-        <button className='round-button'>Sign Up</button>
-      </Link>*/}
     </form>
   );
 }

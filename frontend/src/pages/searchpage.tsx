@@ -1,12 +1,13 @@
 import "@/styles/search-styles.css";
 import Post from "@/components/post";
-import postData from "@/mockdata/post-data";
 import TagInput from "@/components/taginput";
 
 import { useState } from "react";
+import { IPost } from "@/models/postType";
 
 export default function SearchPage() {
     const [tags, setTags] = useState<string[]>([]);
+    const [posts, setPosts] = useState<IPost[]>([]);
 
     return (
         <div className="search-container">
@@ -33,8 +34,6 @@ export default function SearchPage() {
 
             <div className="search-posts">
                 <h1 className="result-text">Results: </h1>
-                <Post post={postData}/>
-                <Post post={postData}/>
             </div>
         </div>
     );

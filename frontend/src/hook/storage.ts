@@ -13,7 +13,5 @@ export function useLocalStorage(key: string, initialValue: string): [string, (ne
         localStorage.setItem(key, newValue);
     };
 
-
-
     return [value, setter];
 }

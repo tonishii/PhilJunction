@@ -1,14 +1,14 @@
 import "@/styles/component-styles.css";
 
 import { useState } from "react";
-import { PostComment } from "@/mockdata/post-data";
 import { Ellipsis, MessageCircle } from "lucide-react";
+import { IComment } from "@/models/commentType";
 
 export default function Comment({
   comment,
   isReplyable = false,
 }: {
-  comment: PostComment;
+  comment: IComment;
   isReplyable?: boolean;
 }) {
   const editComment = () => {
@@ -21,7 +21,7 @@ export default function Comment({
     return "A day ago";
   }
 
-  function handleComments(comment: PostComment): JSX.Element {
+  function handleComments(comment: IComment): JSX.Element {
     const [menuVisible, setMenuVisible] = useState(false);
 
     const toggleMenu = () => setMenuVisible(!menuVisible);
@@ -66,7 +66,7 @@ export default function Comment({
           )}
         </div>
 
-        <p>{comment.content}</p>
+        <p>{comment.body}</p>
 
         {comment.replies.length > 0 && (
           <div className="replies-container">
