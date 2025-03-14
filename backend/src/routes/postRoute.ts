@@ -81,6 +81,17 @@ router.get("/retrieveposts", async (req, res) => {
   }
 });
 
+router.get("/trendingposts", async (req, res) => {
+  try {
+    const data = await Post.find({}).sort({likes: -1, dislikes: 1}).limit(5).exec();
+    console.log(data);
+    res.json(data)
+  }
+  catch (error: any) {
+    res.status(500).json({ message: "Internal server error.", error: error.message });
+  }
+});
+
 router.get("/retrievepost/:id", async (req: Request, res: Response) => {
   try {
     const data = await Post.findOne({ publicId: req.params.id });

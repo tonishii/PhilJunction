@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 
 export default function Main() {
   const [posts, setPosts] = useState<IPost[]>([]);
+  const [popPosts, setPopPosts] = useState<IPost[]>([]);
   useEffect(() => {
     const getPosts = async () => {
       try {
@@ -18,6 +19,14 @@ export default function Main() {
         }
         const data = await resp.json();
         setPosts(data);
+
+        const response = await fetch("http://localhost:3001/trendingposts");
+        console.log(resp);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const popular = await response.json();
+        setPopPosts(popular);
       }
       catch (error: unknown) {
         toast.error("Something went wrong.");
@@ -40,7 +49,7 @@ export default function Main() {
         <span className="popular-posts-header">
           Trending Posts <Flame className="icon" />
         </span>
-        {posts.map((i, j) => (
+        {popPosts.map((i, j) => (
           <SmallPost key={j} post={i} />
         ))}
       </div>
