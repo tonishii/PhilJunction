@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 
 export default function CreatePost() {
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
@@ -26,44 +28,49 @@ export default function CreatePost() {
       setImages([...images, ...fileArray]);
     }
   }
-
-  function submit() {
-    console.log({
-      title, content, images, tags
-    });
-  }
-
-  const navigate = useNavigate();
   
   const submitPost = async () => {
-    document.getElementById("fileInput")?.click()
+    let postTitle = (document.getElementById("title") as HTMLTextAreaElement)?.value;
+    let postContent = (document.getElementById("editor") as HTMLTextAreaElement)?.value;
 
+    const formData = new FormData();
 
-    let postTitle = document.getElementById("title")?.textContent;
-    let postContent = document.getElementById("editor")?.textContent;
-    
-    let images2 = document.getElementById("crete-post-image")?.getElementsByTagName("img")
+    // Add text data
+    formData.append("postTitle", postTitle || "");
+    formData.append("postContent", postContent || "");
+    formData.append("tags", JSON.stringify(tags));
+
+    console.log("Post Title:", postTitle);
+    console.log("Post Content:", postContent);
+    console.log("Tags:", tags);
+
+    for (let i = 0; i < images.length; i++) {
+      const file = await imageUrlToFile(images[i]);  // Await the conversion
+      formData.append('images', file);  // Ensure 'images' is the field name
+    }
 
       try {
         const response = await fetch("http://localhost:3001/submitpost", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({postTitle, postContent, images, tags}),
+          body: formData,
         });
   
-        const result = await response.json();
-  
         if (response.ok) {
+          const result = await response.json();
           navigate("/");
         } else {
-          const errorMessage = JSON.stringify(result, null, 2);
+          const errorMessage = await response.text();;
           toast.error(`${errorMessage || "Server Error"}`);
         }
       } catch (error: unknown) {
         console.log(error);
       }
+    };
+
+    const imageUrlToFile = async (url: string): Promise<File> => {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return new File([blob], 'image.jpg', { type: blob.type });
     };
 
   return (
@@ -134,7 +141,7 @@ export default function CreatePost() {
             <div className='sidebar-button'>
               <button
                 className={`round-button`}
-                onClick={submit}>
+                onClick={submitPost}>
                 <BadgePlus className="icon" />
               </button>
             </div>
@@ -142,7 +149,7 @@ export default function CreatePost() {
             <div className='sidebar-button'>
               <button
                 className={`round-button`}
-                onClick={submitPost}>
+                onClick={() => document.getElementById("fileInput")?.click()}>
                 <ImagePlus className="icon" />
               </button>
             </div>

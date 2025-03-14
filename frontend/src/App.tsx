@@ -14,7 +14,7 @@ import Login from "@/pages/login";
 import SignUp from "@/pages/signup";
 import AuthLayout from "@/pages/authlayout";
 import SearchPage from "@/pages/searchpage";
-import CreatePost from "./pages/createpost";
+import CreatePost from "@/pages/createpost";
 
 import userCommentData from "@/mockdata/user-comments-data";
 import profileData from "@/mockdata/profile-data";
