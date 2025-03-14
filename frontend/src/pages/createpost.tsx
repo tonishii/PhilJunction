@@ -1,117 +1,160 @@
 import "@/styles/create-post.css"
-import { CirclePlus, Send, X, Paperclip } from "lucide-react";
+import { BadgePlus, ImagePlus, X } from "lucide-react";
 import { ChangeEvent, useState } from "react";
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown from 'react-markdown';
+import TagInput from "@/components/taginput";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 export default function CreatePost() {
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const [newTag, setNewTag] = useState("");
-    const [tags, setTags] = useState<string[]>([]);
-    const [images, setImages] = useState([]);
-    const [isEditingPost, setIsEditingPost] = useState(false);
+  const navigate = useNavigate();
 
-    function handleTitleEdit(event: ChangeEvent<HTMLTextAreaElement>) {
-        setTitle(event.target.value)
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>([]);
+
+  function handleTitleEdit(event: ChangeEvent<HTMLTextAreaElement>) {
+    setTitle(event.target.value);
+  }
+
+  function handleEditorEdit(event: ChangeEvent<HTMLTextAreaElement>) {
+    setContent(event.target.value);
+  }
+
+  function handleAttachImage(event: ChangeEvent<HTMLInputElement>) {
+    if (event.target.files) {
+      const fileArray = Array.from(event.target.files).map((file) => URL.createObjectURL(file));
+      setImages([...images, ...fileArray]);
+    }
+  }
+  
+  const submitPost = async () => {
+    let postTitle = (document.getElementById("title") as HTMLTextAreaElement)?.value;
+    let postContent = (document.getElementById("editor") as HTMLTextAreaElement)?.value;
+
+    const formData = new FormData();
+
+    // Add text data
+    formData.append("postTitle", postTitle || "");
+    formData.append("postContent", postContent || "");
+    formData.append("tags", JSON.stringify(tags));
+
+    console.log("Post Title:", postTitle);
+    console.log("Post Content:", postContent);
+    console.log("Tags:", tags);
+
+    for (let i = 0; i < images.length; i++) {
+      const file = await imageUrlToFile(images[i]);  // Await the conversion
+      formData.append('images', file);  // Ensure 'images' is the field name
     }
 
-    function handleEditorEdit(event: ChangeEvent<HTMLTextAreaElement>) {
-        setContent(event.target.value);
-    }
+      try {
+        const response = await fetch("http://localhost:3001/submitpost", {
+          method: "POST",
+          body: formData,
+        });
+  
+        if (response.ok) {
+          const result = await response.json();
+          navigate("/");
+        } else {
+          const errorMessage = await response.text();;
+          toast.error(`${errorMessage || "Server Error"}`);
+        }
+      } catch (error: unknown) {
+        console.log(error);
+      }
+    };
 
-    function handleClickContent() {
-        setIsEditingPost(true);
-        document.getElementById("editor")?.focus();
-    }
+    const imageUrlToFile = async (url: string): Promise<File> => {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return new File([blob], 'image.jpg', { type: blob.type });
+    };
 
-    function handleAddTags() {
-        setTags([...tags, newTag])
-        setNewTag("");
-    }
-
-    function handleRemoveTag(index: number) {
-        console.log(index);
-        const copy = [...tags];
-        copy.splice(index, 1)
-        setTags(copy);
-    }
-
-    function submit() {
-        console.log({
-            title, content, tags
-        })
-    }
-
-    return (
-        <main>
-            <div className="create-post-container">
-                <div className="post-container new-post">
-                    <div className="post-body">
-                        <div className="create-post-header">
-                            <textarea
-                                name="title"
-                                id="title"
-                                placeholder="Add a Title..."
-                                onInput={handleTitleEdit} />
-                        </div>
-
-                        <div className="create-post-main">
-                            <textarea
-                                name="editor"
-                                id="editor"
-                                placeholder="Start typing here..."
-                                onInput={handleEditorEdit} onBlur={() => setIsEditingPost(false)} onFocus={() => setIsEditingPost(true)} />
-                            <div className={`content-container  ${isEditingPost ? "zback" : ""}`} onClick={handleClickContent}>
-                                <ReactMarkdown children={content} />
-                            </div>
-                        </div>
-
-                        <div className="create-post-footer">
-                            <div className="new-tag-section">
-                                <CirclePlus id="addTags" onClick={handleAddTags} />
-                                <input
-                                    type="text"
-                                    name="tag"
-                                    id="tag"
-                                    placeholder="Add a tag..."
-                                    value={newTag}
-                                    onChange={(e) => setNewTag(e.target.value)}
-                                    onKeyUp={(e) => { if (e.code === "Enter") handleAddTags() }} />
-                            </div>
-                            <div className="tags-section">
-                                {
-                                    tags.map((tag, index) => (
-                                        <div className="create-tag">
-                                            <div className="wrap-tag">
-                                                {tag}<X className="remove-tag" onClick={() => handleRemoveTag(index)} />
-                                            </div>
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="post-sidebar">
-                        <div className='sidebar-button'>
-                            <button
-                                className={`round-button`}
-                                onClick={submit}>
-                                <Send className="icon" />
-                            </button>
-                        </div>
-
-                        <div className='sidebar-button'>
-                            <button
-                                className={`round-button`}
-                                onClick={submit}>
-                                <Paperclip className="icon" />
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
+  return (
+    <main>
+      <div className="create-post-container">
+          <div className="post-body">
+            <div className="create-post-header">
+              <textarea
+                name="title"
+                id="title"
+                placeholder="Add a Title..."
+                onChange={handleTitleEdit}
+                maxLength={100}/>
+              <span
+                className={
+                  `title-counter ${
+                    title.length == 100 ? "title-max" :
+                    title.length > 40 ? "title-overflow" : ""
+                  } `}>
+                  {title.length + "/40 "}
+                  {title.length == 100 ? <b>Max!!</b> :
+                   title.length > 40 ? <i>Overflow!</i> : ""}
+              </span>
             </div>
-        </main>
-    )
+
+            <div className="create-post-main">
+              <div className="textarea-wrapper">
+                <i className="textarea-header">Editor</i>
+                <textarea
+                  name="editor"
+                  id="editor"
+                  placeholder="Start typing here..."
+                  onChange={handleEditorEdit}/>
+              </div>
+
+              <ReactMarkdown className="create-post-body" children={content}/>
+
+              <div className="image-preview">
+                {images.map((img, index) => (
+                  <div key={index} className="create-post-image">
+                    <button onClick={() => setImages(images.filter((_, i) => i !== index))}><X size={12}/></button>
+
+                    <img
+                      key={index}
+                      src={img}
+                      alt={`attachment-${index}`}
+                      className="post-image" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="create-post-footer">
+              <TagInput tags={tags} setTags={setTags} />
+
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                id="fileInput"
+                multiple
+                onChange={handleAttachImage}
+              />
+            </div>
+          </div>
+
+          <div className="post-sidebar">
+            <div className='sidebar-button'>
+              <button
+                className={`round-button`}
+                onClick={submitPost}>
+                <BadgePlus className="icon" />
+              </button>
+            </div>
+
+            <div className='sidebar-button'>
+              <button
+                className={`round-button`}
+                onClick={() => document.getElementById("fileInput")?.click()}>
+                <ImagePlus className="icon" />
+              </button>
+            </div>
+          </div>
+      </div>
+    </main>
+  )
 }

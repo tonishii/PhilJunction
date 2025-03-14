@@ -1,31 +1,13 @@
 import "@/styles/search-styles.css";
 import Post from "@/components/post";
-import postData from "@/mockdata/post-data";
+import TagInput from "@/components/taginput";
 
 import { useState } from "react";
-import { X } from "lucide-react";
+import { IPost } from "@/models/postType";
 
 export default function SearchPage() {
-    const [newTag, setNewTag] = useState("");
     const [tags, setTags] = useState<string[]>([]);
-
-    function handleAddTags() {
-        if (newTag.trim() !== "" && !tags.includes(newTag)) {
-            setTags([...tags, newTag.trim()]);
-        }
-        setNewTag("");
-    }
-
-    function handleKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            handleAddTags();
-        }
-    }
-
-    function handleRemoveTag(index: number) {
-        setTags(tags.filter((_, i) => i !== index));
-    }
+    const [posts, setPosts] = useState<IPost[]>([]);
 
     return (
         <div className="search-container">
@@ -33,21 +15,7 @@ export default function SearchPage() {
                 <label htmlFor="keywords">Keywords: </label>
                 <input type="text" id="keywords" name="keywords" className="field-clicked" />
                 <label htmlFor="tags">Tags: </label>
-                <div className="tags-input">
-                    {tags.map((tag, i) => (
-                        <span key={tag + i} className="tag">
-                            {tag} <button onClick={() => handleRemoveTag(i)}><X size={10}/></button>
-                        </span>
-                    ))}
-                    <input
-                        type="text"
-                        name="tag"
-                        id="tag"
-                        value={newTag}
-                        onChange={(e) => setNewTag(e.target.value)}
-                        onKeyUp={handleKeyUp}
-                    />
-                </div>
+                <TagInput tags={tags} setTags={setTags} />
                 <label htmlFor="sort-by">Sort by: </label>
                 <select name="sort-by" id="sort-by">
                     <option value="recent">Most Recent</option>
@@ -66,8 +34,6 @@ export default function SearchPage() {
 
             <div className="search-posts">
                 <h1 className="result-text">Results: </h1>
-                <Post post={postData}/>
-                <Post post={postData}/>
             </div>
         </div>
     );

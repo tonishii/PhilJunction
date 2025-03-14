@@ -1,4 +1,4 @@
-import { Menu, Search, User, FilePen } from "lucide-react";
+import { Menu, Search, User, BadgePlus } from "lucide-react";
 import { Link } from "react-router";
 import Logo from "@/components/logo";
 
@@ -18,14 +18,15 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header-leftmost">
-        <Link to="/profile/settings">
+        <Link to="user/settings">
           <button className="round-button">
             <Menu className="icon" />
           </button>
         </Link>
-        <Link to="/holler">
-          <button className="round-button">
-            <FilePen className="icon" />
+        <Link to="holler">
+          <button className="create-post-button">
+            <BadgePlus className="icon" />
+            <span>Create a Post</span>
           </button>
         </Link>
       </div>
@@ -38,7 +39,7 @@ export default function Header() {
       </Link>
 
       <div className="search-bar">
-        <Link to="/search"><Search className="search-icon" /></Link>
+        <Link to="search"><Search className="search-icon" /></Link>
         <input
           type="text"
           placeholder="Search"
@@ -48,7 +49,7 @@ export default function Header() {
         />
       </div>
 
-      <Link to="/profile">
+      <Link to="user">
         <button className="round-button">
           <User className="icon" />
         </button>

@@ -1,12 +1,14 @@
 import '@/styles/post-styles.css'
 
-import type { Post } from "@/mockdata/post-data";
 import Comment from '@/components/comment';
 import ImageCarousel from '@/components/imagecarousel';
 import { useNavigate } from "react-router";
 import { ThumbsUp, ThumbsDown, MessageCircle, CornerDownLeft } from "lucide-react";
 import { useState } from "react";
+import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
+import { IPost } from '@/models/postType';
+import { IComment } from '@/models/commentType';
 
 export default function PostWindow({
   post,
@@ -14,7 +16,7 @@ export default function PostWindow({
   initialLikes = 0,
   initialDislikes = 0,
 }: {
-  post: Post;
+  post: IPost;
   initialVote?: "up" | "down" | null;
   initialLikes?: number;
   initialDislikes?: number;
@@ -68,12 +70,12 @@ export default function PostWindow({
 
   function handleAddComment(event: React.KeyboardEvent<HTMLInputElement>): void {
     if (event.key === "Enter" && commentValue.trim() !== "") {
-      const newComment = {
+      const newComment: IComment = {
         username: "JamesPH", // TENTATIVE NO USER LOGIC YET
         replyTo: post.username,
         postDate: new Date(),
-        id: comments.length + 1,
-        content: commentValue,
+        commentID: String(comments.length + 1), // TENTATIVE
+        body: commentValue,
         replies: []
       };
 
@@ -109,9 +111,8 @@ export default function PostWindow({
           ))}
         </div>
 
-        <ImageCarousel images={post.images} maxImages={3} />
-
-        <p>{post.body}</p>
+        {/* <ImageCarousel images={post.images} maxImages={3} /> WARNING THIS IS A BLOB!!!*/}
+        <ReactMarkdown className="post-body" children={post.body} />
       </div>
 
       <div className="post-window-footer">

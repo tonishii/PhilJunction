@@ -22,11 +22,15 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "@/*": ["src/*"],
-      "@server/*": ["./server/src/*"],
-      "@components/*": ["src/components/*"]
+      "@/*": ["*"],
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"],
+      "@profile/*": ["pages/profile/*"],
+      "@mockdata/*": ["mockdata/*"],
+      "@styles/*": ["styles/*"],
+      "@models/*": ["models/*"],
     }
   },
   "forceConsistentCasingInFileNames": true,

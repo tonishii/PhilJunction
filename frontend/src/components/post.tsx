@@ -1,11 +1,12 @@
 import '@/styles/post-styles.css'
 
 import ImageCarousel from './imagecarousel';
-import type { Post } from '@/mockdata/post-data';
 import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
+import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
+import { IPost } from '@/models/postType';
 
 export default function Post({
   post,
@@ -13,7 +14,7 @@ export default function Post({
   initialLikes = 0,
   initialDislikes = 0,
 }: {
-  post: Post;
+  post: IPost;
   initialVote?: "up" | "down" | null;
   initialLikes?: number;
   initialDislikes?: number;
@@ -21,7 +22,7 @@ export default function Post({
   const [vote, setVote] = useState<"up" | "down" | null>(initialVote);
   const [likeCount, setLikeCount] = useState(initialLikes);
   const [dislikeCount, setDislikeCount] = useState(initialDislikes);
-  const [commentCount] = useState(post.comments.length);
+  const [commentCount] = useState(post.comments.length?? 0);
 
   function handleDate(datePosted: Date): string {
     return moment(datePosted).fromNow();
@@ -69,9 +70,9 @@ export default function Post({
         </div>
 
         <div className="post-main">
-          <p>{post.body}</p>
+          <ReactMarkdown className="post-body" children={post.body} />
           <div className="matchWidth">
-            <ImageCarousel images={post.images} maxImages={1} />
+            {/* <ImageCarousel images={post.images} maxImages={1} /> WARNING PLEASE FIX THIS IS BLOB!!!*/}
           </div>
 
         </div>
@@ -88,8 +89,7 @@ export default function Post({
         <div className='post-button'>
           <span className='count'>{likeCount}</span>
           <button
-            className={`round-button ${vote === "up" ? "selected-up" : ""
-              }`}
+            className={`round-button ${vote === "up" ? "selected-up" : ""}`}
             onClick={handleUpvote}
           >
             <ThumbsUp className="icon" />
@@ -98,8 +98,7 @@ export default function Post({
 
         <div className="post-button">
           <button
-            className={`round-button ${vote === "down" ? " selected-down" : ""
-              }`}
+            className={`round-button ${vote === "down" ? " selected-down" : ""}`}
             onClick={handleDownvote}>
             <ThumbsDown className="icon" />
           </button>

@@ -1,10 +1,39 @@
+:root {
+    --bg-color: #eaeaea;
+    --field1: #e7e4e0;
+    --field2: #b1a9a5;
+    --field3: #2c2f33;
+    --field4: #c6c1be;
+    --smallpost-header: #d3d0cc;
+
+    --text1: #090815;
+    --text2: #303030;
+    --comment1: #522719;
+    --search-buttons-color: black;
+}
+
+[data-theme="dark"] {
+    --bg-color: #222526;
+    --field1: #2c2f33;
+    --field2: #4E565A;
+    --field3: #d3d0cc;
+    --field4: #393E41;
+    --smallpost-header: #2c2f33;
+
+    --text1: #F6F7EB;
+    --text2: #cfcfcf;
+    --comment1: #ADD8E6;
+    --search-buttons-color: white;
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    background-color: #222526;
+    background-color: var(--bg-color);
+    /* #222526 dark|light #eaeaea*/
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -38,11 +67,6 @@ a {
     transition: background 0.3s;
 }
 
-.round-button span {
-    color: #F6F7EB;
-    padding: 4px;
-}
-
 .round-button:hover,
 .edit-button:hover {
     background-color: #F6F7EB;
@@ -69,5 +93,13 @@ a {
 }
 
 .black {
+    color: #2c2f33;
+}
+
+.active {
+    background-color: #F6F7EB;
+}
+
+.active .icon {
     color: #2c2f33;
 }

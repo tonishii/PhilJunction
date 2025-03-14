@@ -5,8 +5,15 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "baseUrl": "./src",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["*"],
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"],
+      "@profile/*": ["pages/profile/*"],
+      "@mockdata/*": ["mockdata/*"],
+      "@styles/*": ["styles/*"],
+      "@models/*": ["models/*"],
     }
   }
 }
