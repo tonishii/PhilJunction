@@ -41,7 +41,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/profile" element={<Profile />}>
+        <Route path="user" element={<Profile />}>
           <Route
             index
             element={
@@ -57,13 +57,13 @@ function App() {
           <Route path="comments" element={<UserComments userComments={userCommentData} />} />
           <Route path="settings" element={<Settings />} />
         </Route>
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/auth" element={<AuthLayout />}>
+        <Route path="search" element={<SearchPage />} />
+        <Route path="auth" element={<AuthLayout />}>
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp />} />
         </Route>
-        <Route path="/post" element={<PostWindow post={postData} />} />
-        <Route path="/holler" element={<CreatePost />} />
+        <Route path="post" element={<PostWindow post={postData} />} />
+        <Route path="holler" element={<CreatePost />} />
       </Routes>
     </Router>
   );

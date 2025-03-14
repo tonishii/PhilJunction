@@ -16,7 +16,7 @@ export default function ProfileInfo({
     <div>
       <div className="profile-icon-container">
         <img src={icon} alt="icon" className="profile-icon"/>
-        <NavLink to="/profile/settings">
+        <NavLink to="/user/settings">
           <button className="edit-button">
             <UserRoundPen className="icon"/>
           </button>
