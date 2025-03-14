@@ -1,7 +1,7 @@
 import Toggleswitch from "@/components/toggleswitch"
-import { User } from "@/models/userType";
+import { IUser } from "@/models/userType";
 
-export default function Settings({ user }: { user: User; }) {
+export default function Settings({ user }: { user: IUser; }) {
   return (
     <div className="settings-container">
       <section>

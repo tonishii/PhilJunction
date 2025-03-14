@@ -1,8 +1,8 @@
 import { UserRoundPen } from "lucide-react";
 import { NavLink } from "react-router";
-import { User } from "@/models/userType";
+import { IUser } from "@/models/userType";
 
-export default function ProfileInfo({ user }: { user: User; }) {
+export default function ProfileInfo({ user }: { user: IUser; }) {
   return (
     <div className="profile-info">
       <div className="profile-icon-container">
