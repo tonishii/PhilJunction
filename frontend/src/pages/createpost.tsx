@@ -3,6 +3,7 @@ import { BadgePlus, ImagePlus, X } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import TagInput from "@/components/taginput";
+import { toast } from "react-toastify";
 
 export default function CreatePost() {
   const [title, setTitle] = useState("");
@@ -30,6 +31,31 @@ export default function CreatePost() {
       title, content, images, tags
     });
   }
+
+  const submitPost = async () => {
+    document.getElementById("fileInput")?.click()
+  
+      try {
+        const response = await fetch("http://localhost:3001/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(Object.fromEntries(formData.entries())),
+        });
+  
+        const result = await response.json();
+  
+        if (response.ok) {
+          navigate("/");
+        } else {
+          const errorMessage = JSON.stringify(result, null, 2);
+          toast.error(`${errorMessage || "Server Error"}`);
+        }
+      } catch (error: unknown) {
+        console.log(error);
+      }
+    };
 
   return (
     <main>
@@ -107,7 +133,8 @@ export default function CreatePost() {
             <div className='sidebar-button'>
               <button
                 className={`round-button`}
-                onClick={() => document.getElementById("fileInput")?.click()}>
+                onClick={() => }
+                onSubmit={submitPost}>
                 <ImagePlus className="icon" />
               </button>
             </div>
