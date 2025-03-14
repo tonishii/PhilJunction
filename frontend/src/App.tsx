@@ -53,7 +53,7 @@ root.render(
         </Route>
 
         <Route
-          path="/post"
+          path="/post/:post-id"
           element={
             <PostWindow post={postData}
             />
