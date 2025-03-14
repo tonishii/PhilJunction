@@ -5,6 +5,7 @@ import { IPost } from "@/models/postType";
 
 import { Flame } from "lucide-react";
 import { useState, useEffect } from 'react';
+import { toast } from "react-toastify";
 
 export default function Main() {
   const [posts, setPosts] = useState<IPost[]>([]);
@@ -19,8 +20,9 @@ export default function Main() {
         const data = await resp.json();
         setPosts(data);
       }
-      catch (error: any) {
-        alert(`Server Error`);
+      catch (error: unknown) {
+        toast.error("Something went wrong.");
+        console.log(error);
       }
     }
     getPosts();
