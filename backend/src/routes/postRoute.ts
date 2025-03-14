@@ -4,7 +4,6 @@ import express from 'express';
 import multer from 'multer';
 
 import User from "../models/user";
-import Post from "../models/post";
 import Comment from "../models/comment";
 import Post, { IPost } from "../models/post";
 
