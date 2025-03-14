@@ -23,12 +23,6 @@ export default function Settings({ user }: { user: IUser; }) {
     const email =  (document.getElementById("email") as HTMLInputElement).value;
     const bio = (document.getElementById("bio") as HTMLTextAreaElement).value;
 
-    //const userId = await user.findOne({ username: username });
-    /* const userId = user?._id || user?.id;
-    if (!userId) {
-      alert("User ID is missing");
-      return;
-    } */
     try {
         const response = await fetch(`http://localhost:3001/updateuser`, {
             method: "POST",
@@ -36,6 +30,7 @@ export default function Settings({ user }: { user: IUser; }) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
+              oldusername: user.username,
               username: username,
               email: email,
               bio: bio
