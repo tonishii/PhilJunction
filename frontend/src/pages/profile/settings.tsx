@@ -1,6 +1,19 @@
 import Toggleswitch from "@/components/toggleswitch"
+import { useLocalStorage } from "@/hook/storage";
+import { SyntheticEvent, useEffect } from "react";
 
 export default function Settings() {
+
+  const [theme, setTheme] = useLocalStorage("theme", "light");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
+  const handleThemeToggle = (e: SyntheticEvent<HTMLInputElement>) => {
+    setTheme(e.currentTarget.checked ? "dark" : "light");
+  }
+
   return (
     <div className="settings-container">
       <section>
@@ -17,7 +30,7 @@ export default function Settings() {
       <h2>Web Interface</h2>
       <section>
         <label htmlFor="theme">Enable dark theme</label>
-        <Toggleswitch name="theme" />
+        <Toggleswitch name="theme" onClick={handleThemeToggle} defaultChecked={theme === "dark"} />
 
         <label htmlFor="font-style">Customize font-style</label>
         <select name="font-style" id="font-style">
