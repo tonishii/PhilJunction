@@ -4,6 +4,7 @@ import { ChangeEvent, useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import TagInput from "@/components/taginput";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 export default function CreatePost() {
   const [title, setTitle] = useState("");
@@ -32,16 +33,24 @@ export default function CreatePost() {
     });
   }
 
+  const navigate = useNavigate();
+  
   const submitPost = async () => {
     document.getElementById("fileInput")?.click()
-  
+
+
+    let postTitle = document.getElementById("title")?.textContent;
+    let postContent = document.getElementById("editor")?.textContent;
+    
+    let images2 = document.getElementById("crete-post-image")?.getElementsByTagName("img")
+
       try {
-        const response = await fetch("http://localhost:3001/login", {
+        const response = await fetch("http://localhost:3001/submitpost", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(Object.fromEntries(formData.entries())),
+          body: JSON.stringify({postTitle, postContent, images, tags}),
         });
   
         const result = await response.json();
@@ -133,8 +142,7 @@ export default function CreatePost() {
             <div className='sidebar-button'>
               <button
                 className={`round-button`}
-                onClick={() => }
-                onSubmit={submitPost}>
+                onClick={submitPost}>
                 <ImagePlus className="icon" />
               </button>
             </div>

@@ -19,7 +19,7 @@ const postSchema = new mongoose.Schema({
   postDate: { type: Date, default: Date.now },
   body: { type: String, required: true },
   images: [{ data: Buffer, contentType: String }],
-  tags: [{ type: String }],
+  tags: [{ type: String, required: true }],
   likes: { type: Number, default: 0 },
   dislikes: { type: Number, default: 0 },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],

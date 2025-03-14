@@ -4,6 +4,7 @@ import cors from "cors";
 import { corsOptions } from "./corsOptions";
 import mongoose, { connect, disconnect, model, MongooseOptions, Schema } from "mongoose";
 const User = require('./models/user');
+const Post = require('./models/post')
 
 dotenv.config();
 
@@ -73,6 +74,29 @@ app.post("/login", async (req: Request, res: Response): Promise<any> => {
     return res.status(500).json({ message: "Internal server error.", error: error.message });
   }
 });
+
+app.post("/submitpost", async (req: Request, res: Response): Promise<any> => {
+  const {postTitle, postContent, images, tags} = req.body;
+
+  if (!postTitle || !postContent || !tags)
+    return res.status(400).json({ message: req.body });
+  
+  try {
+    const user = await User.findOne({}).exec();
+    if(user)
+    {
+      Post.create({...req.body, "userId" : user._id})
+      return res.status(201).json({ message: 'Post created successfully'});
+    }
+    else
+      return res.status(400).json({ message: "wip"});
+  }
+  catch (error: any) {
+    console.error("Error during registration:", error);
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error.", error: error.message });
+  }
+}); 
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
