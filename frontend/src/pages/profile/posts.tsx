@@ -19,19 +19,13 @@ export default function UserPosts({ user }: { user: IUser; }) {
         })
     }, [user]);
 
-  if (posts.length > 0) {
-    return (
-      <div className="user-posts-container">
-        {posts.map((post) =>
-          <SmallPost post={post}/>
-        )}
-      </div>
-    )
-  } else {
-    return (
-      <div className="user-posts-container">
+  return (
+    <div className="user-posts-container">
+      {(posts.length > 0) ? posts.map((post) =>
+        <SmallPost post={post}/>
+      ) : (
         <p className="error">No posts found!</p>
-      </div>
-    )
-  }
+      )}
+    </div>
+  );
 }

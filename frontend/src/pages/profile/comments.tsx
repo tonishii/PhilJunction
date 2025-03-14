@@ -18,19 +18,11 @@ export default function UserComments({ user }: { user: IUser; }) {
       })
   }, [user]);
 
-  if (comments.length > 0) {
-    return (
-      <div className="user-comments-container">
-        {comments.map((comment) =>
-          <Comment comment={comment} />
-        )}
-      </div>
-    )
-  } else {
-    return (
-      <div className="user-comments-container">
-        <p className="error">No comments found!</p>
-      </div>
-    )
-  }
+  return (
+    <div className="user-comments-container">
+      {(comments.length > 0) ? (comments.map((comment) =>
+        <Comment comment={comment} />
+      )) : <p className="error">No comments found!</p> }
+    </div>
+  )
 }

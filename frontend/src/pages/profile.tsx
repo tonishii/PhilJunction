@@ -26,43 +26,37 @@ export default function Profile() {
       })
   }, [username]);
 
-  if (user) {
-    return (
-      <div className="profile-page">
-        <div className="profile-container">
-          <div className="profile-body">
+  return (
+    <div className="profile-page">
+      <div className="profile-container">
+        <div className="profile-body">
+          { user ? (
             <Routes>
               <Route index element={<ProfileInfo user={user}/>} />
               <Route path="posts" element={<UserPosts user={user}/>} />
               <Route path="comments" element={<UserComments user={user} />} />
               <Route path="settings" element={<Settings user={user} />} />
             </Routes>
-          </div>
-          <div className="profile-sidebar">
-            <NavLink to={`/user/${username}`} end className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
-              <span>Profile</span>
-            </NavLink>
-            <NavLink to={`/user/${username}/posts`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
-              <span>Posts</span>
-            </NavLink>
-            <NavLink to={`/user/${username}/comments`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
-              <span>Comments</span>
-            </NavLink>
-            <NavLink to={`/user/${username}/settings`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
-              <span>Settings</span>
-            </NavLink>
-            <Link to="/login" className="sidebar-button">
-              <span>Sign Out</span>
-            </Link>
-          </div>
+          ) : <p className="error">Loading...</p> }
+        </div>
+        <div className="profile-sidebar">
+          <NavLink to={`/user/${username}`} end className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
+            <span>Profile</span>
+          </NavLink>
+          <NavLink to={`/user/${username}/posts`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
+            <span>Posts</span>
+          </NavLink>
+          <NavLink to={`/user/${username}/comments`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
+            <span>Comments</span>
+          </NavLink>
+          <NavLink to={`/user/${username}/settings`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
+            <span>Settings</span>
+          </NavLink>
+          <Link to="/login" className="sidebar-button">
+            <span>Sign Out</span>
+          </Link>
         </div>
       </div>
-    );
-  } else {
-    return (
-      <div className="profile-container">
-        <p>Loading profile...</p>
-      </div>
-    );
-  }
+    </div>
+  );
 }
