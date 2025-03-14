@@ -25,8 +25,7 @@ export default function Login() {
       if (response.ok) {
         navigate("/");
       } else {
-        const errorMessage = JSON.stringify(result, null, 2);
-        toast.error(`${errorMessage || "Server Error"}`);
+        toast.error("An error has occured.");
       }
     } catch (error: unknown) {
       toast.error(String(error));
@@ -35,11 +34,15 @@ export default function Login() {
 
   return (
     <form className="login-contents" onSubmit={login}>
-      <label htmlFor="uname">Username: </label>
-      <input type="text" id="uname" name="username" />
-      <label htmlFor="pwrd">Password: </label>
-      <input type="password" id="pwrd" name="password" />
-      <button className="round-button" type="submit">
+      <div>
+        <label htmlFor="uname">Username: </label>
+        <input type="text" id="uname" name="username" />
+      </div>
+      <div>
+        <label htmlFor="pwrd">Password: </label>
+        <input type="password" id="pwrd" name="password" />
+      </div>
+      <button className="round-button authsubmit-button" type="submit">
         Log In
       </button>
     </form>

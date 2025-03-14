@@ -52,7 +52,7 @@ export default function Profile() {
           <NavLink to={`/user/${username}/settings`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
             <span>Settings</span>
           </NavLink>
-          <Link to="/login" className="sidebar-button">
+          <Link to="/auth/login" className="sidebar-button">
             <span>Sign Out</span>
           </Link>
         </div>
