@@ -6,6 +6,7 @@ import multer from 'multer';
 import User from "../models/user";
 import Post from "../models/post";
 import Comment from "../models/comment";
+import Post, { IPost } from "../models/post";
 
 const router = express.Router();
 const storage = multer.memoryStorage();  // Store the files in memory (Buffer)
@@ -150,6 +151,31 @@ router.post("/submitcomment", async (req, res): Promise<any> => {
   } catch (err: any) {
     console.log(err);
     return res.status(500).json({ message: "Internal server error.", error: err.message });
+  }
+}
+)
+
+router.post("/searchposts", async (req, res) => {
+  const { keywords, tags, filterBy } = req.body;
+  const parsed = JSON.parse(tags)
+  console.log(Date.now() - filterBy)
+  try {
+    let data: IPost[] = [];
+    const regex = new RegExp(keywords, 'i')
+    if (keywords && parsed.length > 0) {
+      data = await Post.find({ $or: [{ title: { $regex: regex } }, { description: { $regex: regex } }], tags: JSON.parse(tags), postDate: { $gt: new Date((new Date).getDate() - filterBy) } }).exec();
+    }
+    else if (keywords) {
+      data = await Post.find({ $or: [{ title: { $regex: regex } }, { description: { $regex: regex } }], postDate: { $gt: new Date((new Date).getDate() - filterBy) } }).sort({ postDate: -1 }).exec();
+    }
+    else if (parsed.length > 0) {
+      data = await Post.find({ tags: JSON.parse(tags), postDate: { $gt: new Date((new Date).getDate() - filterBy) } }).exec();
+    }
+    console.log(data);
+    res.json(data);
+  }
+  catch (error: any) {
+    res.status(500).json({ message: "Internal server error.", error: error.message });
   }
 });
 
