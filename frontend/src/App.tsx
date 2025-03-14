@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router";
 import { ToastContainer } from "react-toastify";
 
 // Components
@@ -17,6 +17,7 @@ import SignUp from "@pages/signup";
 
 // Profile Pages
 import Profile from "@pages/profile";
+import RandoUser from "./pages/randouser";
 
 function App() {
   // USE FOR TESTING
@@ -36,6 +37,7 @@ function App() {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="user" element={<RandoUser />} />
         <Route path="user/:username/*" element={<Profile />} />
         <Route path="search" element={<SearchPage />} />
 
