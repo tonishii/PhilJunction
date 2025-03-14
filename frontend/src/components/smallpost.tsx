@@ -2,7 +2,8 @@ import '@/styles/post-styles.css'
 
 import { Link } from "react-router";
 import type { Post } from '@/mockdata/post-data';
-;
+import ReactMarkdown from 'react-markdown';
+
 export default function SmallPost({
   post,
 }: {
@@ -25,7 +26,7 @@ export default function SmallPost({
         </div>
 
         <div className="smallpost-body">
-          <p>{post.body}</p>
+          <ReactMarkdown className="post-body" children={post.body} />
         </div>
       </Link>
     </div>

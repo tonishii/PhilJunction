@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: min(1000px, 100vw);
+    width: min(1500px, 100vw);
     height: 70vh;
 }
 
@@ -46,7 +46,6 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-
 .create-post-main {
     background-color: #F6F7EB;
     flex-grow: 1;
@@ -56,6 +55,8 @@
 
 .create-post-main textarea {
     outline: none;
+    font-size: 1em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #editor {
@@ -78,10 +79,6 @@
     background-color: #F6F7EB;
 }
 
-.zback {
-    z-index: -10;
-}
-
 .create-post-footer {
     border-radius: 0px 0px 0px 10px;
     background-color: #E53E24;
@@ -89,61 +86,4 @@
     padding: 10px;
     gap: 1em;
     align-items: center;
-}
-
-.create-post-footer input[type="text"] {
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    padding: 0.5em;
-}
-
-.new-tag-section {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-top: 0.5em;
-}
-
-#addTags {
-    color: white;
-    cursor: pointer;
-}
-
-#addTags:hover {
-    opacity: 0.8;
-}
-
-.tags-section {}
-
-.wrap-tag {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.create-tag {
-    color: #cfcfcf;
-    display: inline-block;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 15px;
-    border-radius: 25px;
-    margin: 0.5em;
-    background-color: #CA2E16;
-    text-align: center;
-    white-space: nowrap;
-}
-
-.remove-tag {
-    width: 1em;
-}
-
-.remove-tag:hover {
-    opacity: 0.8;
-    cursor: pointer;
-}
-
-.content-container>* {
-    margin: 0;
 }

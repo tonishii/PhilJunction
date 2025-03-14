@@ -6,6 +6,7 @@ import ImageCarousel from '@/components/imagecarousel';
 import { useNavigate } from "react-router";
 import { ThumbsUp, ThumbsDown, MessageCircle, CornerDownLeft } from "lucide-react";
 import { useState } from "react";
+import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
 
 export default function PostWindow({
@@ -110,8 +111,7 @@ export default function PostWindow({
         </div>
 
         <ImageCarousel images={post.images} maxImages={3} />
-
-        <p>{post.body}</p>
+        <ReactMarkdown className="post-body" children={post.body} />
       </div>
 
       <div className="post-window-footer">

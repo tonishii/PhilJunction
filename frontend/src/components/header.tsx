@@ -1,4 +1,4 @@
-import { Menu, Search, User, FilePen } from "lucide-react";
+import { Menu, Search, User, BadgePlus } from "lucide-react";
 import { Link } from "react-router";
 import Logo from "@/components/logo";
 
@@ -24,8 +24,9 @@ export default function Header() {
           </button>
         </Link>
         <Link to="/holler">
-          <button className="round-button">
-            <FilePen className="icon" />
+          <button className="create-post-button">
+            <BadgePlus className="icon" />
+            <span>Create a Post</span>
           </button>
         </Link>
       </div>
