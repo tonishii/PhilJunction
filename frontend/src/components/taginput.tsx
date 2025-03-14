@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 
 export default function TagInput({
     tags,
-    setTags,
+    setTags
 }: {
     tags: string[];
     setTags: React.Dispatch<React.SetStateAction<string[]>>;
@@ -38,7 +38,10 @@ export default function TagInput({
                 id="tag"
                 value={newTag}
                 placeholder="Add a tag..."
-                onChange={(e) => setNewTag(e.target.value)}
+                onChange={(e) => {
+                    e.preventDefault();
+                    setNewTag(e.target.value);
+                }}
                 onKeyUp={handleKeyUp}
             />
         </div>
