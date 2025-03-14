@@ -1,32 +1,41 @@
-import '@/styles/post-styles.css'
+import "@/styles/post-styles.css";
 
-import Comment from '@/components/comment';
-import ImageCarousel from '@/components/imagecarousel';
-import { useNavigate } from "react-router";
-import { ThumbsUp, ThumbsDown, MessageCircle, CornerDownLeft } from "lucide-react";
-import { useState } from "react";
-import ReactMarkdown from 'react-markdown';
-import moment from 'moment';
-import { IPost } from '@/models/postType';
-import { IComment } from '@/models/commentType';
+import Comment from "@/components/comment";
+import ImageCarousel from "@/components/imagecarousel";
+import { useNavigate, useParams } from "react-router";
+import {
+  ThumbsUp,
+  ThumbsDown,
+  MessageCircle,
+  CornerDownLeft,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import moment from "moment";
+import { IPost } from "@/models/postType";
+import { IComment } from "@/models/commentType";
 
-export default function PostWindow({
-  post,
-  initialVote = null,
-  initialLikes = 0,
-  initialDislikes = 0,
-}: {
-  post: IPost;
-  initialVote?: "up" | "down" | null;
-  initialLikes?: number;
-  initialDislikes?: number;
-}) {
+export default function PostWindow() {
+  const { postId } = useParams();
+  const [postData, setPostData] = useState<IPost | null>(null);
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(`http://localhost:3001/retrievepost/${postId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setPostData(data);
+      } else {
+        console.log(response);
+      }
+    }
+    fetchData();
+  }, [postId]);
 
-  const [vote, setVote] = useState<"up" | "down" | null>(initialVote);
-  const [likeCount, setLikeCount] = useState(initialLikes);
-  const [dislikeCount, setDislikeCount] = useState(initialDislikes);
-  const [comments, setComments] = useState(post.comments);
-  const [commentCount] = useState(post.comments.length);
+  const [vote, setVote] = useState<"up" | "down" | null>("up");
+  const [likeCount, setLikeCount] = useState(0);
+  const [dislikeCount, setDislikeCount] = useState(0);
+  // const [comments, setComments] = useState({});
+  const [commentCount] = useState(0);
   const [commentValue, setCommentValue] = useState("");
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,8 +44,7 @@ export default function PostWindow({
 
   const navigate = useNavigate();
 
-  function handleDate(datePosted: Date): string {
-
+  function handleDate(datePosted: Date = new Date()): string {
     return moment(datePosted).fromNow();
   }
 
@@ -67,44 +75,45 @@ export default function PostWindow({
       }
     }
   }
-
-  function handleAddComment(event: React.KeyboardEvent<HTMLInputElement>): void {
-    if (event.key === "Enter" && commentValue.trim() !== "") {
-      const newComment: IComment = {
-        username: "JamesPH", // TENTATIVE NO USER LOGIC YET
-        replyTo: post.username,
-        postDate: new Date(),
-        commentID: String(comments.length + 1), // TENTATIVE
-        body: commentValue,
-        replies: []
-      };
-
-      setComments([...comments, newComment]);
-      setCommentValue("");
+  /*
+    function handleAddComment(
+      event: React.KeyboardEvent<HTMLInputElement>
+    ): void {
+      if (event.key === "Enter" && commentValue.trim() !== "") {
+        const newComment: IComment = {
+          username: "JamesPH", // TENTATIVE NO USER LOGIC YET
+          replyTo: post.username,
+          postDate: new Date(),
+          commentID: String(comments.length + 1), // TENTATIVE
+          body: commentValue,
+          replies: [],
+        };
+  
+        setComments([...comments, newComment]);
+        setCommentValue("");
+      }
     }
-  }
-
+    */
   return (
     <div className="post-window-container">
       <div className="post-window-header">
         <div className="post-window-header-info">
-          <h1>{post.title} &sdot; {" "}
-            <span className="gray">{handleDate(post.postDate)}</span>
+          <h1>
+            {postData?.title} &sdot;{" "}
+            <span className="gray">{handleDate(postData?.postDate)}</span>
           </h1>
 
-          <button
-            className="round-button"
-            onClick={() => navigate(-1)}>
+          <button className="round-button" onClick={() => navigate(-1)}>
             <CornerDownLeft className="icon black" />
           </button>
         </div>
 
-        <p className="gray">Posted by {post.username}</p>
+        <p className="gray">Posted by {postData?.username}</p>
       </div>
 
       <div className="post-window-main">
         <div className="tag-list">
-          {post.tags.map((tag, i) => (
+          {postData?.tags.map((tag, i) => (
             <span key={tag + i} className="tag">
               {tag}
             </span>
@@ -112,15 +121,14 @@ export default function PostWindow({
         </div>
 
         {/* <ImageCarousel images={post.images} maxImages={3} /> WARNING THIS IS A BLOB!!!*/}
-        <ReactMarkdown className="post-body" children={post.body} />
+        <ReactMarkdown className="post-body" children={postData?.body} />
       </div>
 
       <div className="post-window-footer">
         <div className="post-button">
-          <span className='count'>{likeCount}</span>
+          <span className="count">{likeCount}</span>
           <button
-            className={`round-button ${vote === "up" ? "selected-up" : ""
-              }`}
+            className={`round-button ${vote === "up" ? "selected-up" : ""}`}
             onClick={handleUpvote}
           >
             <ThumbsUp className="icon" />
@@ -131,17 +139,18 @@ export default function PostWindow({
           <button
             className={`round-button ${vote === "down" ? " selected-down" : ""
               }`}
-            onClick={handleDownvote}>
+            onClick={handleDownvote}
+          >
             <ThumbsDown className="icon" />
           </button>
-          <span className='count'>{dislikeCount}</span>
+          <span className="count">{dislikeCount}</span>
         </div>
 
         <div className="post-button">
           <button className="round-button">
             <MessageCircle className="icon" />
           </button>
-          <span className='count'>{commentCount}</span>
+          <span className="count">{commentCount}</span>
         </div>
 
         <input
@@ -150,14 +159,15 @@ export default function PostWindow({
           id="comment-input"
           className="comment-input"
           onChange={handleCommentChange}
-          onKeyDown={handleAddComment}
           value={commentValue}
         />
       </div>
 
       <div className="post-window-comments">
         <h1>Comments</h1>
-        {comments.map(comment => <Comment comment={comment} isReplyable={true} />)}
+        {postData?.comments.map((comment, i) => (
+          <Comment comment={comment} isReplyable={true} key={i} />
+        ))}
       </div>
     </div>
   );
