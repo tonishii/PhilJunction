@@ -41,7 +41,7 @@ function App() {
           <Route path="signup" element={<SignUp />} />
         </Route>
 
-        <Route path="/post/:post-id" element={<PostWindow post={postData} />} />
+        <Route path="/post/:post-id" element={<PostWindow />} />
 
         <Route path="/holler" element={<CreatePost />} />
       </Routes>
