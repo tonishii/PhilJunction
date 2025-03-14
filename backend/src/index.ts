@@ -124,6 +124,17 @@ app.post("/submitpost", upload.array('images'), async (req: Request, res: Respon
   }
 });
 
+app.get("/retrieveposts", async (req, res) => {
+  try {
+    const data = await Post.find({}).limit(10).exec();
+    console.log(data);
+    res.json(data)
+  }
+  catch (error: any) {
+    res.status(500).json({ message: "Internal server error.", error: error.message });
+  }
+});
+
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });

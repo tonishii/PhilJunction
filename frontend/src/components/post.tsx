@@ -22,7 +22,7 @@ export default function Post({
   const [vote, setVote] = useState<"up" | "down" | null>(initialVote);
   const [likeCount, setLikeCount] = useState(initialLikes);
   const [dislikeCount, setDislikeCount] = useState(initialDislikes);
-  const [commentCount] = useState(post.comments.length);
+  const [commentCount] = useState(post.comments.length?? 0);
 
   function handleDate(datePosted: Date): string {
     return moment(datePosted).fromNow();
