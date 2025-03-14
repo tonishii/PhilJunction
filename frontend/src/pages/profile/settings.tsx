@@ -15,17 +15,62 @@ export default function Settings({ user }: { user: IUser; }) {
     setTheme(e.currentTarget.checked ? "dark" : "light");
   }
 
+  /* For User functionality update: username, email, and bio*/
+  async function updateUser(updatedData: { username: string, email: string, bio: string}) {
+    try {
+        const response = await fetch(`http://localhost:3001/user/${updatedData.username}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedData),
+        });
+
+        if (!response.ok) throw new Error("Failed to update user");
+
+        const data = await response.json();
+        console.log("User updated:", data);
+        alert("User details updated successfully!");
+    } catch (error) {
+        console.error("Error updating user:", error);
+    }
+  }
+
+  const handleSubmit = async () => {
+    const username = (document.getElementById("username") as HTMLInputElement).value;
+    const email =  (document.getElementById("email") as HTMLInputElement).value;
+    const bio = (document.getElementById("bio") as HTMLTextAreaElement).value;
+
+    //const userId = await user.findOne({ username: username });
+    /* const userId = user?._id || user?.id;
+    if (!userId) {
+      alert("User ID is missing");
+      return;
+    } */
+    await updateUser({username, email, bio});
+  }
+
+  /* Example usage:
+  updateUser("650abc123def456ghi789jkl", {
+    username: "newUsername",
+    email: "newemail@example.com",
+    bio: "This is my updated bio."
+  }); */
+
   return (
     <div className="settings-container">
       <section>
         <label htmlFor="username">Username</label>
-        <input type="text" id="username" name="username"></input>
+        <input type="text" id="username" name="username" defaultValue={user?.username}></input>
 
         <label htmlFor="email">Email</label>
-        <input type="text" id="email" name="email"></input>
+        <input type="text" id="email" name="email" defaultValue={user?.email}></input>
 
         <label htmlFor="bio">Bio</label>
-        <textarea name="bio" id="bio"></textarea>
+        <textarea name="bio" id="bio" defaultValue={user?.description}></textarea>
+
+        <label htmlFor="update"></label>
+        <button type="button" id="update" name="update" onClick={handleSubmit}>Update user</button>
       </section>
 
       <h2>Web Interface</h2>

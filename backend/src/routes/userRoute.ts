@@ -61,4 +61,26 @@ router.get('/user/:username/comments', async (req: Request, res: Response): Prom
     }
 });
 
+/* Allow users to update their username, email, and bio, you need to add an update user route. */
+router.put("/user/:id", async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { username, email, bio } = req.body; // Extract fields from request body
+        const userId = req.params.id; // Get user ID from request params
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { username, email, bio }, // Update fields
+            { new: true, runValidators: true } // Return updated user & apply validation
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        return res.status(200).json({ message: "User updated successfully", user: updatedUser });
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err });
+    }
+});
+
 export default router;
