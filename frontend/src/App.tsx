@@ -1,25 +1,32 @@
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 import { ToastContainer } from "react-toastify";
 
-import Header from "@/components/header";
-import Main from "@/pages/main";
-import PostWindow from "@/pages/postwindow";
-import Profile from "@/pages/profile/layout";
-import ProfileInfo from "@/pages/profile/info";
-import UserPosts from "@/pages/profile/posts";
-import UserComments from "@/pages/profile/comments";
-import Settings from "@/pages/profile/settings";
-import Login from "@/pages/login";
-import SignUp from "@/pages/signup";
-import AuthLayout from "@/pages/authlayout";
-import SearchPage from "@/pages/searchpage";
-import CreatePost from "@/pages/createpost";
+// Components
+import Header from "@components/header";
 
-import userCommentData from "@/mockdata/user-comments-data";
-import profileData from "@/mockdata/profile-data";
-import postData from "@/mockdata/post-data";
-import React from "react";
+// Pages
+import AuthLayout from "@pages/authlayout";
+import CreatePost from "@pages/createpost";
+import Login from "@pages/login";
+import Main from "@pages/main";
+import PostWindow from "@pages/postwindow";
+import SearchPage from "@pages/searchpage";
+import SignUp from "@pages/signup";
+
+// Profile Pages
+import Profile from "@profile/layout";
+import ProfileInfo from "@profile/info";
+import Settings from "@profile/settings";
+import UserComments from "@profile/comments";
+import UserPosts from "@profile/posts";
+
+// Mock Data
+import postData from "@mockdata/post-data";
+import profileData from "@mockdata/profile-data";
+import userCommentData from "@mockdata/user-comments-data";
+
 
 function App() {
   // USE FOR TESTING
