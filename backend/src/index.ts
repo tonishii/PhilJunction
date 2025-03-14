@@ -2,7 +2,6 @@ import express, { Express, Request, response, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import multer from 'multer';
-import { corsOptions } from "./corsOptions";
 import mongoose, { connect, disconnect, model, MongooseOptions, Schema } from "mongoose";
 const User = require('./models/user');
 import Post from './models/post'; // Assuming post model is default export
@@ -44,15 +43,15 @@ app.post("/register", async (req: Request, res: Response): Promise<any> => {
 
   if (!username || !email || !password || !confirmPW)
     return res.status(400).json({ message: req.body });
-  
+
   if(password !== confirmPW)
     return res.status(400).json({message: 'Passwords do not match.'});
-  
+
   try {
     const user = await User.findOne({ username, email, password }).exec();
     if(user)
       return res.status(400).json({message: 'Account already exists.'});
-  
+
     await User.create({...req.body})
     return res.status(201).json({ message: 'User registered successfully'});
   }
@@ -61,7 +60,7 @@ app.post("/register", async (req: Request, res: Response): Promise<any> => {
     console.log(error);
     return res.status(500).json({ message: "Internal server error." + Post, error: error.message });
   }
-}); 
+});
 
 app.post("/login", async (req: Request, res: Response): Promise<any> => {
   const { username, password } = req.body;
@@ -92,11 +91,11 @@ app.post("/submitpost", upload.array('images'), async (req: Request, res: Respon
   const files = req.files as Express.Multer.File[] || [];
 
   // Prepare the images to be saved in the database (allowing no images)
-  const images = files.length > 0 
+  const images = files.length > 0
     ? files.map((file: Express.Multer.File) => ({
         data: file.buffer,    // file.buffer contains the file content
         contentType: file.mimetype,  // MIME type of the file
-      })) 
+      }))
     : [];  // If no files, assign an empty array
 
 

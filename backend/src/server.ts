@@ -3,8 +3,10 @@ import dotenv from "dotenv";
 
 import cors from "./config/corsOptions";
 import { connectDB, gracefulShutdown } from "./config/db";
-import userRoute from "./routes/userRoute";
 
+import authRoute from "./routes/authRoute";
+import postRoute from "./routes/postRoute";
+import userRoute from "./routes/userRoute";
 dotenv.config();
 
 const app: Express = express();
@@ -23,6 +25,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // <INSERT ROUTES HERE>
+app.use(authRoute);
+app.use(postRoute);
 app.use(userRoute);
 
 app.listen(PORT, () => {
