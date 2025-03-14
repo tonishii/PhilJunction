@@ -21,16 +21,16 @@ export default function Main() {
       <div className="left-container">
       </div>
       <div className="general-container">
-        {[...Array(20)].map(() =>
-          <Post key={Math.random() * data.length} post={data[
+        {[...Array(20)].map((i) =>
+          <Post key={data.length * i} post={data[
             Math.floor(Math.random() * data.length)]} />
         )}
       </div>
 
       <div className="popular-posts-list">
         <span className="popular-posts-header">Trending Posts <Flame className="icon" /></span>
-        {[...Array(5)].map(() =>
-          <SmallPost post={data[
+        {[...Array(5)].map((i) =>
+          <SmallPost key={data.length * i} post={data[
             Math.floor(Math.random() * data.length)]} />
         )}
       </div>
