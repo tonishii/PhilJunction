@@ -16,25 +16,7 @@ export default function Settings({ user }: { user: IUser; }) {
   }
 
   /* For User functionality update: username, email, and bio*/
-  async function updateUser(updatedData: { username: string, email: string, bio: string}) {
-    try {
-        const response = await fetch(`http://localhost:3001/user/${updatedData.username}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(updatedData),
-        });
 
-        if (!response.ok) throw new Error("Failed to update user");
-
-        const data = await response.json();
-        console.log("User updated:", data);
-        alert("User details updated successfully!");
-    } catch (error) {
-        console.error("Error updating user:", error);
-    }
-  }
 
   const handleSubmit = async () => {
     const username = (document.getElementById("username") as HTMLInputElement).value;
@@ -47,7 +29,27 @@ export default function Settings({ user }: { user: IUser; }) {
       alert("User ID is missing");
       return;
     } */
-    await updateUser({username, email, bio});
+    try {
+        const response = await fetch(`http://localhost:3001/updateuser`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: username,
+              email: email,
+              bio: bio
+            }),
+        });
+
+        if (!response.ok) throw new Error("Failed to update user");
+
+        const data = await response.json();
+        console.log("User updated:", data);
+        alert("User details updated successfully!");
+    } catch (error) {
+        console.error("Error updating user:", error);
+      }
   }
 
   /* Example usage:

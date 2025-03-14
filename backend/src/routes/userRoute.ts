@@ -62,14 +62,13 @@ router.get('/user/:username/comments', async (req: Request, res: Response): Prom
 });
 
 /* Allow users to update their username, email, and bio, you need to add an update user route. */
-router.put("/user/:id", async (req: Request, res: Response): Promise<any> => {
+router.post("/updateuser", async (req: Request, res: Response): Promise<any> => {
     try {
         const { username, email, bio } = req.body; // Extract fields from request body
-        const userId = req.params.id; // Get user ID from request params
 
-        const updatedUser = await User.findByIdAndUpdate(
-            userId,
-            { username, email, bio }, // Update fields
+        const result = await User.findOneAndUpdate(
+            { username: username},
+            { $set: {username: username, email: email, bio: bio} }, // Update fields
             { new: true, runValidators: true } // Return updated user & apply validation
         );
 
