@@ -42,6 +42,7 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
     // Create the new post and save it to the database
     const newPost = new Post({
       userId: user._id,  // Assuming user is logged in and their ID is available
+      username: user.username,
       title: postTitle,
       body: postContent,
       images,
@@ -58,7 +59,12 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
 router.get("/retrieveposts", async (req, res) => {
   try {
     const data = await Post.find({}).limit(10).exec();
-    res.json(data)
+    // const user = data.forEach(async (post) => {
+    //   return await User.findOne({ _id: post.userId });
+    // });
+
+    // res.json({ data: data, user: user });
+    res.json(data);
   }
   catch (error: any) {
     res.status(500).json({ message: "Internal server error.", error: error.message });

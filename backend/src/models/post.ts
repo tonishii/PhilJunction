@@ -10,10 +10,10 @@ export interface IPost extends mongoose.Document {
   likes?: number;
   dislikes?: number;
   comments?: mongoose.Types.ObjectId[];
-} 
+}
 
 const postSchema = new mongoose.Schema({
-  // username: { type: String, required: true },
+  username: { type: String, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   title: { type: String, required: true },
   postDate: { type: Date, default: Date.now },

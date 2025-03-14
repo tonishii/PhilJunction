@@ -31,12 +31,10 @@ export default function SignUp() {
       });
 
       const result = await response.json();
-
       if (response.ok) {
         navigate("/");
       } else {
-        const errorMessage = JSON.stringify(result, null, 2);
-        toast.error(`${errorMessage || "Server Error"}`);
+        toast.error("An error has occured.");
       }
     } catch (error: unknown) {
       console.log(error);
@@ -45,16 +43,24 @@ export default function SignUp() {
 
   return (
     <form className="signup-contents" onSubmit={register}>
-      <label htmlFor="uname">New Username: </label>
-      <input type="text" id="uname" name="username" />
-      <label htmlFor="eml">Email Address: </label>
-      <input type="text" id="eml" name="email" />
-      <label htmlFor="pwrd">Password: </label>
-      <input type="password" id="pwrd" name="password" />
-      <label htmlFor="cfrmpwrd">Confirm Password: </label>
-      <input type="password" id="cfrmpwrd" name="confirmPW" />
+      <div>
+        <label htmlFor="uname">New Username: </label>
+        <input type="text" id="uname" name="username" />
+      </div>
+      <div>
+        <label htmlFor="eml">Email Address: </label>
+        <input type="text" id="eml" name="email" />
+      </div>
+      <div>
+        <label htmlFor="pwrd">Password: </label>
+        <input type="password" id="pwrd" name="password" />
+      </div>
+      <div>
+        <label htmlFor="cfrmpwrd">Confirm Password: </label>
+        <input type="password" id="cfrmpwrd" name="confirmPW" />
+      </div>
 
-      <button className="round-button" type="submit">
+      <button className="round-button authsubmit-button" type="submit">
         Sign Up
       </button>
     </form>
