@@ -118,7 +118,7 @@ export default function PostWindow() {
           setMemoizedComments(a => new Map([...a, [resJson._id, resJson.comment]]));
         } else {
           const errorData = await res.json();
-          toast.error(errorData.message || "Server Error");
+          toast.error("Server error:", errorData.message);
         }
       } catch (e: unknown) {
         toast.error("An error occurred while submitting the comment.");
@@ -127,13 +127,32 @@ export default function PostWindow() {
     }
   }
 
-  useEffect(() => {
-    if (!isFirstLoad && newCommentRef.current) {
-      newCommentRef.current.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      setIsFirstLoad(false);
-    }
-  }, [isFirstLoad]);
+  // const handleAddReply = (newReply: IComment, commentID: string) => {
+  //   newReply.commentID = commentID;
+  //   setComments((prevComments) =>
+  //     prevComments.map((comment) =>
+  //       comment.commentID === newReply.replyTo
+  //         ? { ...comment, replies: [...comment.replies, newReply] }
+  //         : comment
+  //     )
+  //   );
+  // };
+
+  // const handleDeleteComment = (commentID: string) => {
+  //   setComments((prevComments) =>
+  //     prevComments.filter((comment) => comment.commentID !== commentID)
+  //   );
+  // };
+
+  // const handleEditComment = (commentID: string, updatedBody: string) => {
+  //   setComments((prevComments) =>
+  //     prevComments.map((comment) =>
+  //       comment.commentID === commentID
+  //         ? { ...comment, body: updatedBody }
+  //         : comment
+  //     )
+  //   );
+  // };
 
   return (
     <div className="post-window-container">
@@ -210,7 +229,15 @@ export default function PostWindow() {
         {commentTree.length > 0 ? commentTree.map(comment => <Comment comment={comment} isReplyable={true} />) : "Loading..."}
 
         <div ref={newCommentRef} />
-      </div>
-    </div>
+        {/* {comments.map((comment) =>
+          <Comment
+            comment={comment}
+            isReplyable={true}
+            onAddReply={handleAddReply}
+            onDeleteComment={handleDeleteComment}
+            onEditComment={handleEditComment} />
+        )} */}
+      </div >
+    </div >
   );
 }

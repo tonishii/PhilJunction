@@ -7,6 +7,8 @@ import { connectDB, gracefulShutdown } from "./config/db";
 import authRoute from "./routes/authRoute";
 import postRoute from "./routes/postRoute";
 import userRoute from "./routes/userRoute";
+import commentRoute from "./routes/commentRoute";
+
 dotenv.config();
 
 const app: Express = express();
@@ -28,6 +30,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use(authRoute);
 app.use(postRoute);
 app.use(userRoute);
+app.use(commentRoute);
 
 app.listen(PORT, () => {
   console.log(`[SERVER]: Running at http://localhost:${PORT}`);
