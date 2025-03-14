@@ -41,7 +41,7 @@ function App() {
           <Route path="signup" element={<SignUp />} />
         </Route>
 
-        {/* <Route path="post" element={<PostWindow post={post} />} /> THIS IS DYNAMIC POST*/}
+        {/* <Route path="post/:post-id" element={<PostWindow post={post} />} /> THIS IS DYNAMIC POST*/}
         <Route path="holler" element={<CreatePost />} />
       </Routes>
     </Router>
