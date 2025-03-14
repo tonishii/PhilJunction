@@ -27,6 +27,9 @@ function App() {
   //     .catch((error) => console.error("[ERROR] Failed to connect:", error));
   // }, []);
 
+
+  document.documentElement.setAttribute("data-theme", localStorage.getItem("theme") ?? "light");
+
   return (
     <Router>
       <Header />
@@ -41,7 +44,7 @@ function App() {
           <Route path="signup" element={<SignUp />} />
         </Route>
 
-        <Route path="/post/:post-id" element={<PostWindow />} />
+        <Route path="/post/:postId" element={<PostWindow />} />
 
         <Route path="/holler" element={<CreatePost />} />
       </Routes>

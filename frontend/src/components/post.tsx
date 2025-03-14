@@ -22,7 +22,7 @@ export default function Post({
   const [vote, setVote] = useState<"up" | "down" | null>(initialVote);
   const [likeCount, setLikeCount] = useState(initialLikes);
   const [dislikeCount, setDislikeCount] = useState(initialDislikes);
-  const [commentCount] = useState(post.comments.length?? 0);
+  const [commentCount] = useState(post.comments.length ?? 0);
 
   function handleDate(datePosted: Date): string {
     return moment(datePosted).fromNow();
@@ -60,7 +60,7 @@ export default function Post({
     <div className="post-container">
       <div className="post-body">
         <div className="post-header">
-          <Link to="/post" className="post-link">
+          <Link to={`/post/${post.publicId}`} className="post-link">
             <h1>
               {post.title} &sdot;{" "}
               <span className="gray">{handleDate(post.postDate)}</span>
@@ -106,7 +106,7 @@ export default function Post({
         </div>
 
         <div className="post-button">
-          <Link to="/post">
+          <Link to={`/post/${post.publicId}`}>
             <button className="round-button">
               <MessageCircle className="icon" />
             </button>

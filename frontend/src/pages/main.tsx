@@ -24,12 +24,6 @@ export default function Main() {
     };
     getPosts();
   }, []);
-  const [theme] = useLocalStorage("theme", "light");
-
-  useEffect(() => {
-    console.log(theme);
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
 
   return (
     <div className="main-container">

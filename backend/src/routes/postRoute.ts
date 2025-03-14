@@ -76,4 +76,20 @@ router.get("/retrieveposts", async (req, res) => {
   }
 });
 
+router.get("/retrievepost/:id", async (req: Request, res: Response) => {
+  try {
+    const data = await Post.findOne({ publicId: req.params.id });
+    if (!data) {
+      res.status(404).json({ message: "Post not found." });
+      return;
+    }
+
+    res.status(200).json(data);
+    return;
+  } catch (e: unknown) {
+    console.log(e);
+    res.status(500).json({ message: "Server error" });
+  }
+})
+
 export default router;

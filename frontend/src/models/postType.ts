@@ -10,4 +10,5 @@ export interface IPost {
   likes: number;
   dislikes: number;
   comments: IComment[];
+  publicId: string;
 }
