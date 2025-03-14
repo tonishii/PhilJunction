@@ -1,105 +1,29 @@
 :root {
     --bg-color: #eaeaea;
-
-    /* component-styles.css */
-    --search-bar: #e7e4e0;
-    --search-icon: #090815;
-    --search-input: #090814;
-    --comment-container: #b1a9a5;
-    --comment-container-p: #090814;
-    --comment-header: #522719;
-    --comment-name: #090814;
-    --comment-reply: #090814;
-    --comment-reply-span: #522719;
-
-    /* post-styles.css */
-    --popular-posts-list: #c6c1be;
-    --popular-posts-header: #303030;
-    --post-window-comments-bgcolor: #c6c1be;
-    --post-window-comments-color: #090814;
+    --field1: #e7e4e0;
+    --field2: #b1a9a5;
+    --field3: #2c2f33;
+    --field4: #c6c1be;
     --smallpost-header: #d3d0cc;
-    --smallpost-header-p: #303030;
-    --left-container: #c6c1be;
 
-    /* profile-styles.css */
-    --profile-container: #e7e4e0;
-    --profile-body-bgcolor: #c6c1be;
-    --profile-body-color: #090814;
-    --sidebar-button: #090814;
-    --settings-container-input-bgcolor: #e7e4e0;
-    --settings-container-input-color: #2c2f33;
-    --settings-container-textarea-bgcolor: #e7e4e0;
-    --settings-container-textarea-color: #2c2f33; 
-    --settings-container-select-bgcolor: #e7e4e0;
-    --settings-container-select-color: #2c2f33;
-
-    /* search-styles.css */
-    --search-body: #c6c1be;
-    --search-body-label-color: #090814;
-    --search-body-label-bgcolor: #e7e4e0;
-    --search-body-input-bgcolor: #e7e4e0; 
-    --search-body-input-color: #090814;
-    --tags-input-bgcolor: #e7e4e0;
-    --tags-input-color: #090814;
-    --tags-input-input: #090814;
-    --tag-button: #090814;
-    --search-body-select-bgcolor: #e7e4e0;
-    --search-body-select-color: #090814;
-    --result-text: #090814;
+    --text1: #090815;
+    --text2: #303030;
+    --comment1: #522719;    
     --search-buttons-color: black;
-    --search-buttons-border: #090814;
 }
 
 [data-theme="dark"] {
     --bg-color: #222526;
-
-    /* component-styles.css */
-    --search-bar: #2c2f33;
-    --search-icon: #F6F7EB;
-    --search-input: #F6F7EB;
-    --comment-container: #4E565A;
-    --comment-container-p: #f6f7eb;
-    --comment-header: #ADD8E6;
-    --comment-name: #F6F7EB;
-    --comment-reply: #F6F7EB;
-    --comment-reply-span: #ADD8E6;
-
-    /* post-styles.css */
-    --popular-posts-list: #393E41;
-    --popular-posts-header: #cfcfcf;
-    --post-window-comments-bgcolor: #393E41;
-    --post-window-comments-color: #F6F7EB;
+    --field1: #2c2f33;
+    --field2: #4E565A;
+    --field3: #d3d0cc;
+    --field4: #393E41;
     --smallpost-header: #2c2f33;
-    --smallpost-header-p: #cfcfcf;
-    --left-container: #393E41;
 
-    /* profile-styles.css */
-    --profile-container: #2c2f33;
-    --profile-body-bgcolor: #393E41;
-    --profile-body-color: #F6F7EB;
-    --sidebar-button: #F6F7EB;
-    --settings-container-input-bgcolor: #2c2f33;
-    --settings-container-input-color: #d3d0cc;
-    --settings-container-textarea-bgcolor: #2c2f33;
-    --settings-container-textarea-color: #d3d0cc; 
-    --settings-container-select-bgcolor: #2c2f33;
-    --settings-container-select-color: #d3d0cc;
-
-    /* search-styles.css */
-    --search-body: #393E41;
-    --search-body-label-color: #F6F7EB;
-    --search-body-label-bgcolor: #2c2f33;
-    --search-body-input-bgcolor: #2c2f33; 
-    --search-body-input-color: #F6F7EB;
-    --tags-input-bgcolor: #2c2f33;
-    --tags-input-color: #F6F7EB;
-    --tags-input-input: #F6F7EB;
-    --tag-button: #F6F7EB;
-    --search-body-select-bgcolor: #2c2f33;
-    --search-body-select-color: #F6F7EB;
-    --result-text: #F6F7EB;
+    --text1: #F6F7EB;
+    --text2: #cfcfcf;
+    --comment1: #ADD8E6;
     --search-buttons-color: white;
-    --search-buttons-border: #F6F7EB;
 }
 
 * {
