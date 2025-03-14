@@ -1,5 +1,5 @@
 export interface IComment {
-  commentID: string;
+  commentID: string | null;
   username: string;
   body: string;
   postDate: Date;

@@ -4,11 +4,12 @@ import Comment from '@/components/comment';
 import ImageCarousel from '@/components/imagecarousel';
 import { useNavigate } from "react-router";
 import { ThumbsUp, ThumbsDown, MessageCircle, CornerDownLeft } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
 import { IPost } from '@/models/postType';
 import { IComment } from '@/models/commentType';
+import { toast } from 'react-toastify';
 
 export default function PostWindow({
   post,
@@ -25,9 +26,13 @@ export default function PostWindow({
   const [vote, setVote] = useState<"up" | "down" | null>(initialVote);
   const [likeCount, setLikeCount] = useState(initialLikes);
   const [dislikeCount, setDislikeCount] = useState(initialDislikes);
+
   const [comments, setComments] = useState(post.comments);
   const [commentCount] = useState(post.comments.length);
   const [commentValue, setCommentValue] = useState("");
+
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+  const newCommentRef = useRef<HTMLDivElement | null>(null);
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentValue(event.target.value);
@@ -36,7 +41,6 @@ export default function PostWindow({
   const navigate = useNavigate();
 
   function handleDate(datePosted: Date): string {
-
     return moment(datePosted).fromNow();
   }
 
@@ -68,21 +72,51 @@ export default function PostWindow({
     }
   }
 
-  function handleAddComment(event: React.KeyboardEvent<HTMLInputElement>): void {
+  async function handleAddComment(event: React.KeyboardEvent<HTMLInputElement>): Promise<any> {
     if (event.key === "Enter" && commentValue.trim() !== "") {
       const newComment: IComment = {
-        username: "JamesPH", // TENTATIVE NO USER LOGIC YET
-        replyTo: post.username,
+        commentID: null,
+        username: "Protea", // TENTATIVE NO USER LOGIC YET
         postDate: new Date(),
-        commentID: String(comments.length + 1), // TENTATIVE
         body: commentValue,
+        replyTo: post.postID,
         replies: []
       };
 
-      setComments([...comments, newComment]);
-      setCommentValue("");
+      try {
+        const res = await fetch("http://localhost:3001/submitcomment", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: newComment.username,
+            body: newComment.body,
+            replyTo: newComment.replyTo
+          }),
+        });
+
+        if (res.ok) {
+          const resJson = await res.json();
+          setComments([...comments, resJson.comment]);
+          setCommentValue("");
+        } else {
+          const errorData = await res.json();
+          toast.error(errorData.message || "Server Error");
+        }
+      } catch (error) {
+        toast.error("An error occurred while submitting the comment.");
+      }
     }
   }
+
+  useEffect(() => {
+    if (!isFirstLoad && newCommentRef.current) {
+      newCommentRef.current.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      setIsFirstLoad(false);
+    }
+  }, [comments]);
 
   return (
     <div className="post-window-container">
@@ -158,6 +192,8 @@ export default function PostWindow({
       <div className="post-window-comments">
         <h1>Comments</h1>
         {comments.map(comment => <Comment comment={comment} isReplyable={true} />)}
+
+        <div ref={newCommentRef}/>
       </div>
     </div>
   );

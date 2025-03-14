@@ -29,7 +29,7 @@ export default function Login() {
         toast.error(`${errorMessage || "Server Error"}`);
       }
     } catch (error: unknown) {
-      console.log(error);
+      toast.error(String(error));
     }
   };
 

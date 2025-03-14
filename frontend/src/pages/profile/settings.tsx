@@ -19,13 +19,13 @@ export default function Settings({ user }: { user: IUser; }) {
     <div className="settings-container">
       <section>
         <label htmlFor="username">Username</label>
-        <input type="text" id="username" name="username"></input>
+        <input type="text" id="username" name="username" placeholder={user.username}></input>
 
         <label htmlFor="email">Email</label>
-        <input type="text" id="email" name="email"></input>
+        <input type="text" id="email" name="email" placeholder={user.email}></input>
 
         <label htmlFor="bio">Bio</label>
-        <textarea name="bio" id="bio"></textarea>
+        <textarea name="bio" id="bio" placeholder={user.description}></textarea>
       </section>
 
       <h2>Web Interface</h2>

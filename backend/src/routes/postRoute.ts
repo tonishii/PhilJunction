@@ -5,6 +5,7 @@ import multer from 'multer';
 
 import User from "../models/user";
 import Post from "../models/post";
+import Comment from "../models/comment";
 
 const router = express.Router();
 const storage = multer.memoryStorage();  // Store the files in memory (Buffer)
@@ -48,9 +49,8 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
     });
 
     await newPost.save();
-    return res.status(201).json({ message: 'Post created successfully' });
+    return res.status(201).json({ message: 'Post created successfully.' });
   } catch (error: any) {
-    console.error("Error:", error);
     return res.status(500).json({ message: "Internal server error.", error: error.message });
   }
 });
@@ -58,11 +58,39 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
 router.get("/retrieveposts", async (req, res) => {
   try {
     const data = await Post.find({}).limit(10).exec();
-    console.log(data);
     res.json(data)
   }
   catch (error: any) {
     res.status(500).json({ message: "Internal server error.", error: error.message });
+  }
+});
+
+router.post("/submitcomment", async (req, res): Promise<any> => {
+  try {
+    const { username, body, replyTo } = req.body;
+
+    if (!body || !replyTo ) {
+      return res.status(400).json({ message: "Body and replied to are required. "})
+    }
+
+    const user = await User.findOne({ username: username });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found or authentication required." });
+    }
+
+    const newComment = new Comment({
+      userId: user._id,
+      username: username,
+      body: body,
+      replyTo: replyTo,
+      replies: [],
+    });
+
+    const savedComment = await newComment.save();
+    return res.status(201).json({ message: "Comment created successfully.", comment: savedComment });
+  } catch (err: any) {
+    return res.status(500).json({ message: "Internal server error.", error: err.message });
   }
 });
 

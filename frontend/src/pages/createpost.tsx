@@ -28,7 +28,7 @@ export default function CreatePost() {
       setImages([...images, ...fileArray]);
     }
   }
-  
+
   const submitPost = async () => {
     let postTitle = (document.getElementById("title") as HTMLTextAreaElement)?.value;
     let postContent = (document.getElementById("editor") as HTMLTextAreaElement)?.value;
@@ -54,7 +54,7 @@ export default function CreatePost() {
           method: "POST",
           body: formData,
         });
-  
+
         if (response.ok) {
           const result = await response.json();
           navigate("/");

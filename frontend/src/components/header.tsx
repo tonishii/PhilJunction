@@ -18,7 +18,7 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header-leftmost">
-        <Link to="user/settings">
+        <Link to="user/settings"> {/* FIX  */}
           <button className="round-button">
             <Menu className="icon" />
           </button>
