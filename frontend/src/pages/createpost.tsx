@@ -5,9 +5,10 @@ import ReactMarkdown from 'react-markdown';
 import TagInput from "@/components/taginput";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
-import postData from "@/mockdata/post-data";
 
 export default function CreatePost() {
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
@@ -27,14 +28,6 @@ export default function CreatePost() {
       setImages([...images, ...fileArray]);
     }
   }
-
-  function submit() {
-    console.log({
-      title, content, images, tags
-    });
-  }
-
-  const navigate = useNavigate();
   
   const submitPost = async () => {
     let postTitle = (document.getElementById("title") as HTMLTextAreaElement)?.value;

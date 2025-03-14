@@ -88,14 +88,6 @@ app.post("/submitpost", upload.array('images'), async (req: Request, res: Respon
     return res.status(400).json({ message: 'Title, content, and tags are required.' });
   }
 
-  // Parse the tags: if tags are already an array, we don't need to parse it
-  let parsedTags: string[] = [];
-  try {
-    parsedTags = Array.isArray(tags) ? tags : JSON.parse(tags);
-  } catch (error) {
-    return res.status(400).json({ message: "Invalid tags format." });
-  }
-
   // Get the files from the request (array of files)
   const files = req.files as Express.Multer.File[] || [];
 
@@ -107,12 +99,6 @@ app.post("/submitpost", upload.array('images'), async (req: Request, res: Respon
       })) 
     : [];  // If no files, assign an empty array
 
-  console.log('Data to be saved:', {
-    title: postTitle,
-    body: postContent,
-    images,  // Array of image buffers
-    tags: parsedTags,  // Ensure tags are parsed correctly
-  });
 
   try {
     // Placeholder user validation (to be replaced with actual authentication logic)
@@ -127,7 +113,7 @@ app.post("/submitpost", upload.array('images'), async (req: Request, res: Respon
       title: postTitle,
       body: postContent,
       images,
-      tags: parsedTags,  // Store tags as an array of strings
+      tags: JSON.parse(tags),  // Store tags as an array of strings
     });
 
     await newPost.save();
