@@ -29,7 +29,8 @@
       "@pages/*": ["pages/*"],
       "@profile/*": ["pages/profile/*"],
       "@mockdata/*": ["mockdata/*"],
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "@models/*": ["models/*"],
     }
   },
   "forceConsistentCasingInFileNames": true,

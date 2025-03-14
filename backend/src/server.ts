@@ -1,7 +1,9 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+
 import cors from "./config/corsOptions";
 import { connectDB, gracefulShutdown } from "./config/db";
+import userRoute from "./routes/userRoute";
 
 dotenv.config();
 
@@ -21,6 +23,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // <INSERT ROUTES HERE>
+app.use(userRoute);
 
 app.listen(PORT, () => {
   console.log(`[SERVER]: Running at http://localhost:${PORT}`);

@@ -1,6 +1,6 @@
-import { Post } from "./post-data"
+import { IPost } from "@/models/postType";
 
-const post1: Post = {
+const post1: IPost = {
     title: "How to get to Sm North Edsa From SM South?",
     body: "Just the title",
     images: [],
@@ -10,7 +10,7 @@ const post1: Post = {
     comments: []
 }
 
-const post2: Post = {
+const post2: IPost = {
     title: "Commute Summit!",
     body: "hi guys! We at the Commuting Underclassmen Movement are so excited to share with you our first every Commute Summit! It's so strange...",
     images: [],
@@ -20,7 +20,7 @@ const post2: Post = {
     comments: []
 }
 
-const post3: Post = {
+const post3: IPost = {
     title: "pano punta quiapo galing pasig",
     body: "morgnig mga mamser, pano po kaya",
     images: [],
@@ -30,7 +30,7 @@ const post3: Post = {
     comments: []
 }
 
-const post4: Post = {
+const post4: IPost = {
     title: "Best Route from Cubao to NAIA Terminal 3?",
     body: "Hi everyone! I have an early morning flight from NAIA T3. What’s the best and safest way to get there from Cubao?",
     images: [],
@@ -39,25 +39,25 @@ const post4: Post = {
     username: "travelerPH",
     comments: [
         {
-            id: 1,
+            commentID: "12",
             username: "dailycommuter",
             replyTo: "",
             postDate: new Date("March 12, 2024, 9:00 AM"),
-            content: "If you don’t have heavy luggage, you can take the EDSA Carousel bus from Cubao to MOA, then ride a P2P bus to NAIA T3.",
+            body: "If you don’t have heavy luggage, you can take the EDSA Carousel bus from Cubao to MOA, then ride a P2P bus to NAIA T3.",
             replies: [
                 {
-                    id: 2,
+                    commentID: "2",
                     username: "travelerPH",
                     replyTo: "dailycommuter",
                     postDate: new Date("March 12, 2024, 9:10 AM"),
-                    content: "That sounds good! How much is the fare?",
+                    body: "That sounds good! How much is the fare?",
                     replies: [
                         {
-                            id: 3,
+                            commentID: "3",
                             username: "dailycommuter",
                             replyTo: "travelerPH",
                             postDate: new Date("March 12, 2024, 9:15 AM"),
-                            content: "EDSA Carousel: ₱50, P2P bus: ₱100. Travel time is around 1 hour if no heavy traffic.",
+                            body: "EDSA Carousel: ₱50, P2P bus: ₱100. Travel time is around 1 hour if no heavy traffic.",
                             replies: []
                         }
                     ]
@@ -65,17 +65,17 @@ const post4: Post = {
             ]
         },
         {
-            id: 4,
+            commentID: "4",
             username: "midnightflyer",
             replyTo: "",
             postDate: new Date("March 12, 2024, 9:20 AM"),
-            content: "If your flight is late at night, taking a Grab might be your best option. Buses are less frequent after 10 PM.",
+            body: "If your flight is late at night, taking a Grab might be your best option. Buses are less frequent after 10 PM.",
             replies: []
         }
     ]
 };
 
-const post5: Post = {
+const post5: IPost = {
     title: "Is There a Direct Bus from Laguna to Makati?",
     body: "I just moved to Laguna and need to commute to Makati daily. Is there a direct bus, or do I need multiple rides?",
     images: [],
@@ -84,25 +84,25 @@ const post5: Post = {
     username: "lagunaworker",
     comments: [
         {
-            id: 5,
+            commentID: "5",
             username: "workaholic_commuter",
             replyTo: "",
             postDate: new Date("March 8, 2024, 6:45 AM"),
-            content: "There’s a P2P bus from Sta. Rosa to Greenbelt. It’s fast but schedules are limited. Best to check online.",
+            body: "There’s a P2P bus from Sta. Rosa to Greenbelt. It’s fast but schedules are limited. Best to check online.",
             replies: [
                 {
-                    id: 6,
+                    commentID: "6",
                     username: "lagunaworker",
                     replyTo: "workaholic_commuter",
                     postDate: new Date("March 8, 2024, 6:50 AM"),
-                    content: "Thanks! What time do the buses start operating?",
+                    body: "Thanks! What time do the buses start operating?",
                     replies: [
                         {
-                            id: 7,
+                            commentID: "7",
                             username: "workaholic_commuter",
                             replyTo: "lagunaworker",
                             postDate: new Date("March 8, 2024, 6:55 AM"),
-                            content: "First trip is at 5:30 AM, last trip is around 9 PM.",
+                            body: "First trip is at 5:30 AM, last trip is around 9 PM.",
                             replies: []
                         }
                     ]
@@ -110,17 +110,17 @@ const post5: Post = {
             ]
         },
         {
-            id: 8,
+            commentID: "8",
             username: "alt_commuter",
             replyTo: "",
             postDate: new Date("March 8, 2024, 7:10 AM"),
-            content: "If you miss the P2P, you can take a bus from Calamba to Buendia, then ride a jeep or bus to Makati.",
+            body: "If you miss the P2P, you can take a bus from Calamba to Buendia, then ride a jeep or bus to Makati.",
             replies: []
         }
     ]
 };
 
-const post6: Post = {
+const post6: IPost = {
     title: "Fastest Commute from QC to Alabang?",
     body: "I need to go to Alabang from Quezon City frequently. What’s the fastest route via public transport?",
     images: [],
@@ -129,25 +129,25 @@ const post6: Post = {
     username: "dailycommuterQC",
     comments: [
         {
-            id: 9,
+            commentID: "9",
             username: "southbound_rider",
             replyTo: "",
             postDate: new Date("March 5, 2024, 8:20 AM"),
-            content: "Take MRT from North Ave to Magallanes, then ride a bus to Alabang. This is the fastest if MRT isn't crowded.",
+            body: "Take MRT from North Ave to Magallanes, then ride a bus to Alabang. This is the fastest if MRT isn't crowded.",
             replies: [
                 {
-                    id: 10,
+                    commentID: "10",
                     username: "dailycommuterQC",
                     replyTo: "southbound_rider",
                     postDate: new Date("March 5, 2024, 8:25 AM"),
-                    content: "That sounds good! How much time should I allot during rush hour?",
+                    body: "That sounds good! How much time should I allot during rush hour?",
                     replies: [
                         {
-                            id: 11,
+                            commentID: "11",
                             username: "southbound_rider",
                             replyTo: "dailycommuterQC",
                             postDate: new Date("March 5, 2024, 8:30 AM"),
-                            content: "Rush hour can add 30–45 minutes to your trip. Try leaving before 6 AM for a smoother ride.",
+                            body: "Rush hour can add 30–45 minutes to your trip. Try leaving before 6 AM for a smoother ride.",
                             replies: []
                         }
                     ]
@@ -155,11 +155,11 @@ const post6: Post = {
             ]
         },
         {
-            id: 12,
+            commentID: "12",
             username: "jeepneylover",
             replyTo: "",
             postDate: new Date("March 5, 2024, 8:40 AM"),
-            content: "If you prefer jeepneys, take one from QC to Pasay, then another from Pasay to Alabang. It's cheaper but takes longer.",
+            body: "If you prefer jeepneys, take one from QC to Pasay, then another from Pasay to Alabang. It's cheaper but takes longer.",
             replies: []
         }
     ]
