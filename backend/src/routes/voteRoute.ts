@@ -36,7 +36,7 @@ router.post("/upvote/:id", async (req: Request, res: Response): Promise<any> => 
       post.likes += 1;
       await post.save();
 
-      return res.status(200).json({ message: "Upvote successful", likes: post.likes, dislike: post.dislikes  });
+      return res.status(200).json({ message: "Upvote successful.", likes: post.likes, dislike: post.dislikes  });
     } else if (vote.type === true) {
       await vote.deleteOne();
 
@@ -89,7 +89,7 @@ router.post("/downvote/:id", async (req: Request, res: Response): Promise<any> =
       post.dislikes += 1;
       await post.save();
 
-      return res.status(200).json({ message: "Downvote successful", likes: post.likes, dislike: post.dislikes });
+      return res.status(200).json({ message: "Downvote successful.", likes: post.likes, dislike: post.dislikes });
     } else if (vote.type === false) {
       await vote.deleteOne();
 
@@ -146,63 +146,6 @@ router.get("/retreivevote/:id", async (req: Request, res: Response): Promise<any
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
-  }
-});
-
-// COMMENTS
-router.get("/retrievecomment/:id", async (req: Request, res: Response) => {
-  try {
-    const data = await Comment.findOne({ _id: req.params.id });
-    if (!data) {
-      res.status(404).json({ message: "Comment not found." });
-      return;
-    }
-
-    res.status(200).json(data);
-  } catch (e: unknown) {
-    console.log(e);
-    res.status(500).json({ message: "server error" });
-  }
-});
-
-router.post("/submitcomment", async (req, res): Promise<any> => {
-  try {
-    const { username, body, postId, topLevel, replyTo } = req.body;
-    console.log(username, body, postId, topLevel, replyTo)
-
-    if (!body || !replyTo) {
-      return res.status(400).json({ message: "Body and replied to are required. " })
-    }
-
-    const user = await User.findOne({ username: replyTo });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found or authentication required." });
-    }
-
-    const relatedPost = Post.findOne({ publicId: postId });
-
-    if (!relatedPost) {
-      return res.status(404).json({ message: "Post not found." });
-    }
-
-    const newComment = new Comment({
-      userId: user._id,
-      username: username,
-      body: body,
-      replyTo: replyTo,
-      replies: [],
-      topLevel: topLevel
-    });
-
-    const savedComment = await newComment.save();
-    console.log("hi")
-    await relatedPost.updateOne({ $push: { comments: savedComment._id } });
-
-    return res.status(201).json({ message: "Comment created successfully.", comment: savedComment });
-  } catch (err: any) {
-    console.log(err);
-    return res.status(500).json({ message: "Internal server error.", error: err.message });
   }
 });
 

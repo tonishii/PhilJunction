@@ -1,23 +1,22 @@
 import mongoose from 'mongoose';
 
 export interface IComment extends mongoose.Document {
+  username: string;
   userId: mongoose.Types.ObjectId;
   body: string;
-  username: string;
-  replyTo: string;
+  publicId: string;
+  parentId: mongoose.Types.ObjectId;
   replies: mongoose.Types.ObjectId[];
-  topLevel: boolean;
 }
 
 const commentSchema = new mongoose.Schema({
   username: { type: String, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   body: { type: String, required: true },
-  replyTo: { type: String, required: true },
-  replies: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
-  topLevel: { type: Boolean, required: true }
-}, { timestamps: true }
-);
+  publicId: { type: String, required: true },
+  parentId: { type: mongoose.Schema.Types.ObjectId, ref: "Comment", default: null },
+  replies: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }]
+}, { timestamps: true });
 
-const Comment = mongoose.model("Comment", commentSchema);
+const Comment = mongoose.model<IComment>("Comment", commentSchema);
 export default Comment;

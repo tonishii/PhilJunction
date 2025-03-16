@@ -39,7 +39,7 @@ export default function Post({
 
       if (!res.ok) {
         toast.error("An error has occured.");
-        console.log(data.message);
+        console.error(data.message);
         return;
       }
 
@@ -56,7 +56,7 @@ export default function Post({
       }
     } catch (err: any) {
       toast.error("A server error occured.");
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -70,7 +70,7 @@ export default function Post({
 
       if (!res.ok) {
         toast.error("An error has occured.");
-        console.log(data.message);
+        console.error(data.message);
         return;
       }
 
@@ -87,7 +87,7 @@ export default function Post({
       }
     } catch (err: any) {
       toast.error("A server error occured.");
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -99,7 +99,7 @@ export default function Post({
             <h2>{post.title}</h2>
             <hr />
             <div className="post-info">
-              <i className="post-author">Posted by <span className="gray-color">{post.username}</span> </i>
+              <b className="post-author">Posted by <span className="gray-color">{post.username}</span> </b>
               <i className="post-date">{handleDate(post.postDate)}</i>
             </div>
           </Link>

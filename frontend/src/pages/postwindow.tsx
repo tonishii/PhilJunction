@@ -3,6 +3,7 @@ import "@/styles/post-styles.css";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import ReactMarkdown from "react-markdown";
+import { toast } from 'react-toastify';
 import moment from "moment";
 import {
   ThumbsUp,
@@ -14,17 +15,17 @@ import {
 import Comment from "@/components/comment";
 // import ImageCarousel from "@/components/imagecarousel";
 import { IPost } from "@/models/postType";
-import { ICommentTree } from "@/models/commentType";
-import { toast } from 'react-toastify';
+import { IComment } from "@/models/commentType";
 
 export default function PostWindow() {
   const { postId } = useParams();
   const [post, setPost] = useState<IPost>({} as IPost);
-
   const [vote, setVote] = useState<boolean | null>(null);
+
   const [commentValue, setCommentValue] = useState("");
-  const [commentTree, setCommentTree] = useState<ICommentTree[]>([]);
-  const [memoizedComments, setMemoizedComments] = useState<Map<string, ICommentTree>>(new Map());
+  const [commentTree, setCommentTree] = useState<IComment[]>([]);
+
+  const [memoizedComments, setMemoizedComments] = useState<Map<string, IComment>>(new Map());
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function PostWindow() {
         const values = await Promise.all(comments.map(id => fetch(`http://localhost:3001/retrievecomment/${id}`)));
         setMemoizedComments(new Map((await Promise.all(values.map(v => v.json()))).map((v, i) => [comments[i], v])));
       } else {
-        console.log(response);
+        console.error(response);
       }
     }
 
@@ -59,7 +60,7 @@ export default function PostWindow() {
   }, [postId]);
 
   useEffect(() => {
-    const topLevelComments: ICommentTree[] = [];
+    const topLevelComments: IComment[] = [];
     memoizedComments.forEach(c => { if (c.topLevel) topLevelComments.push(c) });
     setCommentTree(topLevelComments);
 
@@ -83,7 +84,7 @@ export default function PostWindow() {
 
       if (!res.ok) {
         toast.error("An error has occured.");
-        console.log(data.message);
+        console.error(data.message);
         return;
       }
 
@@ -100,7 +101,7 @@ export default function PostWindow() {
       }
     } catch (err: any) {
       toast.error("A server error occured.");
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -114,7 +115,7 @@ export default function PostWindow() {
 
       if (!res.ok) {
         toast.error("An error has occured.");
-        console.log(data.message);
+        console.error(data.message);
         return;
       }
 
@@ -131,13 +132,12 @@ export default function PostWindow() {
       }
     } catch (err: any) {
       toast.error("A server error occured.");
-      console.log(err);
+      console.error(err);
     }
   }
 
   async function handleAddComment(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter" && commentValue.trim() !== "") {
-
       try {
         const res = await fetch("http://localhost:3001/submitcomment", {
           method: "POST",
@@ -269,7 +269,7 @@ export default function PostWindow() {
 
       <div className="post-window-comments">
         <h1>Comments</h1>
-        {commentTree.length > 0 ? commentTree.map(comment => <Comment comment={comment} isReplyable={true} />) : "Loading..."}
+        {commentTree.length > 0 ? commentTree.map(comment => <Comment commentData={comment} isReplyable={true} />) : "Loading..."}
         {/* {comments.map((comment) =>
           <Comment
             comment={comment}
