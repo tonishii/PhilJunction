@@ -175,6 +175,12 @@ export default function Comment({
     }
   };
 
+  function handleDeleteComment(replyID: string) {
+    setReplies((prevReplies) =>
+      prevReplies.filter((reply) => reply.commentID !== replyID)
+    );
+  };
+
   return (
     <div className="comment-container">
       <div className="comment-header">
@@ -253,17 +259,18 @@ export default function Comment({
 
       <p>{comment.body}</p>
 
-      {replies.length > 0 && (
-        <div className="replies-container">
-          {replies.map((reply, i) => (
+      <div className="replies-container">
+        { replies.length > 0 &&
+          replies.map((reply, i) => (
             <Comment
-              key={comment.commentID as string + i}
+              key={(reply.commentID ?? "") + i}
               commentData={reply}
               isReplyable={true}
-              onDeleteComment={onDeleteComment} />
-          ))}
-        </div>
-      )}
+              onDeleteComment={handleDeleteComment}
+            />
+          ))
+        }
+      </div>
     </div>
   );
 }
