@@ -56,7 +56,7 @@
 }
 
 .search-input::placeholder {
-  color: #F6F7EB;
+  color: var(--text1);
 }
 
 .create-post-button {
