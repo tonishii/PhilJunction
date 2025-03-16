@@ -1,5 +1,5 @@
 import "@/styles/component-styles.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Ellipsis, MessageCircle, Send, Pencil } from "lucide-react";
 import { IComment } from "@/models/commentType";
 import moment from "moment";
@@ -15,12 +15,36 @@ export default function Comment({
   onDeleteComment: (commentId: string) => void;
 }) {
   const [comment, setComment] = useState<IComment>(commentData);
+  const [replies, setReplies] = useState<IComment[]>([]);
   const [edit, setEdited] = useState(comment.body);
   const [editVisible, setEditVisible] = useState(false);
   const [reply, setReply] = useState("");
   const [replyVisible, setReplyVisible] = useState(false);
-
   const [menuVisible, setMenuVisible] = useState(false);
+
+  useEffect(() => {
+    async function fetchReplies() {
+      if (!comment.replies || comment.replies.length === 0) return;
+
+      const commentsData = await Promise.all(
+        comment.replies.map(async (replyId: string) => {
+          const res = await fetch(`http://localhost:3001/retrievecomment/${replyId}`);
+          const data = await res.json();
+
+          if (!res.ok) {
+            toast.error("An error has occurred.");
+            console.error(data.message);
+            return null;
+          } else {
+            console.log(data.message);
+            return data.comment;
+          }
+        })
+      );
+      setReplies(commentsData.filter(Boolean) ?? []);
+    }
+    fetchReplies();
+  }, [comment.replies]);
 
   function handleKeyUpEdit(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
@@ -34,20 +58,18 @@ export default function Comment({
     if ("key" in event && event.key !== "Enter") return;
 
     try {
-      const newReply: IComment = {
-        username: "Protea", // TENATIVE NO USER LOGIC
-        body: reply,
-        publicId: comment.publicId,
-        parentId: comment.commentID as string,
-        replies: [],
-      };
-
       const res = await fetch("http://localhost:3001/submitcomment", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({newReply, type: "Reply"}),
+        body: JSON.stringify({
+          username: "ANTHIMON", // TENATIVE NO USER LOGIC
+          body: reply,
+          publicId: comment.publicId,
+          parentId: comment.commentID as string,
+          type: "Reply"
+        }),
       });
 
       const data = await res.json();
@@ -56,8 +78,8 @@ export default function Comment({
         setReply("");
         setReplyVisible(false);
 
-        setComment({...comment, replies: data.newReply });
         console.log(data.message);
+        setReplies((prevReplies) => [...prevReplies, data.newReply]);
       } else {
         toast.error("An error has occured.");
         console.error(data.message);
@@ -90,7 +112,7 @@ export default function Comment({
         setEdited("");
         setEditVisible(false);
 
-        setComment(data.editedReply);
+        setComment(data.comment);
         console.log(data.message);
       } else {
         toast.error("An error has occured.");
@@ -110,16 +132,15 @@ export default function Comment({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          commentId: comment.commentID,
+          commentID: comment.commentID,
         }),
       });
 
-      console.log(comment.commentID);
       const data = await res.json();
 
       if (res.ok) {
-        onDeleteComment(comment.commentID as string);
         console.log(data.message);
+        onDeleteComment(comment.commentID as string);
       } else {
         toast.error("An error has occured.");
         console.error(data.message);
@@ -179,6 +200,7 @@ export default function Comment({
                       name="reply"
                       id="reply"
                       value={reply}
+                      onChange={(e) => setReply(e.target.value)}
                       onKeyUp={handleReply}
                       placeholder="Write a reply..."
                     />
@@ -207,6 +229,7 @@ export default function Comment({
                               name="edit"
                               id="edit"
                               value={edit}
+                              onChange={(e) => setEdited(e.target.value)}
                               onKeyUp={handleKeyUpEdit}
                               placeholder="Edit a comment..."
                             />
@@ -230,9 +253,9 @@ export default function Comment({
 
       <p>{comment.body}</p>
 
-      {comment.replies.length > 0 && (
+      {replies.length > 0 && (
         <div className="replies-container">
-          {comment.replies.map((reply, i) => (
+          {replies.map((reply, i) => (
             <Comment
               key={comment.commentID as string + i}
               commentData={reply}

@@ -5,5 +5,5 @@ export interface IComment {
   postDate?: Date;
   publicId: string;
   parentId: string;
-  replies: IComment[];
+  replies: string[];
 }

@@ -81,16 +81,14 @@ router.get("/trendingposts", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/retrievepost/:id", async (req: Request, res: Response) => {
+router.get("/retrievepost/:id", async (req: Request, res: Response): Promise<any> => {
   try {
     const data = await Post.findOne({ publicId: req.params.id });
     if (!data) {
-      res.status(404).json({ message: "Post not found." });
-      return;
+      return res.status(404).json({ message: "Post not found." });
     }
 
-    res.status(200).json(data);
-    return;
+    return res.status(200).json({ message: "Post successfully pulled", post: data });
   } catch (e: unknown) {
     console.log(e);
     res.status(500).json({ message: "Server error" });

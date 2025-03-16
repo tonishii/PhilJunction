@@ -23,23 +23,37 @@ export default function PostWindow() {
   const [vote, setVote] = useState<boolean | null>(null);
 
   const [commentValue, setCommentValue] = useState("");
-  const [commentTree, setCommentTree] = useState<IComment[]>([]);
-
-  const [memoizedComments, setMemoizedComments] = useState<Map<string, IComment>>(new Map());
+  const [comments, setComments] = useState<IComment[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(`http://localhost:3001/retrievepost/${postId}`);
-      if (response.ok) {
-        const data: IPost = await response.json();
-        setPost(data);
-        // console.log(data);
 
-        const comments = data.comments;
-        const values = await Promise.all(comments.map(id => fetch(`http://localhost:3001/retrievecomment/${id}`)));
-        setMemoizedComments(new Map((await Promise.all(values.map(v => v.json()))).map((v, i) => [comments[i], v])));
+      if (response.ok) {
+        const { message, post } = await response.json();
+        setPost(post);
+        console.log(message);
+
+        const commentsData = await Promise.all(
+          post.comments.map(async (commentId: string) => {
+            const res = await fetch(`http://localhost:3001/retrievecomment/${commentId}`);
+            const data = await res.json();
+
+            if (!res.ok) {
+              toast.error("An error has occurred.");
+              console.error(data.message);
+              return null;
+            } else {
+              console.log(data.message);
+              return data.comment;
+            }
+          })
+        );
+
+        setComments(commentsData.filter(Boolean));
       } else {
+        toast.error("An error has occured");
         console.error(response);
       }
     }
@@ -58,17 +72,6 @@ export default function PostWindow() {
     fetchData();
     fetchVote();
   }, [postId]);
-
-  useEffect(() => {
-    const topLevelComments: IComment[] = [];
-    memoizedComments.forEach(c => { if (c.topLevel) topLevelComments.push(c) });
-    setCommentTree(topLevelComments);
-
-  }, [memoizedComments])
-
-  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCommentValue(event.target.value);
-  };
 
   function handleDate(datePosted: Date = new Date()): string {
     return moment(datePosted).fromNow();
@@ -137,64 +140,44 @@ export default function PostWindow() {
   }
 
   async function handleAddComment(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === "Enter" && commentValue.trim() !== "") {
-      try {
-        const res = await fetch("http://localhost:3001/submitcomment", {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username: "Protea",
-            body: commentValue,
-            postId: postId,
-            topLevel: true,
-            replyTo: post.username
-          }),
-        });
+    if (event.key !== "Enter" || commentValue.trim() === "") return;
 
-        if (res.ok) {
-          const resJson = await res.json();
-          setCommentValue("");
-          console.log(resJson);
-          setMemoizedComments(a => new Map([...a, [resJson._id, resJson.comment]]));
-        } else {
-          const errorData = await res.json();
-          toast.error("Server error:", errorData.message);
-        }
-      } catch (e: unknown) {
-        toast.error("An error occurred while submitting the comment.");
-        console.log(e);
+    try {
+      const res = await fetch("http://localhost:3001/submitcomment", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: "ANTHIMON",
+          body: commentValue,
+          publicId: postId,
+          parentId: postId,
+          type: "Comment",
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setCommentValue("");
+
+        console.log(data.message);
+        setComments((prevComments) => [...prevComments, data.newComment]);
+      } else {
+        toast.error("An error has occured.");
+        console.error(data.message);
       }
+    } catch (err: unknown) {
+      toast.error("An error occurred while submitting the comment.");
+      console.log(err);
     }
   }
 
-  // const handleAddReply = (newReply: IComment, commentID: string) => {
-  //   newReply.commentID = commentID;
-  //   setComments((prevComments) =>
-  //     prevComments.map((comment) =>
-  //       comment.commentID === newReply.replyTo
-  //         ? { ...comment, replies: [...comment.replies, newReply] }
-  //         : comment
-  //     )
-  //   );
-  // };
-
-  // const handleDeleteComment = (commentID: string) => {
-  //   setComments((prevComments) =>
-  //     prevComments.filter((comment) => comment.commentID !== commentID)
-  //   );
-  // };
-
-  // const handleEditComment = (commentID: string, updatedBody: string) => {
-  //   setComments((prevComments) =>
-  //     prevComments.map((comment) =>
-  //       comment.commentID === commentID
-  //         ? { ...comment, body: updatedBody }
-  //         : comment
-  //     )
-  //   );
-  // };
+  function handleDeleteComment(commentID: string) {
+    setComments((prevComments) =>
+      prevComments.filter((comment) => comment.commentID !== commentID)
+    );
+  };
 
   return (
     <div className="post-window-container">
@@ -261,7 +244,7 @@ export default function PostWindow() {
           placeholder="Add a Comment"
           id="comment-input"
           className="comment-input"
-          onChange={handleCommentChange}
+          onChange={(e) => setCommentValue(e.target.value)}
           onKeyUp={handleAddComment}
           value={commentValue}
         />
@@ -269,15 +252,15 @@ export default function PostWindow() {
 
       <div className="post-window-comments">
         <h1>Comments</h1>
-        {commentTree.length > 0 ? commentTree.map(comment => <Comment commentData={comment} isReplyable={true} />) : "Loading..."}
-        {/* {comments.map((comment) =>
-          <Comment
-            comment={comment}
-            isReplyable={true}
-            onAddReply={handleAddReply}
-            onDeleteComment={handleDeleteComment}
-            onEditComment={handleEditComment} />
-        )} */}
+        { comments.length > 0 ?
+          comments.map((comment, i) =>
+            <Comment
+              key={(comment.commentID ?? "") + i}
+              commentData={comment}
+              isReplyable={true}
+              onDeleteComment={handleDeleteComment} />)
+          : comments.length === 0 ? <p>No comments yet!</p>
+          :<p>"Loading..."</p> }
       </div >
     </div >
   );
