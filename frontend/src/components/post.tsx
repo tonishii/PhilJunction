@@ -1,6 +1,6 @@
 import '@/styles/post-styles.css'
 
-// import ImageCarousel from './imagecarousel';
+import ImageCarousel from './imagecarousel';
 import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
@@ -72,7 +72,7 @@ export default function Post({
         <div className="post-main">
           <ReactMarkdown className="post-body" children={post.body} />
           <div className="matchWidth">
-            {/* <ImageCarousel images={post.images} maxImages={1} /> WARNING PLEASE FIX THIS IS BLOB!!!*/}
+            <ImageCarousel images={post.convertedImg} maxImages={1} />
           </div>
 
         </div>

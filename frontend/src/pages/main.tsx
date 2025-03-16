@@ -17,9 +17,9 @@ export default function Main() {
         if (!resp.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await resp.json();
+        const data: IPost[] = await resp.json();
+        
         setPosts(data);
-
         const response = await fetch("http://localhost:3001/trendingposts");
         console.log(resp);
         if (!response.ok) {

@@ -68,13 +68,25 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
 
 router.get("/retrieveposts", async (req, res) => {
   try {
-    const data = await Post.find({}).limit(10).exec();
+    const data = await Post.find({}).limit(20).exec();
     // const user = data.forEach(async (post) => {
     //   return await User.findOne({ _id: post.userId });
     // });
 
     // res.json({ data: data, user: user });
-    res.json(data);
+    const postsWithImages = data.map((post) => {
+      const images = post.images?.map((image) => ({
+        contentType: image.contentType,
+        imageUrl: `data:${image.contentType};base64,${image.data.toString('base64')}`,
+      }));
+
+      return {
+        ...post.toObject(),
+        convertedImg: images || [],
+      };
+    });
+
+    res.json(postsWithImages);
   }
   catch (error: any) {
     res.status(500).json({ message: "Internal server error.", error: error.message });
