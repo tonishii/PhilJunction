@@ -1,15 +1,18 @@
 import "@/styles/component-styles.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import { IBuffer } from "@/models/postType";
 
 export default function ImageCarousel({
   images,
   maxImages,
 }: {
-  images: string[];
+  images: IBuffer[];
   maxImages: number;
 }) {
+  const [imageURLS, setImageURLS] = useState<string[]>([]);
+  const [imageElements, setImages] = useState<JSX.Element[]>([]);
   const [currImageIndex, setImageIndex] = useState(0);
   const totalImages = images.length;
 
@@ -34,9 +37,23 @@ export default function ImageCarousel({
     );
   }
 
-  const imageElements: JSX.Element[] = images.map((imagePath, i) => (
-    <img src={imagePath} key={i} alt="post image" className="post-image" />
-  ));
+  useEffect(() => {
+    setImageURLS(images.map((image): string => {
+      const blob = new Blob([image.data], { type: image.contentType });
+      return URL.createObjectURL(blob);
+    }));
+
+    setImages(imageURLS.map((url, i) => {
+      return (
+        <img
+          src={url}
+          key={url + i}
+          alt={`post image ${i}`}
+          className="post-image" />
+      );
+    }));
+  }, [images]);
+
   const imagesToShow = getNextImages(imageElements, currImageIndex);
 
   return (

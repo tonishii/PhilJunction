@@ -8,6 +8,7 @@ import Settings from "@profile/settings";
 import UserComments from "@profile/comments";
 import UserPosts from "@profile/posts";
 import { IUser } from "@/models/userType";
+import { toast } from "react-toastify";
 
 export default function Profile() {
   const { username } = useParams();
@@ -18,8 +19,8 @@ export default function Profile() {
       then((response) => response.json()).
       then((data) => {
         if (data.message) {
-          // message exists meaning may error
-
+          toast.error("An error has occured.");
+          console.log(data.message);
         } else {
           setUser(data);
         }

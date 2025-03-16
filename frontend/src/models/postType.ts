@@ -1,13 +1,17 @@
+export interface IBuffer {
+  data: Buffer;
+  contentType: string;
+}
+
 export interface IPost {
-  postID: string;
+  publicId: string;
   username: string;
   title: string;
   postDate: Date;
   body: string;
-  images: Blob[];
+  images: IBuffer[];
   tags: string[];
   likes: number;
   dislikes: number;
   comments: string[];
-  publicId: string;
 }

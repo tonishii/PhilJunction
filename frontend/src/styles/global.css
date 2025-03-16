@@ -1,5 +1,14 @@
 :root {
-    --bg-color: #eaeaea;
+    --bg-color: #e3e3e3;
+    --black1-color: #222526;
+    --black2-color: #2c2f33;
+    --black3-color: #4E565A;
+    --light-gray-color: #DAD8D7;
+    --white1-color: #F6F7EB;
+    --like-color: green;
+    --dislike-color: #CA2E16;
+    --highlight1: #E53E24;
+
     --field1: #e7e4e0;
     --field2: #b1a9a5;
     --field3: #2c2f33;
@@ -88,12 +97,12 @@ a {
 
 /* Miscellaneous */
 
-.gray {
-    color: #393E41;
+.black-color {
+  color: var(--black2-color);
 }
 
-.black {
-    color: #2c2f33;
+.gray-color {
+  color: var(--black3-color);
 }
 
 .active {
@@ -102,4 +111,9 @@ a {
 
 .active .icon {
     color: #2c2f33;
+}
+
+.top-right {
+    margin-top: 25px;
+    margin-bottom: auto;
 }

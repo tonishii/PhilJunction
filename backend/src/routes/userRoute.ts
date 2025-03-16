@@ -1,12 +1,10 @@
-import { Request, Response } from "express";
+import express, { Request, Response, Router } from "express";
 
-const express = require('express');
 import User from "../models/user";
 import Post from "../models/post";
 import Comment from "../models/comment";
-import { error } from "console";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.get('/randomuser', async (req: Request, res: Response) => {
     try {
@@ -72,7 +70,6 @@ router.get('/user/:username/comments', async (req: Request, res: Response): Prom
     }
 });
 
-/* Allow users to update their username, email, and bio, you need to add an update user route. */
 router.post("/updateuser", async (req: Request, res: Response): Promise<any> => {
     try {
         const { oldusername, username, email, bio } = req.body; // Extract fields from request body

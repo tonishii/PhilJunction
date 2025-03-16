@@ -8,6 +8,7 @@ import authRoute from "./routes/authRoute";
 import postRoute from "./routes/postRoute";
 import userRoute from "./routes/userRoute";
 import commentRoute from "./routes/commentRoute";
+import voteRoute from "./routes/voteRoute";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use(authRoute);
 app.use(postRoute);
 app.use(userRoute);
 app.use(commentRoute);
+app.use(voteRoute);
 
 app.listen(PORT, () => {
   console.log(`[SERVER]: Running at http://localhost:${PORT}`);

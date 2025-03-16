@@ -1,6 +1,5 @@
-import { Request, Response } from "express";
+import express, { Request, Response, Router} from "express";
 
-import express, { Router } from 'express';
 import User from "../models/user";
 import Comment from "../models/comment";
 

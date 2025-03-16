@@ -4,9 +4,8 @@ export interface IComment extends mongoose.Document {
   userId: mongoose.Types.ObjectId;
   body: string;
   username: string;
-  postDate?: Date;
   replyTo: string;
-  replies?: mongoose.Types.ObjectId[];
+  replies: mongoose.Types.ObjectId[];
   topLevel: boolean;
 }
 

@@ -1,7 +1,7 @@
 import "@/styles/component-styles.css";
 import { useState } from "react";
 import { Ellipsis, MessageCircle, Send, Pencil } from "lucide-react";
-import { IComment } from "@/models/commentType";
+import { ICommentTree } from "@/models/commentType";
 import moment from "moment";
 import { toast } from "react-toastify";
 
@@ -12,9 +12,9 @@ export default function Comment({
   onDeleteComment = () => {},
   onEditComment = () => {},
 }: {
-  comment: IComment;
+  comment: ICommentTree;
   isReplyable?: boolean;
-  onAddReply?: (newReply: IComment, commentID: string) => void;
+  onAddReply?: (newReply: ICommentTree, commentID: string) => void;
   onDeleteComment?: (commentID: string) => void;
   onEditComment?: (commentID: string, updatedBody: string) => void;
 }) {
@@ -49,7 +49,7 @@ export default function Comment({
   const handleEdit = async () => {
     if (!edit.trim()) return;
 
-    const updatedComment: IComment = {
+    const updatedComment: ICommentTree = {
       ...comment,
       body: edit,
     };
@@ -107,8 +107,8 @@ export default function Comment({
   const handleReply = async () => {
     if (reply.trim() === "") return;
 
-    const newReply: IComment = {
-      commentID: null,
+    const newReply: ICommentTree = {
+      commentID: "",
       username: "Protea", // TENATIVE NO USER LOGIC
       postDate: new Date(),
       body: reply,
