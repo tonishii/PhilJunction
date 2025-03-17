@@ -1,5 +1,5 @@
-export interface IBuffer {
-  data: Buffer;
+export interface IPostImage {
+  imageUrl: string;
   contentType: string;
 }
 
@@ -9,13 +9,9 @@ export interface IPost {
   title: string;
   postDate: Date;
   body: string;
-  images: IBuffer[];
+  images: IPostImage[];
   tags: string[];
   likes: number;
   dislikes: number;
   comments: string[];
-  convertedImg: {
-    contentType: string;
-    imageUrl: string;
-  }[]
 }

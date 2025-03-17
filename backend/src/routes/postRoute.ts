@@ -72,7 +72,7 @@ router.get("/retrieveposts", async (req: Request, res: Response) => {
 
       return {
         ...post.toObject(),
-        convertedImg: images || [],
+        images: images || [],
       };
     });
 
@@ -100,7 +100,15 @@ router.get("/retrievepost/:id", async (req: Request, res: Response): Promise<any
       return res.status(404).json({ message: "Post not found." });
     }
 
-    return res.status(200).json({ message: "Post successfully pulled", post: data });
+    const images = data.images.map((image) => ({
+      contentType: image.contentType,
+      imageUrl: `data:${image.contentType};base64,${image.data.toString('base64')}`,
+    }));
+
+    return res.status(200).json({
+      message: "Post successfully pulled",
+      post: { ...data.toObject(), images: images || [] }
+    });
   } catch (e: unknown) {
     console.log(e);
     res.status(500).json({ message: "Server error" });

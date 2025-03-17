@@ -15,16 +15,20 @@ export default function Profile() {
   const [user, setUser] = useState<IUser | null>(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/user/${username}`).
-      then((response) => response.json()).
-      then((data) => {
-        if (data.message) {
-          toast.error("An error has occured.");
-          console.log(data.message);
-        } else {
-          setUser(data);
-        }
-      })
+    async function fetchUser() {
+      const res = await fetch(`http://localhost:3001/user/${username}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("An error has occured.");
+        console.log(data.message);
+      } else {
+        setUser(data.user);
+        console.log(data);
+      }
+    }
+
+    fetchUser();
   }, [username]);
 
   return (

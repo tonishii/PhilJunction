@@ -108,7 +108,7 @@ export default function Post({
         <div className="post-body-container">
           <ReactMarkdown className="post-body" children={post.body} />
           <div className="matchWidth">
-            <ImageCarousel images={post.convertedImg} maxImages={1} />
+            <ImageCarousel images={post.images} maxImages={1} />
           </div>
 
         </div>

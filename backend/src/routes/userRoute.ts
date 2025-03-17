@@ -24,7 +24,12 @@ router.get('/user/:username', async (req: Request, res: Response): Promise<any> 
             return res.status(404).json({ message: "User not found." });
         }
 
-        return res.status(200).json(user);
+        const icon = {
+            contentType: user.icon.contentType,
+            imageUrl: `data:${user.icon.contentType};base64,${user.icon.data.toString('base64')}`
+        };
+
+        return res.status(200).json({ message: "User data successfully pulled", user: { ...user.toObject(), icon: icon } });
     } catch (err) {
         res.status(500).json({ message: "Server error:", err });
     }

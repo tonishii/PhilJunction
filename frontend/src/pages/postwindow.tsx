@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 import Comment from "@/components/comment";
-// import ImageCarousel from "@/components/imagecarousel";
+import ImageCarousel from "@/components/imagecarousel";
 import { IPost } from "@/models/postType";
 import { IComment } from "@/models/commentType";
 
@@ -212,7 +212,7 @@ export default function PostWindow() {
           ))}
         </div>
 
-        {/* <ImageCarousel images={post.images} maxImages={3} /> WARNING THIS IS A BLOB!!!*/}
+        <ImageCarousel images={post.images} maxImages={3} />
         <ReactMarkdown className="post-body" children={post?.body} />
       </div>
 
