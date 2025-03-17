@@ -1,11 +1,11 @@
-import { IPostImage } from "./postType";
+import { ImageBuffer } from "./postType";
 
 export interface IUser {
   userID: string;
   username: string;
   email: string;
   description: string;
-  icon: IPostImage;
+  icon: ImageBuffer;
   password: string;
   dateCreated: Date;
 }

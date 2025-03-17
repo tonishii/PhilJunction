@@ -2,13 +2,13 @@ import "@/styles/component-styles.css";
 
 import { useState } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { IPostImage } from "@/models/postType";
+import { ImageBuffer } from "@/models/postType";
 
 export default function ImageCarousel({
   images = [],
   maxImages,
 }: {
-  images?: IPostImage[],
+  images?: ImageBuffer[],
   maxImages: number;
 }) {
   const [currImageIndex, setImageIndex] = useState(0);

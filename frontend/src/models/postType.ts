@@ -1,4 +1,4 @@
-export interface IPostImage {
+export interface ImageBuffer {
   imageUrl: string;
   contentType: string;
 }
@@ -9,7 +9,7 @@ export interface IPost {
   title: string;
   postDate: Date;
   body: string;
-  images: IPostImage[];
+  images: ImageBuffer[];
   tags: string[];
   likes: number;
   dislikes: number;

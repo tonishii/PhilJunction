@@ -1,11 +1,16 @@
 import Toggleswitch from "@/components/toggleswitch"
 import { useLocalStorage } from "@/hook/storage";
-import { SyntheticEvent, useEffect } from "react";
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { IUser } from "@/models/userType";
+import { toast } from "react-toastify";
+import { UserRoundPen } from "lucide-react";
 
 export default function Settings({ user }: { user: IUser; }) {
-
   const [theme, setTheme] = useLocalStorage("theme", "light");
+  const [username, setUsername] = useState(user.username);
+  const [email, setEmail] = useState(user.email);
+  const [bio, setBio] = useState(user.description);
+  const [iconUrl, setIconUrl] = useState<string>(user.icon.imageUrl);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -15,34 +20,47 @@ export default function Settings({ user }: { user: IUser; }) {
     setTheme(e.currentTarget.checked ? "dark" : "light");
   }
 
-  const handleSubmit = async () => {
-    const username = (document.getElementById("username") as HTMLInputElement).value;
-    const email = (document.getElementById("email") as HTMLInputElement).value;
-    const bio = (document.getElementById("bio") as HTMLTextAreaElement).value;
-
-    try {
-      const response = await fetch(`http://localhost:3001/updateuser`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          oldusername: user.username,
-          username: username,
-          email: email,
-          bio: bio
-        }),
-      });
-
-      if (!response.ok) throw new Error("Failed to update user");
-
-      const data = await response.json();
-      console.log("User updated:", data);
-      alert("User details updated successfully!");
-    } catch (error) {
-      console.error("Error updating user:", error);
+  function handleAttachImage(event: ChangeEvent<HTMLInputElement>) {
+    if (event.target.files) {
+      const newIconUrl = Array.from(event.target.files).map((file) => URL.createObjectURL(file));
+      setIconUrl(newIconUrl[0]);
     }
   }
+
+  const handleSubmit = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("oldusername", user.username);
+      formData.append("username", username);
+      formData.append("email", email);
+      formData.append("bio", bio);
+
+      if (iconUrl !== user.icon.imageUrl) {
+        const blob = await fetch(iconUrl).then((res) => res.blob());
+        formData.append("icon", new File([blob], "icon.jpg", { type: blob.type }));
+      }
+
+      const response = await fetch("http://localhost:3001/updateuser", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error("Failed to update details.");
+        console.error(data.message);
+      } else {
+        toast.success("Details updated successfully!");
+        setUsername(data.user.username);
+        setEmail(data.user.email);
+        setBio(data.user.description);
+      }
+  } catch (error) {
+    toast.error("An error has occurred.");
+    console.error("Error updating user:", error);
+  }
+}
 
   /* Example usage:
   updateUser("650abc123def456ghi789jkl", {
@@ -61,7 +79,8 @@ export default function Settings({ user }: { user: IUser; }) {
           name="username"
           placeholder="Enter your username..."
           required
-          defaultValue={user?.username} />
+          onChange={(e) => setUsername(e.target.value)}
+          value={username} />
 
         <label htmlFor="email">Email</label>
         <input
@@ -70,14 +89,33 @@ export default function Settings({ user }: { user: IUser; }) {
           name="email"
           placeholder="Enter your email..."
           required
-          defaultValue={user?.email} />
+          onChange={(e) => setEmail(e.target.value)}
+          value={email} />
 
         <label htmlFor="bio">Bio</label>
         <textarea
           name="bio"
           id="bio"
           placeholder="Introduce yourself!"
-          defaultValue={user?.description} />
+          onChange={(e) => setBio(e.target.value)}
+          value={bio} />
+
+        <div className="profile-icon-container">
+          <img src={iconUrl} alt="icon" className="profile-icon"/>
+          <button
+            className="edit-button"
+            onClick={() => document.getElementById("fileInput")?.click()}>
+            <UserRoundPen className="icon"/>
+          </button>
+        </div>
+
+        <input
+          type="file"
+          accept="image/*"
+          style={{ display: "none" }}
+          id="fileInput"
+          multiple
+          onChange={handleAttachImage} />
 
         <label htmlFor="update"></label>
         <button

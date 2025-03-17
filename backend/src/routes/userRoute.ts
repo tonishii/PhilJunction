@@ -1,4 +1,8 @@
 import express, { Request, Response, Router } from "express";
+import multer from "multer";
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 import User from "../models/user";
 import Post from "../models/post";
@@ -75,14 +79,22 @@ router.get('/user/:username/comments', async (req: Request, res: Response): Prom
     }
 });
 
-router.post("/updateuser", async (req: Request, res: Response): Promise<any> => {
+router.post("/updateuser", upload.single("icon"), async (req: Request, res: Response): Promise<any> => {
     try {
-        const { oldusername, username, email, bio } = req.body; // Extract fields from request body
+        const { oldusername, username, email, bio } = req.body;
+
+        const newIcon = req.file ? {
+            contentType: req.file.mimetype,
+            data: req.file.buffer
+        } : undefined;
+
+        const updateFields: any = { username, email, description: bio };
+        if (newIcon) updateFields.icon = newIcon;
 
         const result = await User.findOneAndUpdate(
-            { username: oldusername},
-            { $set: {username: username, email: email, bio: bio} }, // Update fields
-            { new: true, runValidators: true } // Return updated user & apply validation
+            { username: oldusername },
+            { $set: updateFields },
+            { new: true, runValidators: true },
         );
 
         if (!result) {
@@ -91,7 +103,7 @@ router.post("/updateuser", async (req: Request, res: Response): Promise<any> => 
 
         return res.status(200).json({ message: "User updated successfully", user: result });
     } catch (err) {
-        res.status(500).json({ message: "Server error", error: err });
+        res.status(500).json({ message: err });
     }
 });
 

@@ -21,23 +21,20 @@ export default function CreatePost() {
   }
 
   const submitPost = async () => {
-    let postTitle = (document.getElementById("title") as HTMLTextAreaElement)?.value;
-    let postContent = (document.getElementById("editor") as HTMLTextAreaElement)?.value;
-
     const formData = new FormData();
 
     // Add text data
-    formData.append("postTitle", postTitle || "");
-    formData.append("postContent", postContent || "");
+    formData.append("postTitle", title || "");
+    formData.append("postContent", content || "");
     formData.append("tags", JSON.stringify(tags));
 
-    console.log("Post Title:", postTitle);
-    console.log("Post Content:", postContent);
+    console.log("Post Title:", title);
+    console.log("Post Content:", content);
     console.log("Tags:", tags);
 
     for (let i = 0; i < images.length; i++) {
-      const file = await imageUrlToFile(images[i]);  // Await the conversion
-      formData.append('images', file);  // Ensure 'images' is the field name
+      const file = await imageUrlToFile(images[i]);
+      formData.append('images', file)
     }
 
       try {
@@ -47,10 +44,9 @@ export default function CreatePost() {
         });
 
         if (response.ok) {
-          const result = await response.json();
           navigate("/");
         } else {
-          const errorMessage = await response.text();;
+          const errorMessage = await response.text();
           toast.error(`${errorMessage || "Server Error"}`);
         }
       } catch (error: unknown) {
@@ -123,8 +119,7 @@ export default function CreatePost() {
                 style={{ display: "none" }}
                 id="fileInput"
                 multiple
-                onChange={handleAttachImage}
-              />
+                onChange={handleAttachImage} />
             </div>
           </div>
 
