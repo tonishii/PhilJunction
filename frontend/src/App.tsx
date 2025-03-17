@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router";
-import { ToastContainer } from "react-toastify";
+import { Slide, ToastContainer } from "react-toastify";
 
 // Components
 import Header from "@components/header";
@@ -34,7 +34,9 @@ function App() {
   return (
     <Router>
       <Header />
-      <ToastContainer />
+      <ToastContainer
+        autoClose={3000}
+        transition={Slide}/>
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="user" element={<RandoUser />} />

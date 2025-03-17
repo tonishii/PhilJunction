@@ -1,19 +1,9 @@
 export interface IComment {
-  commentID: string;
+  commentID?: string;
   username: string;
   body: string;
-  postDate: Date;
-  topLevel: boolean;
+  postDate?: Date;
+  publicId: string;
+  parentId: string;
   replies: string[];
-  replyTo: string;
-}
-
-export interface ICommentTree {
-  commentID: string;
-  username: string;
-  body: string;
-  postDate: Date;
-  topLevel: boolean;
-  replies: ICommentTree[];
-  replyTo: string;
 }

@@ -2,26 +2,31 @@ import Comment from "@/components/comment"
 import { IUser } from "@/models/userType"
 import { useEffect, useState } from "react";
 import { IComment } from "@/models/commentType";
+import { toast } from "react-toastify";
 
 export default function UserComments({ user }: { user: IUser; }) {
   const [comments, setComments] = useState<IComment[]>([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/user/${user.username}/comments`).
-      then((response) =>  response.json()).
-      then((data) => {
-        if (data.message) {
+    async function fetchComments() {
+      const res = await fetch(`http://localhost:3001/user/${user.username}/comments`);
+      const data = await res.json();
 
-        } else {
-          setComments(data);
-        }
-      })
+      if (res.ok) {
+        setComments(data.comments);
+        console.log(data.message);
+      } else {
+        toast.error("An error has occured.");
+        console.error(data.message);
+      }
+    }
+    fetchComments();
   }, [user]);
 
   return (
     <div className="user-comments-container">
-      {(comments.length > 0) ? (comments.map((comment) =>
-        <Comment comment={comment} />
+      {(comments.length > 0) ? (comments.map((comment, i) =>
+        <Comment key={comment.commentID ?? "" + i} commentData={comment} />
       )) : <p className="error">No comments found!</p> }
     </div>
   )

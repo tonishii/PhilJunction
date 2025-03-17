@@ -7,20 +7,11 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 
 export default function CreatePost() {
-  const navigate = useNavigate();
-
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
-
-  function handleTitleEdit(event: ChangeEvent<HTMLTextAreaElement>) {
-    setTitle(event.target.value);
-  }
-
-  function handleEditorEdit(event: ChangeEvent<HTMLTextAreaElement>) {
-    setContent(event.target.value);
-  }
+  const navigate = useNavigate();
 
   function handleAttachImage(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files) {
@@ -30,23 +21,20 @@ export default function CreatePost() {
   }
 
   const submitPost = async () => {
-    let postTitle = (document.getElementById("title") as HTMLTextAreaElement)?.value;
-    let postContent = (document.getElementById("editor") as HTMLTextAreaElement)?.value;
-
     const formData = new FormData();
 
     // Add text data
-    formData.append("postTitle", postTitle || "");
-    formData.append("postContent", postContent || "");
+    formData.append("postTitle", title || "");
+    formData.append("postContent", content || "");
     formData.append("tags", JSON.stringify(tags));
 
-    console.log("Post Title:", postTitle);
-    console.log("Post Content:", postContent);
+    console.log("Post Title:", title);
+    console.log("Post Content:", content);
     console.log("Tags:", tags);
 
     for (let i = 0; i < images.length; i++) {
-      const file = await imageUrlToFile(images[i]);  // Await the conversion
-      formData.append('images', file);  // Ensure 'images' is the field name
+      const file = await imageUrlToFile(images[i]);
+      formData.append('images', file)
     }
 
       try {
@@ -56,10 +44,9 @@ export default function CreatePost() {
         });
 
         if (response.ok) {
-          const result = await response.json();
           navigate("/");
         } else {
-          const errorMessage = await response.text();;
+          const errorMessage = await response.text();
           toast.error(`${errorMessage || "Server Error"}`);
         }
       } catch (error: unknown) {
@@ -76,13 +63,13 @@ export default function CreatePost() {
   return (
     <main>
       <div className="create-post-container">
-          <div className="post-body">
+          <div className="create-post-body">
             <div className="create-post-header">
               <textarea
                 name="title"
                 id="title"
                 placeholder="Add a Title..."
-                onChange={handleTitleEdit}
+                onChange={(e) => setTitle(e.target.value)}
                 maxLength={100}/>
               <span
                 className={
@@ -103,10 +90,10 @@ export default function CreatePost() {
                   name="editor"
                   id="editor"
                   placeholder="Start typing here..."
-                  onChange={handleEditorEdit}/>
+                  onChange={(e) => setContent(e.target.value)}/>
               </div>
 
-              <ReactMarkdown className="create-post-body" children={content}/>
+              <ReactMarkdown className="create-post-MD" children={content}/>
 
               <div className="image-preview">
                 {images.map((img, index) => (
@@ -132,8 +119,7 @@ export default function CreatePost() {
                 style={{ display: "none" }}
                 id="fileInput"
                 multiple
-                onChange={handleAttachImage}
-              />
+                onChange={handleAttachImage} />
             </div>
           </div>
 

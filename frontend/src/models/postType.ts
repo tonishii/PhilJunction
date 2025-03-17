@@ -1,17 +1,17 @@
+export interface ImageBuffer {
+  imageUrl: string;
+  contentType: string;
+}
+
 export interface IPost {
-  postID: string;
+  publicId: string;
   username: string;
   title: string;
   postDate: Date;
   body: string;
-  images: Blob[];
+  images: ImageBuffer[];
   tags: string[];
   likes: number;
   dislikes: number;
   comments: string[];
-  publicId: string;
-  convertedImg: {
-    contentType: string;
-    imageUrl: string;
-}[]
 }

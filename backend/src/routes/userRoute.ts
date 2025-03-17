@@ -1,12 +1,14 @@
-import { Request, Response } from "express";
+import express, { Request, Response, Router } from "express";
+import multer from "multer";
 
-const express = require('express');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 import User from "../models/user";
 import Post from "../models/post";
 import Comment from "../models/comment";
-import { error } from "console";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.get('/randomuser', async (req: Request, res: Response) => {
     try {
@@ -26,7 +28,12 @@ router.get('/user/:username', async (req: Request, res: Response): Promise<any> 
             return res.status(404).json({ message: "User not found." });
         }
 
-        return res.status(200).json(user);
+        const icon = {
+            contentType: user.icon.contentType,
+            imageUrl: `data:${user.icon.contentType};base64,${user.icon.data.toString('base64')}`
+        };
+
+        return res.status(200).json({ message: "User data successfully pulled", user: { ...user.toObject(), icon: icon } });
     } catch (err) {
         res.status(500).json({ message: "Server error:", err });
     }
@@ -43,10 +50,10 @@ router.get('/user/:username/posts', async (req: Request, res: Response): Promise
         const posts = await Post.find({ userId: user._id });
 
         if (!posts || posts.length === 0) {
-            return res.status(404).json({ message: "No posts yet. " });
+            return res.status(200).json({ message: "No posts yet. ", posts: [] });
         }
-
-        res.json(posts);
+        console.log(posts);
+        return res.status(200).json({ message: "Posts of user successfully pulled.", posts: posts });
     } catch (err) {
         res.status(500).json({ message: "Server error:", err });
     }
@@ -63,24 +70,31 @@ router.get('/user/:username/comments', async (req: Request, res: Response): Prom
         const comments = await Comment.find({ userId: user._id });
 
         if (!comments || comments.length === 0) {
-            return res.status(404).json({ message: "No comments yet. " });
+            return res.status(200).json({ message: "No comments yet.", comments: [] });
         }
 
-        res.json(comments);
+        return res.status(200).json({ message: "Comments of user successfully pulled.", comments: comments });
     } catch (err) {
         res.status(500).json({ message: "Server error:", err });
     }
 });
 
-/* Allow users to update their username, email, and bio, you need to add an update user route. */
-router.post("/updateuser", async (req: Request, res: Response): Promise<any> => {
+router.post("/updateuser", upload.single("icon"), async (req: Request, res: Response): Promise<any> => {
     try {
-        const { oldusername, username, email, bio } = req.body; // Extract fields from request body
+        const { oldusername, username, email, bio } = req.body;
+
+        const newIcon = req.file ? {
+            contentType: req.file.mimetype,
+            data: req.file.buffer
+        } : undefined;
+
+        const updateFields: any = { username, email, description: bio };
+        if (newIcon) updateFields.icon = newIcon;
 
         const result = await User.findOneAndUpdate(
-            { username: oldusername},
-            { $set: {username: username, email: email, bio: bio} }, // Update fields
-            { new: true, runValidators: true } // Return updated user & apply validation
+            { username: oldusername },
+            { $set: updateFields },
+            { new: true, runValidators: true },
         );
 
         if (!result) {
@@ -89,7 +103,7 @@ router.post("/updateuser", async (req: Request, res: Response): Promise<any> => 
 
         return res.status(200).json({ message: "User updated successfully", user: result });
     } catch (err) {
-        res.status(500).json({ message: "Server error", error: err });
+        res.status(500).json({ message: err });
     }
 });
 

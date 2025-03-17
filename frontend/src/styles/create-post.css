@@ -1,8 +1,9 @@
 .create-post-container {
   display: grid;
   width: min(800px, 100vw);
-  height: 70vh;
-  grid-template-columns: auto 50px;
+  height: 600px;
+  border-radius: 10px;
+  grid-template-columns: auto 65px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -11,6 +12,12 @@
   line-height: 1.5em;
   border-radius: 10px 0px 0px 0px;
   background-color: #DAD8D7;
+}
+
+.create-post-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .title-overflow {
@@ -68,8 +75,8 @@
   border-radius: 5px;
   resize: vertical;
   padding: 0px;
-  min-height: 3em;
-  max-height: 7em;
+  min-height: 5em;
+  max-height: 10em;
   width: 100%;
   background-color: #F6F7EB;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -140,14 +147,14 @@
   align-items: center;
 }
 
-.create-post-body {
+.create-post-MD {
   padding: 10px 20px 0px;
   height: auto;
   word-wrap: break-word;
   white-space: pre-wrap;
 }
 
-.create-post-body>* {
+.create-post-MD>* {
   margin: 0;
   line-height: 1em;
 }

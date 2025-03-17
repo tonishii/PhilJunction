@@ -1,13 +1,9 @@
-import { Request, Response } from "express";
-
-import express from 'express';
-import multer from 'multer';
+import express, { Request, Response, Router } from "express";
 
 import User from "../models/user";
 import Post from "../models/post";
 
-const router = express.Router();
-const storage = multer.memoryStorage();  // Store the files in memory (Buffer)
+const router: Router = express.Router();
 
 router.post("/register", async (req: Request, res: Response): Promise<any> => {
   const { username, email, password, confirmPW } = req.body;
@@ -15,11 +11,12 @@ router.post("/register", async (req: Request, res: Response): Promise<any> => {
   if (!username || !email || !password || !confirmPW)
     return res.status(400).json({ message: req.body });
 
-  if(password !== confirmPW)
+  if (password !== confirmPW)
     return res.status(400).json({message: 'Passwords do not match.'});
 
   try {
     const user = await User.findOne({ username, email, password }).exec();
+
     if(user)
       return res.status(400).json({message: 'Account already exists.'});
 
@@ -36,6 +33,7 @@ router.post("/register", async (req: Request, res: Response): Promise<any> => {
 router.post("/login", async (req: Request, res: Response): Promise<any> => {
   const { username, password } = req.body;
   console.log(username, password);
+
   try {
     const user = await User.findOne({ username, password }).exec();
     if(user)

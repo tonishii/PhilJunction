@@ -30,7 +30,6 @@ export default function SignUp() {
         body: JSON.stringify(Object.fromEntries(formData.entries())),
       });
 
-      const result = await response.json();
       if (response.ok) {
         navigate("/");
       } else {

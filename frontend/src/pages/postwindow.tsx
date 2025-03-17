@@ -1,192 +1,226 @@
 import "@/styles/post-styles.css";
 
-import Comment from "@/components/comment";
-// import ImageCarousel from "@/components/imagecarousel";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import ReactMarkdown from "react-markdown";
+import { toast } from 'react-toastify';
+import moment from "moment";
 import {
   ThumbsUp,
   ThumbsDown,
   MessageCircle,
   CornerDownLeft,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import moment from "moment";
+
+import Comment from "@/components/comment";
+import ImageCarousel from "@/components/imagecarousel";
 import { IPost } from "@/models/postType";
-import { ICommentTree } from "@/models/commentType";
-import { toast } from 'react-toastify';
+import { IComment } from "@/models/commentType";
 
 export default function PostWindow() {
   const { postId } = useParams();
-  const [postData, setPostData] = useState<IPost>({} as IPost);
+  const [post, setPost] = useState<IPost>({} as IPost);
+  const [vote, setVote] = useState<boolean | null>(null);
 
-  const [vote, setVote] = useState<"up" | "down" | null>(null);
   const [commentValue, setCommentValue] = useState("");
-  const [commentTree, setCommentTree] = useState<ICommentTree[]>([]);
-  const [memoizedComments, setMemoizedComments] = useState<Map<string, ICommentTree>>(new Map());
+  const [comments, setComments] = useState<IComment[]>([]);
+  const [commentCount, setCommentCount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(`http://localhost:3001/retrievepost/${postId}`);
-      if (response.ok) {
-        const data: IPost = await response.json();
-        setPostData(data);
-        // console.log(data);
 
-        const comments = data.comments;
-        const values = await Promise.all(comments.map(id => fetch(`http://localhost:3001/retrievecomment/${id}`)));
-        setMemoizedComments(new Map((await Promise.all(values.map(v => v.json()))).map((v, i) => [comments[i], v])));
+      if (response.ok) {
+        const { message, post } = await response.json();
+        setPost(post);
+        console.log(message);
+
+        const commentsData = await Promise.all(
+          post.comments.map(async (commentId: string) => {
+            const res = await fetch(`http://localhost:3001/retrievecomment/${commentId}`);
+            const data = await res.json();
+
+            if (!res.ok) {
+              toast.error("An error has occurred.");
+              console.error(data.message);
+              return null;
+            } else {
+              console.log(data.message);
+              return data.comment;
+            }
+          })
+        );
+
+        const filteredComments = commentsData.filter(Boolean);
+        setComments(filteredComments);
+        setCommentCount(filteredComments.length);
       } else {
-        console.log(response);
+        toast.error("An error has occured");
+        console.error(response);
       }
     }
+
+    async function fetchVote() {
+      const res = await fetch(`http://localhost:3001/retreivevote/${postId}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("A server error has occured vote pull.");
+      } else {
+        setVote(data.initialVote);
+      }
+    }
+
     fetchData();
+    fetchVote();
   }, [postId]);
-
-  const newCommentRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-
-    const topLevelComments: ICommentTree[] = [];
-    memoizedComments.forEach(c => { if (c.topLevel) topLevelComments.push(c) });
-    setCommentTree(topLevelComments);
-
-  }, [memoizedComments])
-
-  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCommentValue(event.target.value);
-  };
-
-  const navigate = useNavigate();
 
   function handleDate(datePosted: Date = new Date()): string {
     return moment(datePosted).fromNow();
   }
 
-  function handleUpvote(): void {
-    if (vote === "up") {
-      setVote(null);
-      // setLikeCount(likeCount - 1);
-    } else {
-      setVote("up");
-      // setLikeCount(likeCount + 1);
+  async function handleUpvote(): Promise<any> {
+    try {
+      const res = await fetch(`http://localhost:3001/upvote/${post.publicId}`, {
+        method: "POST",
+      });
 
-      if (vote === "down") {
-        // setDislikeCount(dislikeCount - 1);
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("An error has occured.");
+        console.error(data.message);
+        return;
       }
+
+      if (data.likes !== undefined && data.dislike !== undefined) {
+        setPost((post) => ({...post, likes: data.likes}));
+        setPost((post) => ({...post, dislikes: data.dislike}));
+
+        if (vote === true) {
+          setVote(null);
+        } else {
+          setVote(true);
+        }
+        console.log(data.message);
+      }
+    } catch (err: any) {
+      toast.error("A server error occured.");
+      console.error(err);
     }
   }
 
-  function handleDownvote(): void {
-    if (vote === "down") {
-      setVote(null);
-      // setDislikeCount(dislikeCount - 1);
-    } else {
-      setVote("down");
-      // setDislikeCount(dislikeCount + 1);
+  async function handleDownvote(): Promise<any> {
+    try {
+      const res = await fetch(`http://localhost:3001/downvote/${post.publicId}`, {
+        method: "POST",
+      });
 
-      if (vote === "up") {
-        // setLikeCount(likeCount - 1);
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("An error has occured.");
+        console.error(data.message);
+        return;
       }
+
+      if (data.likes !== undefined && data.dislike !== undefined) {
+        setPost((post) => ({...post, likes: data.likes}));
+        setPost((post) => ({...post, dislikes: data.dislike}));
+
+        if (vote === false) {
+          setVote(null);
+        } else {
+          setVote(false);
+        }
+        console.log(data.message);
+      }
+    } catch (err: any) {
+      toast.error("A server error occured.");
+      console.error(err);
     }
   }
 
   async function handleAddComment(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === "Enter" && commentValue.trim() !== "") {
+    if (event.key !== "Enter" || commentValue.trim() === "") return;
 
-      try {
-        const res = await fetch("http://localhost:3001/submitcomment", {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username: "Protea",
-            body: commentValue,
-            postId: postId,
-            topLevel: true,
-            replyTo: postData.username
-          }),
-        });
+    try {
+      const res = await fetch("http://localhost:3001/submitcomment", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: "ANTHIMON",
+          body: commentValue,
+          publicId: postId,
+          parentId: postId,
+          type: "Comment",
+        }),
+      });
 
-        if (res.ok) {
-          const resJson = await res.json();
-          setCommentValue("");
-          console.log(resJson);
-          setMemoizedComments(a => new Map([...a, [resJson._id, resJson.comment]]));
-        } else {
-          const errorData = await res.json();
-          toast.error("Server error:", errorData.message);
-        }
-      } catch (e: unknown) {
-        toast.error("An error occurred while submitting the comment.");
-        console.log(e);
+      const data = await res.json();
+      if (res.ok) {
+        setCommentValue("");
+
+        console.log(data.message);
+        setComments((prevComments) => [...prevComments, data.newComment]);
+        setCommentCount((prev) => prev + 1);
+      } else {
+        toast.error("An error has occured.");
+        console.error(data.message);
       }
+    } catch (err: unknown) {
+      toast.error("An error occurred while submitting the comment.");
+      console.log(err);
     }
   }
 
-  // const handleAddReply = (newReply: IComment, commentID: string) => {
-  //   newReply.commentID = commentID;
-  //   setComments((prevComments) =>
-  //     prevComments.map((comment) =>
-  //       comment.commentID === newReply.replyTo
-  //         ? { ...comment, replies: [...comment.replies, newReply] }
-  //         : comment
-  //     )
-  //   );
-  // };
-
-  // const handleDeleteComment = (commentID: string) => {
-  //   setComments((prevComments) =>
-  //     prevComments.filter((comment) => comment.commentID !== commentID)
-  //   );
-  // };
-
-  // const handleEditComment = (commentID: string, updatedBody: string) => {
-  //   setComments((prevComments) =>
-  //     prevComments.map((comment) =>
-  //       comment.commentID === commentID
-  //         ? { ...comment, body: updatedBody }
-  //         : comment
-  //     )
-  //   );
-  // };
+  function handleDeleteComment(commentID: string) {
+    setComments((prevComments) => {
+    const updatedComments = prevComments.filter((comment) => comment.commentID !== commentID);
+    setCommentCount(updatedComments.length);
+    return updatedComments;
+  });
+  };
 
   return (
     <div className="post-window-container">
       <div className="post-window-header">
-        <div className="post-window-header-info">
-          <h1>
-            {postData?.title} &sdot;{" "}
-            <span className="gray">{handleDate(postData?.postDate)}</span>
-          </h1>
-
-          <button className="round-button" onClick={() => navigate(-1)}>
+        <div className="post-window-title">
+          <h1>{post?.title}</h1>
+          <button className="round-button top-right" onClick={() => navigate(-1)}>
             <CornerDownLeft className="icon black" />
           </button>
         </div>
 
-        <p className="gray">Posted by {postData?.username}</p>
+        <hr />
+
+        <div className="post-info">
+          <b className="post-author">Posted by <span className="gray-color">{post?.username}</span> </b>
+          <i className="post-date">{handleDate(post?.postDate)}</i>
+        </div>
       </div>
 
       <div className="post-window-main">
         <div className="tag-list">
-          {postData?.tags?.map((tag, i) => (
+          {post?.tags?.map((tag, i) => (
             <span key={tag + i} className="tag">
               {tag}
             </span>
           ))}
         </div>
 
-        {/* <ImageCarousel images={post.images} maxImages={3} /> WARNING THIS IS A BLOB!!!*/}
-        <ReactMarkdown className="post-body" children={postData?.body} />
+        <ImageCarousel images={post.images} maxImages={3} />
+        <ReactMarkdown className="post-body" children={post?.body} />
       </div>
 
       <div className="post-window-footer">
         <div className="post-button">
-          <span className="count">{postData?.likes}</span>
+          <span className="like-count">{post?.likes}</span>
           <button
-            className={`round-button ${vote === "up" ? "selected-up" : ""}`}
+            className={`round-button ${vote === true ? "selected-up" : ""}`}
             onClick={handleUpvote}
           >
             <ThumbsUp className="icon" />
@@ -195,20 +229,20 @@ export default function PostWindow() {
 
         <div className="post-button">
           <button
-            className={`round-button ${vote === "down" ? " selected-down" : ""
+            className={`round-button ${vote === false ? " selected-down" : ""
               }`}
             onClick={handleDownvote}
           >
             <ThumbsDown className="icon" />
           </button>
-          <span className="count">{postData?.dislikes}</span>
+          <span className="dislike-count">{post?.dislikes}</span>
         </div>
 
         <div className="post-button">
           <button className="round-button">
             <MessageCircle className="icon" />
           </button>
-          {/* <span className="count">{postData?.comments?.length}</span> */}
+          <span className="comment-count">{commentCount}</span>
         </div>
 
         <input
@@ -216,7 +250,7 @@ export default function PostWindow() {
           placeholder="Add a Comment"
           id="comment-input"
           className="comment-input"
-          onChange={handleCommentChange}
+          onChange={(e) => setCommentValue(e.target.value)}
           onKeyUp={handleAddComment}
           value={commentValue}
         />
@@ -224,17 +258,16 @@ export default function PostWindow() {
 
       <div className="post-window-comments">
         <h1>Comments</h1>
-        {commentTree.length > 0 ? commentTree.map(comment => <Comment comment={comment} isReplyable={true} />) : "Loading..."}
-
-        <div ref={newCommentRef} />
-        {/* {comments.map((comment) =>
-          <Comment
-            comment={comment}
-            isReplyable={true}
-            onAddReply={handleAddReply}
-            onDeleteComment={handleDeleteComment}
-            onEditComment={handleEditComment} />
-        )} */}
+        { comments.length > 0 ?
+          comments.map((comment, i) =>
+            <Comment
+              key={(comment.commentID ?? "") + i}
+              commentData={comment}
+              isReplyable={true}
+              onDeleteComment={handleDeleteComment}
+              setCommentCount={setCommentCount} />)
+          : comments.length === 0 ? <p>No comments yet!</p>
+          :<p>"Loading..."</p> }
       </div >
     </div >
   );

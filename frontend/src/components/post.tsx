@@ -7,6 +7,7 @@ import { Link } from "react-router";
 import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
 import { IPost } from '@/models/postType';
+import { toast } from 'react-toastify';
 
 export default function Post({
   post,
@@ -15,11 +16,11 @@ export default function Post({
   initialDislikes = 0,
 }: {
   post: IPost;
-  initialVote?: "up" | "down" | null;
+  initialVote?: boolean | null;
   initialLikes?: number;
   initialDislikes?: number;
 }) {
-  const [vote, setVote] = useState<"up" | "down" | null>(initialVote);
+  const [vote, setVote] = useState<boolean | null>(initialVote);
   const [likeCount, setLikeCount] = useState(initialLikes);
   const [dislikeCount, setDislikeCount] = useState(initialDislikes);
   const [commentCount] = useState(post.comments.length ?? 0);
@@ -28,54 +29,89 @@ export default function Post({
     return moment(datePosted).fromNow();
   }
 
-  function handleUpvote(): void {
-    if (vote === "up") {
-      setVote(null);
-      setLikeCount(likeCount - 1);
-    } else {
-      setVote("up");
-      setLikeCount(likeCount + 1);
+  async function handleUpvote(): Promise<any> {
+    try {
+      const res = await fetch(`http://localhost:3001/upvote/${post.publicId}`, {
+        method: "POST",
+      });
 
-      if (vote === "down") {
-        setDislikeCount(dislikeCount - 1);
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("An error has occured.");
+        console.error(data.message);
+        return;
       }
+
+      if (data.likes !== undefined && data.dislike !== undefined) {
+        setLikeCount(data.likes);
+        setDislikeCount(data.dislike);
+
+        if (vote === true) {
+          setVote(null);
+        } else {
+          setVote(true);
+        }
+        console.log(data.message);
+      }
+    } catch (err: any) {
+      toast.error("A server error occured.");
+      console.error(err);
     }
   }
 
-  function handleDownvote(): void {
-    if (vote === "down") {
-      setVote(null);
-      setDislikeCount(dislikeCount - 1);
-    } else {
-      setVote("down");
-      setDislikeCount(dislikeCount + 1);
+  async function handleDownvote(): Promise<any> {
+    try {
+      const res = await fetch(`http://localhost:3001/downvote/${post.publicId}`, {
+        method: "POST",
+      });
 
-      if (vote === "up") {
-        setLikeCount(likeCount - 1);
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("An error has occured.");
+        console.error(data.message);
+        return;
       }
+
+      if (data.likes !== undefined && data.dislike !== undefined) {
+        setLikeCount(data.likes);
+        setDislikeCount(data.dislike);
+
+        if (vote === false) {
+          setVote(null);
+        } else {
+          setVote(false);
+        }
+        console.log(data.message);
+      }
+    } catch (err: any) {
+      toast.error("A server error occured.");
+      console.error(err);
     }
   }
 
   return (
     <div className="post-container">
-      <div className="post-body">
+      <div className="post-main">
         <div className="post-header">
-          <Link to={`/post/${post.publicId}`} className="post-link">
-            <h1>
-              {post.title} &sdot;{" "}
-              <span className="gray">{handleDate(post.postDate)}</span>
-            </h1>
+          <Link to={`/post/${post.publicId}`} className="black-color">
+            <h2>{post.title}</h2>
+            <hr />
+            <div className="post-info">
+              <b className="post-author">Posted by <span className="gray-color">{post.username}</span> </b>
+              <i className="post-date">{handleDate(post.postDate)}</i>
+            </div>
           </Link>
-          <p className="gray">Posted by {post.username}</p>
         </div>
 
-        <div className="post-main">
+        <div className="post-body-container">
           <ReactMarkdown className="post-body" children={post.body} />
           <div className="matchWidth">
-            <ImageCarousel images={post.convertedImg} maxImages={1} />
+            <ImageCarousel images={post.images} maxImages={1} />
           </div>
-
         </div>
+
         <div className="post-footer">
           {post.tags.map((tag, i) => (
             <span key={tag + i} className="tag">
@@ -87,22 +123,21 @@ export default function Post({
 
       <div className="post-sidebar">
         <div className='post-button'>
-          <span className='count'>{likeCount}</span>
+          <span className='like-count'>{likeCount}</span>
           <button
-            className={`round-button ${vote === "up" ? "selected-up" : ""}`}
-            onClick={handleUpvote}
-          >
+            className={`round-button ${vote === true ? "selected-up" : ""}`}
+            onClick={handleUpvote}>
             <ThumbsUp className="icon" />
           </button>
         </div>
 
         <div className="post-button">
           <button
-            className={`round-button ${vote === "down" ? " selected-down" : ""}`}
+            className={`round-button ${vote === false ? " selected-down" : ""}`}
             onClick={handleDownvote}>
             <ThumbsDown className="icon" />
           </button>
-          <span className='count'>{dislikeCount}</span>
+          <span className='dislike-count'>{dislikeCount}</span>
         </div>
 
         <div className="post-button">
@@ -111,7 +146,7 @@ export default function Post({
               <MessageCircle className="icon" />
             </button>
           </Link>
-          <span className='count'>{commentCount}</span>
+          <span className='comment-count'>{commentCount}</span>
         </div>
       </div>
     </div>

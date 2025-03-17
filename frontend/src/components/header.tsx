@@ -1,17 +1,16 @@
 import { Menu, Search, User, BadgePlus } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Logo from "@/components/logo";
 
 export default function Header() {
+  const navigate = useNavigate();
+
   function handleSearch(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter") {
-      const searchInput = document.getElementById(
-        "search-input"
-      ) as HTMLInputElement;
-      const searchQuery = searchInput.value;
-
-      // Search for posts with the search in a search page
-      // query here...
+      const searchInput = event.currentTarget.value.trim();
+      if (searchInput) {
+        navigate(`/search?q=${encodeURIComponent(searchInput)}`)
+      }
     }
   }
 

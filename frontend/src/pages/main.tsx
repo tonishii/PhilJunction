@@ -8,48 +8,102 @@ import { toast } from "react-toastify";
 
 export default function Main() {
   const [posts, setPosts] = useState<IPost[]>([]);
-  const [popPosts, setPopPosts] = useState<IPost[]>([]);
+  const [trendingPosts, setTrending] = useState<IPost[]>([]);
+  const [votes, setVotes] =
+    useState<{
+      [key: string]: {
+        initialLikes: number;
+        initialDislikes: number;
+        initialVote: boolean | null
+      }
+    }> ({});
+
+  async function getGeneralPosts() {
+    try {
+      const res = await fetch("http://localhost:3001/retrieveposts");
+      const general = await res.json();
+
+      if (!res.ok) {
+        toast.error("A server error has occured when pulling general.");
+        console.log(general.error);
+      }
+
+      setPosts(general);
+    } catch (error: unknown) {
+      toast.error("Something went wrong.");
+      console.log(error);
+    }
+  }
+
+  async function getPopularPosts() {
+    try {
+      const res = await fetch("http://localhost:3001/trendingposts");
+      const popular = await res.json();
+
+      if (!res.ok) {
+        toast.error("A server error has occured when pulling popular.");
+        console.log(popular.error);
+      }
+
+      setTrending(popular);
+    } catch (error: unknown) {
+      toast.error("Something went wrong.");
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const resp = await fetch("http://localhost:3001/retrieveposts");
-        console.log(resp);
-        if (!resp.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data: IPost[] = await resp.json();
-        
-        setPosts(data);
-        const response = await fetch("http://localhost:3001/trendingposts");
-        console.log(resp);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const popular = await response.json();
-        setPopPosts(popular);
-      }
-      catch (error: unknown) {
-        toast.error("Something went wrong.");
-        console.log(error);
-      }
-    };
-    getPosts();
+    getGeneralPosts();
+    getPopularPosts();
   }, []);
+
+  useEffect(() => {
+    posts.forEach(async (post) => {
+    const res = await fetch(`http://localhost:3001/retreivevote/${post.publicId}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      toast.error("A server error has occured vote pull.");
+    } else {
+      setVotes(prevVotes => ({
+        ...prevVotes,
+        [post.publicId]: {
+          initialLikes: data.initialLikes,
+          initialDislikes: data.initialDislikes,
+          initialVote: data.initialVote
+        }
+      }));
+    }});
+  }, [posts]);
 
   return (
     <div className="main-container">
       <div className="left-container"></div>
       <div className="general-container">
-        {posts.map((i, j) => (
-          <Post key={j} post={i} />
-        ))}
+        {posts.map((post, i) => {
+          const voteData = votes[post.publicId];
+
+          if (!voteData) {
+            return <div key={i}>Loading...</div>;
+          }
+
+          return (
+            <Post
+              key={i}
+              post={post}
+              initialLikes={voteData.initialLikes}
+              initialDislikes={voteData.initialDislikes}
+              initialVote={voteData.initialVote}
+            />
+          );
+        })}
       </div>
 
       <div className="popular-posts-list">
         <span className="popular-posts-header">
           Trending Posts <Flame className="icon" />
         </span>
-        {popPosts.map((i, j) => (
+        {trendingPosts.map((i, j) => (
           <SmallPost key={j} post={i} />
         ))}
       </div>

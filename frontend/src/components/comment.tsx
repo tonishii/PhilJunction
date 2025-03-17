@@ -1,43 +1,53 @@
 import "@/styles/component-styles.css";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Ellipsis, MessageCircle, Send, Pencil } from "lucide-react";
 import { IComment } from "@/models/commentType";
 import moment from "moment";
 import { toast } from "react-toastify";
 
 export default function Comment({
-  comment,
+  commentData,
   isReplyable = false,
-  onAddReply = () => {},
-  onDeleteComment = () => {},
-  onEditComment = () => {},
+  onDeleteComment,
+  setCommentCount,
 }: {
-  comment: IComment;
+  commentData: IComment;
   isReplyable?: boolean;
-  onAddReply?: (newReply: IComment, commentID: string) => void;
-  onDeleteComment?: (commentID: string) => void;
-  onEditComment?: (commentID: string, updatedBody: string) => void;
+  onDeleteComment?: (commentId: string) => void;
+  setCommentCount?: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const [reply, setReply] = useState("");
+  const [comment, setComment] = useState<IComment>(commentData);
+  const [replies, setReplies] = useState<IComment[]>([]);
+
   const [edit, setEdited] = useState(comment.body);
   const [editVisible, setEditVisible] = useState(false);
+  const [reply, setReply] = useState("");
   const [replyVisible, setReplyVisible] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
 
-  const handleReplyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setReply(e.target.value);
-  };
+  useEffect(() => {
+    async function fetchReplies() {
+      if (!comment.replies || comment.replies.length === 0) return;
 
-  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEdited(e.target.value);
-  };
+      const commentsData = await Promise.all(
+        comment.replies.map(async (replyId: string) => {
+          const res = await fetch(`http://localhost:3001/retrievecomment/${replyId}`);
+          const data = await res.json();
 
-  function handleKeyUpReply(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleReply();
+          if (!res.ok) {
+            toast.error("An error has occurred.");
+            console.error(data.message);
+            return null;
+          } else {
+            console.log(data.message);
+            return data.comment;
+          }
+        })
+      );
+      setReplies(commentsData.filter(Boolean) ?? []);
     }
-  }
+    fetchReplies();
+  }, [comment.replies]);
 
   function handleKeyUpEdit(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
@@ -46,7 +56,45 @@ export default function Comment({
     }
   }
 
-  const handleEdit = async () => {
+  async function handleReply(event: React.KeyboardEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement>) {
+    if (reply.trim() === "") return;
+    if ("key" in event && event.key !== "Enter") return;
+
+    try {
+      const res = await fetch("http://localhost:3001/submitcomment", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: "ANTHIMON", // TENATIVE NO USER LOGIC
+          body: reply,
+          publicId: comment.publicId,
+          parentId: comment.commentID as string,
+          type: "Reply"
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setReply("");
+        setReplyVisible(false);
+
+        console.log(data.message);
+        setReplies((prevReplies) => [...prevReplies, data.newReply]);
+        setCommentCount?.((prev) => prev + 1);
+      } else {
+        toast.error("An error has occured.");
+        console.error(data.message);
+      }
+    } catch (error: any) {
+      toast.error("Error occurred while submitting reply.");
+      console.error(error);
+    }
+  };
+
+  async function handleEdit() {
     if (!edit.trim()) return;
 
     const updatedComment: IComment = {
@@ -60,26 +108,27 @@ export default function Comment({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          commentID: updatedComment.commentID,
-          body: updatedComment.body
-        }),
+        body: JSON.stringify(updatedComment),
       });
 
+      const data = await res.json();
       if (res.ok) {
-        const resJson = await res.json();
-        onEditComment(comment.commentID as string, resJson.comment.body);
+        setEdited("");
         setEditVisible(false);
+
+        setComment(data.comment);
+        console.log(data.message);
       } else {
-        const errorData = await res.json();
-        console.error("Server error:", errorData.message);
+        toast.error("An error has occured.");
+        console.error(data.message);
       }
-    } catch (error) {
+    } catch (error: any) {
       toast.error("Error occurred while editing reply.");
+      console.error(error);
     }
   };
 
-  const handleDelete = async () => {
+  async function handleDelete() {
     try {
       const res = await fetch(`http://localhost:3001/deletecomment`, {
         method: "POST",
@@ -91,55 +140,19 @@ export default function Comment({
         }),
       });
 
-      console.log(comment.commentID);
+      const data = await res.json();
+
       if (res.ok) {
-        const resJson = await res.json();
-        onDeleteComment(comment.commentID as string);
+        console.log(data.message);
+        onDeleteComment?.(comment.commentID as string);
+        setCommentCount?.((prev) => prev - 1);
       } else {
-        const errorData = await res.json();
-        console.error("Server error:", errorData.message);
+        toast.error("An error has occured.");
+        console.error(data.message);
       }
     } catch (error) {
       toast.error("Error occurred while deleting comment.");
-    }
-  };
-
-  const handleReply = async () => {
-    if (reply.trim() === "") return;
-
-    const newReply: IComment = {
-      commentID: null,
-      username: "Protea", // TENATIVE NO USER LOGIC
-      postDate: new Date(),
-      body: reply,
-      replyTo: comment.commentID as string,
-      replies: [],
-    };
-
-    try {
-      const res = await fetch("http://localhost:3001/submitcomment", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: newReply.username,
-          body: newReply.body,
-          replyTo: newReply.replyTo,
-        }),
-      });
-
-      if (res.ok) {
-        const resJson = await res.json();
-        onAddReply(resJson.comment, resJson.comment._id);
-        setReply("");
-        setReplyVisible(false);
-      } else {
-        const errorData = await res.json();
-        console.error("Server error:", errorData.message);
-      }
-    } catch (error) {
-      toast.error("Error occurred while submitting reply.");
+      console.error(error);
     }
   };
 
@@ -167,6 +180,12 @@ export default function Comment({
     }
   };
 
+  function handleDeleteComment(replyID: string) {
+    setReplies((prevReplies) =>
+      prevReplies.filter((reply) => reply.commentID !== replyID)
+    );
+  };
+
   return (
     <div className="comment-container">
       <div className="comment-header">
@@ -174,7 +193,7 @@ export default function Comment({
           <div>
             <span className="comment-name">{comment.username}</span>
             <span className="comment-date">
-              &nbsp;&sdot; {handleDate(comment.postDate)}
+              &nbsp;&sdot; {handleDate(comment.postDate as Date)}
             </span>
           </div>
 
@@ -192,9 +211,9 @@ export default function Comment({
                       name="reply"
                       id="reply"
                       value={reply}
-                      onChange={handleReplyChange}
-                      onKeyUp={handleKeyUpReply}
-                      placeholder="Write a reply..."
+                      onChange={(e) => setReply(e.target.value)}
+                      onKeyUp={handleReply}
+                      placeholder="Join the conversation!"
                     />
                     <button className="reply-button" onClick={handleReply}>
                       <Send className="icon" />
@@ -221,7 +240,7 @@ export default function Comment({
                               name="edit"
                               id="edit"
                               value={edit}
-                              onChange={handleEditChange}
+                              onChange={(e) => setEdited(e.target.value)}
                               onKeyUp={handleKeyUpEdit}
                               placeholder="Edit a comment..."
                             />
@@ -241,23 +260,22 @@ export default function Comment({
             </div>
           </div>
         </div>
-
-        {comment.replyTo && (
-          <div className="comment-reply">
-            reply to <span>&nbsp;{comment.replyTo}</span>
-          </div>
-        )}
       </div>
 
       <p>{comment.body}</p>
 
-      {comment.replies.length > 0 && (
-        <div className="replies-container">
-          {comment.replies.map((reply, ind) => (
-            <Comment key={comment.commentID as string + ind} comment={reply} isReplyable={true} onAddReply={onAddReply} />
-          ))}
-        </div>
-      )}
+      <div className="replies-container">
+        { replies.length > 0 &&
+          replies.map((reply, i) => (
+            <Comment
+              key={(reply.commentID ?? "") + i}
+              commentData={reply}
+              isReplyable={true}
+              onDeleteComment={handleDeleteComment}
+              setCommentCount={setCommentCount} />
+          ))
+        }
+      </div>
     </div>
   );
 }

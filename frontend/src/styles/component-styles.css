@@ -3,6 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
   padding: 10px;
   background-color: #E94F37;
 }
@@ -26,7 +27,6 @@
 }
 
 .header-logo {
-  display: block;
   width: 40px;
   height: 40px;
 }
@@ -79,11 +79,11 @@
 
 /* Comment */
 .comment-container {
-  min-width: 250px;
-  min-height: 100px;
-  padding: 10px;
-  border-radius: 10px;
-  padding-left: 10px;
+  min-height: 90px;
+  width: 100%;
+  border-radius: 5px;
+  margin: 20px 0px;
+  padding-left: 30px;
   border-left-width: 3px;
   border-left-style: solid;
   border-color: var(--field2); /* #4E565A dark|light #b1a9a5 */
@@ -91,20 +91,24 @@
 
 .comment-container p {
   color: var(--text1); /* #f6f7eb dark|light #090814 */
-  margin-bottom: 10px;
+  margin: 0px;
 }
 
 .comment-header {
   display: grid;
-  grid-template-rows: 1fr 1fr;
   font-weight: bold;
   font-size: 18px;
   color: var(--comment1); /* #ADD8E6 dark|light #522719 */
 }
 
 .comment-name {
-  font-size: 24px;
-  color: var(--text1); /* #F6F7EB dark|light #090814 */
+  font-weight: 700;
+  color: #2c2f33;
+}
+
+.comment-date {
+  color: #2c2f33;
+  font-weight: lighter;
 }
 
 .comment-reply {
@@ -127,14 +131,13 @@
 
 .comment-menu {
   position: relative;
-  padding: 5px;
-  margin: 5px;
 }
 
 .comment-sidebuttons {
   display: flex;
   align-items: center;
-  background-color: #595e66;
+  height: 30px;
+  background-color: #2c2f33;
   border-radius: 10px;
 }
 
@@ -142,16 +145,18 @@
   display: flex;
   align-items: center;
   background-color: transparent;
-  border: none;
+  padding: 7px;
   border-radius: 10px;
-  padding: 5px 7px;
-  margin: 5px;
+  border: none;
   cursor: pointer;
 }
 
 .ellipsis-button {
-  border-radius: 50%;
+  display: flex;
+  align-items: center;
   background-color: transparent;
+  padding: 7px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
 }

@@ -8,22 +8,27 @@ import Settings from "@profile/settings";
 import UserComments from "@profile/comments";
 import UserPosts from "@profile/posts";
 import { IUser } from "@/models/userType";
+import { toast } from "react-toastify";
 
 export default function Profile() {
   const { username } = useParams();
   const [user, setUser] = useState<IUser | null>(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/user/${username}`).
-      then((response) => response.json()).
-      then((data) => {
-        if (data.message) {
-          // message exists meaning may error
+    async function fetchUser() {
+      const res = await fetch(`http://localhost:3001/user/${username}`);
+      const data = await res.json();
 
-        } else {
-          setUser(data);
-        }
-      })
+      if (!res.ok) {
+        toast.error("An error has occured.");
+        console.log(data.message);
+      } else {
+        setUser(data.user);
+        console.log(data);
+      }
+    }
+
+    fetchUser();
   }, [username]);
 
   return (

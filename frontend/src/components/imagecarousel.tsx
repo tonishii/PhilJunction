@@ -2,57 +2,36 @@ import "@/styles/component-styles.css";
 
 import { useState } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import { ImageBuffer } from "@/models/postType";
 
 export default function ImageCarousel({
-  images,
+  images = [],
   maxImages,
 }: {
-  images: {
-    contentType: string;
-    imageUrl: string; }[],
+  images?: ImageBuffer[],
   maxImages: number;
 }) {
   const [currImageIndex, setImageIndex] = useState(0);
-  const totalImages = images.length;
-
-  function handleNextImage() {
-    setImageIndex((prevIndex) =>
-      prevIndex === 0 ? totalImages - 1 : prevIndex - 1
-    );
-  }
-
-  function handlePrevImage() {
-    setImageIndex((prevIndex) =>
-      prevIndex === totalImages - 1 ? 0 : prevIndex + 1
-    );
-  }
-
-  function getNextImages(images: JSX.Element[], currentInd: number) {
-    if (totalImages === 0) return [];
-
-    return Array.from(
-      { length: Math.min(maxImages, totalImages) },
-      (_, i) => images[(currentInd + i) % totalImages]
-    );
-  }
-
-  const imageElements: JSX.Element[] = images.map((imagePath, i) => (
-    <img src={imagePath.imageUrl} key={i} alt="post image" className="post-image" />
-  ));
-  const imagesToShow = getNextImages(imageElements, currImageIndex);
 
   return (
     <div className="image-carousel">
-      {totalImages > 2 && (
-        <button className="image-button" onClick={handlePrevImage}>
+      {images.length > 2 && (
+        <button className="image-button" onClick={() => setImageIndex((prevIndex) => prevIndex === images.length - 1 ? 0 : prevIndex + 1)}>
           <ChevronLeft />
         </button>
       )}
 
-      {imagesToShow}
+      {images.slice(currImageIndex, currImageIndex + maxImages).map((imageUrl, i) => (
+        <img
+          key={currImageIndex + i}
+          src={imageUrl.imageUrl}
+          alt="post image"
+          className="post-image"
+        />
+      ))}
 
-      {totalImages > 2 && (
-        <button className="image-button" onClick={handleNextImage}>
+      {images.length > 2 && (
+        <button className="image-button" onClick={() => setImageIndex((prevIndex) => prevIndex === 0 ? images.length - 1 : prevIndex - 1)}>
           <ChevronRight />
         </button>
       )}
