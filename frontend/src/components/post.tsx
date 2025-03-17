@@ -110,8 +110,8 @@ export default function Post({
           <div className="matchWidth">
             <ImageCarousel images={post.images} maxImages={1} />
           </div>
-
         </div>
+
         <div className="post-footer">
           {post.tags.map((tag, i) => (
             <span key={tag + i} className="tag">
