@@ -79,7 +79,7 @@
     position: relative;
     width: 80px;
     height: 80px;
-    margin: 0px 0px 20px;
+    margin: 20px auto;
 }
 
 .profile-icon {
@@ -91,9 +91,10 @@
 
 .edit-button {
     position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translate(25%, 25%);
     border-radius: 50%;
-    top: 50px;
-    left: 55px;
     background-color: #2c2f33;
     border: none;
     padding: 5px 4px 4px 7px;
@@ -138,6 +139,10 @@
     grid-template-columns: 1fr 1fr;
 }
 
+.settings-container>section>label {
+    margin-left: 60px;
+}
+
 .settings-container input {
     background-color: var(--field1); /* #2c2f33 dark|light #e7e4e0 */
     border-radius: 10px;
@@ -145,6 +150,7 @@
     padding: 7px 10px;
     border: none;
     outline: none;
+    margin-right: 100px;
 }
 
 .settings-container textarea {
@@ -154,7 +160,7 @@
     padding: 7px 10px;
     border: none;
     resize: none;
-    min-height: 5rem;
+    min-height: 8rem;
     outline: none;
 }
 
@@ -172,6 +178,14 @@
 .update-user {
     justify-content: center;
     color: #F6F7EB;
-    width: 50%;
-    margin-left: 25%;
+    width: 140px;
+    margin: 20px auto;
+}
+
+.settings-icon-container {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 5px 12%;
 }

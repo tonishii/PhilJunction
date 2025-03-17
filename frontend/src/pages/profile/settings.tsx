@@ -72,7 +72,7 @@ export default function Settings({ user }: { user: IUser; }) {
   return (
     <div className="settings-container">
       <section>
-        <label htmlFor="username">Username</label>
+        <label htmlFor="username">Username:</label>
         <input
           type="text"
           id="username"
@@ -82,7 +82,7 @@ export default function Settings({ user }: { user: IUser; }) {
           onChange={(e) => setUsername(e.target.value)}
           value={username} />
 
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">Email:</label>
         <input
           type="text"
           id="email"
@@ -92,7 +92,7 @@ export default function Settings({ user }: { user: IUser; }) {
           onChange={(e) => setEmail(e.target.value)}
           value={email} />
 
-        <label htmlFor="bio">Bio</label>
+        <label htmlFor="bio">Bio:</label>
         <textarea
           name="bio"
           id="bio"
@@ -100,7 +100,8 @@ export default function Settings({ user }: { user: IUser; }) {
           onChange={(e) => setBio(e.target.value)}
           value={bio} />
 
-        <div className="profile-icon-container">
+        <label htmlFor="icon">Icon:</label>
+        <div className="settings-icon-container">
           <img src={iconUrl} alt="icon" className="profile-icon"/>
           <button
             className="edit-button"
@@ -117,14 +118,14 @@ export default function Settings({ user }: { user: IUser; }) {
           multiple
           onChange={handleAttachImage} />
 
-        <label htmlFor="update"></label>
-        <button
-          type="button"
-          id="update"
-          name="update"
-          className="round-button update-user"
-          onClick={handleSubmit}>Update user</button>
       </section>
+
+      <button
+        type="button"
+        id="update"
+        name="update"
+        className="round-button update-user"
+        onClick={handleSubmit}>Update user</button>
 
       <h2>Web Interface</h2>
       <section>
