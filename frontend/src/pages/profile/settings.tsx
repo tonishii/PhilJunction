@@ -55,16 +55,37 @@ export default function Settings({ user }: { user: IUser; }) {
     <div className="settings-container">
       <section>
         <label htmlFor="username">Username</label>
-        <input type="text" id="username" name="username" defaultValue={user?.username}></input>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter your username..."
+          required
+          defaultValue={user?.username} />
 
         <label htmlFor="email">Email</label>
-        <input type="text" id="email" name="email" defaultValue={user?.email}></input>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          placeholder="Enter your email..."
+          required
+          defaultValue={user?.email} />
 
         <label htmlFor="bio">Bio</label>
-        <textarea name="bio" id="bio" defaultValue={user?.description}></textarea>
+        <textarea
+          name="bio"
+          id="bio"
+          placeholder="Introduce yourself!"
+          defaultValue={user?.description} />
 
         <label htmlFor="update"></label>
-        <button type="button" id="update" name="update" onClick={handleSubmit}>Update user</button>
+        <button
+          type="button"
+          id="update"
+          name="update"
+          className="round-button update-user"
+          onClick={handleSubmit}>Update user</button>
       </section>
 
       <h2>Web Interface</h2>

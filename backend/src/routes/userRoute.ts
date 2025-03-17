@@ -46,7 +46,7 @@ router.get('/user/:username/posts', async (req: Request, res: Response): Promise
         const posts = await Post.find({ userId: user._id });
 
         if (!posts || posts.length === 0) {
-            return res.status(404).json({ message: "No posts yet. " });
+            return res.status(200).json({ message: "No posts yet. ", posts: [] });
         }
         console.log(posts);
         return res.status(200).json({ message: "Posts of user successfully pulled.", posts: posts });
@@ -66,10 +66,10 @@ router.get('/user/:username/comments', async (req: Request, res: Response): Prom
         const comments = await Comment.find({ userId: user._id });
 
         if (!comments || comments.length === 0) {
-            return res.status(404).json({ message: "No comments yet. " });
+            return res.status(200).json({ message: "No comments yet.", comments: [] });
         }
 
-        res.json(comments);
+        return res.status(200).json({ message: "Comments of user successfully pulled.", comments: comments });
     } catch (err) {
         res.status(500).json({ message: "Server error:", err });
     }

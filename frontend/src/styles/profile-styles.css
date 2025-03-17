@@ -124,6 +124,8 @@
     gap: 10px;
 }
 
+
+/* Settings */
 .settings-container {
     height: 100%;
     width: 100%;
@@ -165,4 +167,11 @@
     border: none;
     color: var(--field3); /* #d3d0cc dark|light #2c2f33 */
     outline: none;
+}
+
+.update-user {
+    justify-content: center;
+    color: #F6F7EB;
+    width: 50%;
+    margin-left: 25%;
 }
