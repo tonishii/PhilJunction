@@ -14,4 +14,8 @@ export interface IPost {
   likes: number;
   dislikes: number;
   comments: string[];
+  convertedImg: {
+    contentType: string;
+    imageUrl: string;
+  }[]
 }

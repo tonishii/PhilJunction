@@ -8,7 +8,9 @@ export default function ImageCarousel({
   images,
   maxImages,
 }: {
-  images: IBuffer[];
+  images: {
+    contentType: string;
+    imageUrl: string; }[],
   maxImages: number;
 }) {
   const [imageURLS, setImageURLS] = useState<string[]>([]);
@@ -37,23 +39,9 @@ export default function ImageCarousel({
     );
   }
 
-  useEffect(() => {
-    setImageURLS(images.map((image): string => {
-      const blob = new Blob([image.data], { type: image.contentType });
-      return URL.createObjectURL(blob);
-    }));
-
-    setImages(imageURLS.map((url, i) => {
-      return (
-        <img
-          src={url}
-          key={url + i}
-          alt={`post image ${i}`}
-          className="post-image" />
-      );
-    }));
-  }, [images]);
-
+  const imageElements: JSX.Element[] = images.map((imagePath, i) => (
+    <img src={imagePath.imageUrl} key={i} alt="post image" className="post-image" />
+  ));
   const imagesToShow = getNextImages(imageElements, currImageIndex);
 
   return (
