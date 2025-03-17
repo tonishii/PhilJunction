@@ -7,7 +7,9 @@ export default function ImageCarousel({
   images,
   maxImages,
 }: {
-  images: string[];
+  images: {
+    contentType: string;
+    imageUrl: string; }[],
   maxImages: number;
 }) {
   const [currImageIndex, setImageIndex] = useState(0);
@@ -35,7 +37,7 @@ export default function ImageCarousel({
   }
 
   const imageElements: JSX.Element[] = images.map((imagePath, i) => (
-    <img src={imagePath} key={i} alt="post image" className="post-image" />
+    <img src={imagePath.imageUrl} key={i} alt="post image" className="post-image" />
   ));
   const imagesToShow = getNextImages(imageElements, currImageIndex);
 

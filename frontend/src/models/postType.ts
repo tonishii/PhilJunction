@@ -10,4 +10,8 @@ export interface IPost {
   dislikes: number;
   comments: string[];
   publicId: string;
+  convertedImg: {
+    contentType: string;
+    imageUrl: string;
+}[]
 }
