@@ -24,6 +24,7 @@ export default function PostWindow() {
 
   const [commentValue, setCommentValue] = useState("");
   const [comments, setComments] = useState<IComment[]>([]);
+  const [commentCount, setCommentCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,7 +52,9 @@ export default function PostWindow() {
           })
         );
 
-        setComments(commentsData.filter(Boolean));
+        const filteredComments = commentsData.filter(Boolean);
+        setComments(filteredComments);
+        setCommentCount(filteredComments.length);
       } else {
         toast.error("An error has occured");
         console.error(response);
@@ -163,6 +166,7 @@ export default function PostWindow() {
 
         console.log(data.message);
         setComments((prevComments) => [...prevComments, data.newComment]);
+        setCommentCount((prev) => prev + 1);
       } else {
         toast.error("An error has occured.");
         console.error(data.message);
@@ -174,9 +178,11 @@ export default function PostWindow() {
   }
 
   function handleDeleteComment(commentID: string) {
-    setComments((prevComments) =>
-      prevComments.filter((comment) => comment.commentID !== commentID)
-    );
+    setComments((prevComments) => {
+    const updatedComments = prevComments.filter((comment) => comment.commentID !== commentID);
+    setCommentCount(updatedComments.length);
+    return updatedComments;
+  });
   };
 
   return (
@@ -192,7 +198,7 @@ export default function PostWindow() {
         <hr />
 
         <div className="post-info">
-          <i className="post-author">Posted by <span className="gray-color">{post?.username}</span> </i>
+          <b className="post-author">Posted by <span className="gray-color">{post?.username}</span> </b>
           <i className="post-date">{handleDate(post?.postDate)}</i>
         </div>
       </div>
@@ -236,7 +242,7 @@ export default function PostWindow() {
           <button className="round-button">
             <MessageCircle className="icon" />
           </button>
-          <span className="comment-count">{post?.comments?.length}</span>
+          <span className="comment-count">{commentCount}</span>
         </div>
 
         <input
@@ -258,7 +264,8 @@ export default function PostWindow() {
               key={(comment.commentID ?? "") + i}
               commentData={comment}
               isReplyable={true}
-              onDeleteComment={handleDeleteComment} />)
+              onDeleteComment={handleDeleteComment}
+              setCommentCount={setCommentCount} />)
           : comments.length === 0 ? <p>No comments yet!</p>
           :<p>"Loading..."</p> }
       </div >

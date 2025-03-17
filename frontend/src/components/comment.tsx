@@ -9,13 +9,16 @@ export default function Comment({
   commentData,
   isReplyable = false,
   onDeleteComment,
+  setCommentCount,
 }: {
   commentData: IComment;
   isReplyable?: boolean;
-  onDeleteComment: (commentId: string) => void;
+  onDeleteComment?: (commentId: string) => void;
+  setCommentCount?: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const [comment, setComment] = useState<IComment>(commentData);
   const [replies, setReplies] = useState<IComment[]>([]);
+
   const [edit, setEdited] = useState(comment.body);
   const [editVisible, setEditVisible] = useState(false);
   const [reply, setReply] = useState("");
@@ -80,6 +83,7 @@ export default function Comment({
 
         console.log(data.message);
         setReplies((prevReplies) => [...prevReplies, data.newReply]);
+        setCommentCount?.((prev) => prev + 1);
       } else {
         toast.error("An error has occured.");
         console.error(data.message);
@@ -140,7 +144,8 @@ export default function Comment({
 
       if (res.ok) {
         console.log(data.message);
-        onDeleteComment(comment.commentID as string);
+        onDeleteComment?.(comment.commentID as string);
+        setCommentCount?.((prev) => prev - 1);
       } else {
         toast.error("An error has occured.");
         console.error(data.message);
@@ -208,7 +213,7 @@ export default function Comment({
                       value={reply}
                       onChange={(e) => setReply(e.target.value)}
                       onKeyUp={handleReply}
-                      placeholder="Write a reply..."
+                      placeholder="Join the conversation!"
                     />
                     <button className="reply-button" onClick={handleReply}>
                       <Send className="icon" />
@@ -267,7 +272,7 @@ export default function Comment({
               commentData={reply}
               isReplyable={true}
               onDeleteComment={handleDeleteComment}
-            />
+              setCommentCount={setCommentCount} />
           ))
         }
       </div>

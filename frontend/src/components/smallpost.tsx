@@ -7,7 +7,7 @@ import { IPost } from '@/models/postType';
 export default function SmallPost({ post }: { post: IPost; }) {
   return (
     <div className="smallpost-container">
-      <Link to="/post" className="post-link">
+      <Link to={`/post/${post.publicId}`} className="post-link">
         <div className="smallpost-header">
           <p>{post.title}</p>
 

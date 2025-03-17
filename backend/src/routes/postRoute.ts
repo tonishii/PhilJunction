@@ -64,6 +64,7 @@ router.get("/retrieveposts", async (req: Request, res: Response) => {
     // });
 
     // res.json({ data: data, user: user });
+    console.log(data);
     res.json(data);
   }
   catch (error: any) {

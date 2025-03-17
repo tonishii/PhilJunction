@@ -15,9 +15,6 @@ export default function Settings({ user }: { user: IUser; }) {
     setTheme(e.currentTarget.checked ? "dark" : "light");
   }
 
-  /* For User functionality update: username, email, and bio*/
-
-
   const handleSubmit = async () => {
     const username = (document.getElementById("username") as HTMLInputElement).value;
     const email = (document.getElementById("email") as HTMLInputElement).value;
