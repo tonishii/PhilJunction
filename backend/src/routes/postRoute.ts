@@ -58,12 +58,40 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
 
 router.get("/retrieveposts", async (req: Request, res: Response) => {
   try {
-    const data = await Post.find({}).limit(20).exec();
+    const data = await Post.find({}).sort({postDate: -1}).limit(10).exec();
     // const user = data.forEach(async (post) => {
     //   return await User.findOne({ _id: post.userId });
     // });
 
     // res.json({ data: data, user: user });
+    const postsWithImages = data.map((post) => {
+      const images = post.images?.map((image) => ({
+        contentType: image.contentType,
+        imageUrl: `data:${image.contentType};base64,${image.data.toString('base64')}`,
+      }));
+
+      return {
+        ...post.toObject(),
+        images: images || [],
+      };
+    });
+
+    res.json(postsWithImages);
+  }
+  catch (error: any) {
+    res.status(500).json({ message: "Internal server error.", error: error.message });
+  }
+});
+
+router.get("/retrievemoreposts", async (req: Request, res: Response) => {
+  try {
+    let currLen = Number(req.query.curr_len)
+    let count = await Post.countDocuments();
+    let lim = count - currLen > 10 ? 10 : count - currLen;
+
+    console.log(req.query.curr_len, currLen, count, lim)
+    const data = await Post.find({}).sort({postDate: -1}).skip(currLen).limit(lim).exec();
+
     const postsWithImages = data.map((post) => {
       const images = post.images?.map((image) => ({
         contentType: image.contentType,
