@@ -1,7 +1,7 @@
 import "@/styles/profile-styles.css";
 
 import { useEffect, useState } from "react";
-import { useParams, Link, NavLink, Route, Routes } from "react-router";
+import { useParams, Link, NavLink, Route, Routes, useNavigate } from "react-router";
 
 import ProfileInfo from "@profile/info";
 import Settings from "@profile/settings";
@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 export default function Profile() {
   const { username } = useParams();
   const [user, setUser] = useState<IUser | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchUser() {
@@ -20,8 +21,13 @@ export default function Profile() {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error("An error has occured.");
-        console.log(data.message);
+        if (res.status === 404) {
+          toast.info("Can't find that person!")
+          navigate("/");
+        } else {
+          toast.error("An error has occured.");
+          console.log(data.message);
+        }
       } else {
         setUser(data.user);
         console.log(data);
