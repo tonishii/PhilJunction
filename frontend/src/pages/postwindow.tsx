@@ -56,8 +56,15 @@ export default function PostWindow() {
         setComments(filteredComments);
         setCommentCount(filteredComments.length);
       } else {
-        toast.error("An error has occured");
         console.error(response);
+        if (response.status === 404) {
+          toast.info("That post you were looking for was a paper town!");
+          navigate("/");
+
+        } else {
+
+          toast.error("An error has occured");
+        }
       }
     }
 
@@ -66,7 +73,11 @@ export default function PostWindow() {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error("A server error has occured vote pull.");
+        if (res.status === 404) {
+          // do nothing
+        } else {
+          toast.error("A server error has occured vote pull.");
+        }
       } else {
         setVote(data.initialVote);
       }
@@ -74,7 +85,7 @@ export default function PostWindow() {
 
     fetchData();
     fetchVote();
-  }, [postId]);
+  }, [postId, navigate]);
 
   function handleDate(datePosted: Date = new Date()): string {
     return moment(datePosted).fromNow();
@@ -95,8 +106,8 @@ export default function PostWindow() {
       }
 
       if (data.likes !== undefined && data.dislike !== undefined) {
-        setPost((post) => ({...post, likes: data.likes}));
-        setPost((post) => ({...post, dislikes: data.dislike}));
+        setPost((post) => ({ ...post, likes: data.likes }));
+        setPost((post) => ({ ...post, dislikes: data.dislike }));
 
         if (vote === true) {
           setVote(null);
@@ -126,8 +137,8 @@ export default function PostWindow() {
       }
 
       if (data.likes !== undefined && data.dislike !== undefined) {
-        setPost((post) => ({...post, likes: data.likes}));
-        setPost((post) => ({...post, dislikes: data.dislike}));
+        setPost((post) => ({ ...post, likes: data.likes }));
+        setPost((post) => ({ ...post, dislikes: data.dislike }));
 
         if (vote === false) {
           setVote(null);
@@ -179,10 +190,10 @@ export default function PostWindow() {
 
   function handleDeleteComment(commentID: string) {
     setComments((prevComments) => {
-    const updatedComments = prevComments.filter((comment) => comment.commentID !== commentID);
-    setCommentCount(updatedComments.length);
-    return updatedComments;
-  });
+      const updatedComments = prevComments.filter((comment) => comment.commentID !== commentID);
+      setCommentCount(updatedComments.length);
+      return updatedComments;
+    });
   };
 
   return (
@@ -258,7 +269,7 @@ export default function PostWindow() {
 
       <div className="post-window-comments">
         <h1>Comments</h1>
-        { comments.length > 0 ?
+        {comments.length > 0 ?
           comments.map((comment, i) =>
             <Comment
               key={(comment.commentID ?? "") + i}
@@ -267,7 +278,7 @@ export default function PostWindow() {
               onDeleteComment={handleDeleteComment}
               setCommentCount={setCommentCount} />)
           : comments.length === 0 ? <p>No comments yet!</p>
-          :<p>"Loading..."</p> }
+            : <p>"Loading..."</p>}
       </div >
     </div >
   );
