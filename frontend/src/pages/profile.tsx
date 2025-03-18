@@ -35,14 +35,14 @@ export default function Profile() {
     <div className="profile-page">
       <div className="profile-container">
         <div className="profile-body">
-          { user ? (
+          {user ? (
             <Routes>
-              <Route index element={<ProfileInfo user={user}/>} />
-              <Route path="posts" element={<UserPosts user={user}/>} />
+              <Route index element={<ProfileInfo user={user} />} />
+              <Route path="posts" element={<UserPosts user={user} />} />
               <Route path="comments" element={<UserComments user={user} />} />
-              <Route path="settings" element={<Settings user={user} />} />
+              <Route path="settings" element={<Settings user={user} setUser={setUser} />} />
             </Routes>
-          ) : <p className="error">Loading...</p> }
+          ) : <p className="error">Loading...</p>}
         </div>
         <div className="profile-sidebar">
           <NavLink to={`/user/${username}`} end className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>

@@ -5,7 +5,7 @@ import { IUser } from "@/models/userType";
 import { toast } from "react-toastify";
 import { UserRoundPen } from "lucide-react";
 
-export default function Settings({ user }: { user: IUser; }) {
+export default function Settings({ user, setUser }: { user: IUser; setUser: React.Dispatch<React.SetStateAction<IUser | null>> }) {
   const [theme, setTheme] = useLocalStorage("theme", "light");
   const [username, setUsername] = useState(user.username);
   const [email, setEmail] = useState(user.email);
@@ -52,15 +52,14 @@ export default function Settings({ user }: { user: IUser; }) {
         console.error(data.message);
       } else {
         toast.success("Details updated successfully!");
-        setUsername(data.user.username);
-        setEmail(data.user.email);
-        setBio(data.user.description);
+        setUser(data.user);
+        console.log(data);
       }
-  } catch (error) {
-    toast.error("An error has occurred.");
-    console.error("Error updating user:", error);
+    } catch (error) {
+      toast.error("An error has occurred.");
+      console.error("Error updating user:", error);
+    }
   }
-}
 
   /* Example usage:
   updateUser("650abc123def456ghi789jkl", {
@@ -102,11 +101,11 @@ export default function Settings({ user }: { user: IUser; }) {
 
         <label htmlFor="icon">Icon:</label>
         <div className="settings-icon-container">
-          <img src={iconUrl} alt="icon" className="profile-icon"/>
+          <img src={iconUrl} alt="icon" className="profile-icon" />
           <button
             className="edit-button"
             onClick={() => document.getElementById("fileInput")?.click()}>
-            <UserRoundPen className="icon"/>
+            <UserRoundPen className="icon" />
           </button>
         </div>
 
