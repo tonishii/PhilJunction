@@ -1,17 +1,41 @@
 import "@/styles/create-post.css"
 import { Send, ImagePlus, X } from "lucide-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import TagInput from "@/components/taginput";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { ImageBuffer } from "@/models/postType";
 
 export default function CreatePost() {
+  const { publicId } = useParams();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!publicId) return;
+
+    async function fetchData() {
+      const response = await fetch(`http://localhost:3001/retrievepost/${publicId}`);
+
+      if (response.ok) {
+        const { message, post } = await response.json();
+        setTitle(post.title);
+        setContent(post.body);
+        setTags(post.tags);
+        setImages(post.images.map((image: ImageBuffer) => image.imageUrl));
+        console.log(message);
+      } else {
+        toast.error("An error has occured");
+        console.error(response);
+      }
+    }
+
+    fetchData();
+  }, [publicId]);
 
   function handleAttachImage(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files) {
@@ -20,7 +44,7 @@ export default function CreatePost() {
     }
   }
 
-  const submitPost = async () => {
+  async function handleSubmit() {
     const formData = new FormData();
 
     // Add text data
@@ -37,28 +61,65 @@ export default function CreatePost() {
       formData.append('images', file)
     }
 
-      try {
-        const response = await fetch("http://localhost:3001/submitpost", {
-          method: "POST",
-          body: formData,
-        });
+    try {
+      const response = await fetch("http://localhost:3001/submitpost", {
+        method: "POST",
+        body: formData,
+      });
 
-        if (response.ok) {
-          navigate("/");
-        } else {
-          const errorMessage = await response.text();
-          toast.error(`${errorMessage || "Server Error"}`);
-        }
-      } catch (error: unknown) {
-        console.log(error);
+      if (response.ok) {
+        navigate("/");
+      } else {
+        const errorMessage = await response.text();
+        toast.error("An error has occured.");
+        console.error(errorMessage);
       }
-    };
+    } catch (error: unknown) {
+      toast.error("An error has occured.");
+      console.error(error);
+    }
+  };
 
-    const imageUrlToFile = async (url: string): Promise<File> => {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      return new File([blob], 'image.jpg', { type: blob.type });
-    };
+  async function handleEdit() {
+    const formData = new FormData();
+
+    formData.append("publicId", publicId || "");
+    formData.append("postTitle", title || "");
+    formData.append("postContent", content || "");
+    formData.append("tags", JSON.stringify(tags));
+
+    for (let i = 0; i < images.length; i++) {
+      const file = await imageUrlToFile(images[i]);
+      formData.append('images', file)
+    }
+
+    console.log(formData);
+    try {
+      const res = await fetch("http://localhost:3001/updatepost", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        navigate("/");
+        console.log(data.message);
+      } else {
+        toast.error("An error has occured.");
+        console.error(data.message);
+      }
+    } catch (error: unknown) {
+      toast.error("An error has occured.");
+      console.error(error);
+    }
+  }
+
+  const imageUrlToFile = async (url: string): Promise<File> => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], 'image.jpg', { type: blob.type });
+  };
 
   return (
     <main>
@@ -70,6 +131,7 @@ export default function CreatePost() {
                 id="title"
                 placeholder="Add a Title..."
                 onChange={(e) => setTitle(e.target.value)}
+                value={title}
                 maxLength={100}/>
               <span
                 className={
@@ -90,7 +152,8 @@ export default function CreatePost() {
                   name="editor"
                   id="editor"
                   placeholder="Start typing here..."
-                  onChange={(e) => setContent(e.target.value)}/>
+                  onChange={(e) => setContent(e.target.value)}
+                  value={content} />
               </div>
 
               <ReactMarkdown className="create-post-MD" children={content}/>
@@ -127,7 +190,7 @@ export default function CreatePost() {
             <div className='sidebar-button'>
               <button
                 className={`round-button`}
-                onClick={submitPost}>
+                onClick={publicId ? handleEdit : handleSubmit}>
                 <Send className="icon" />
               </button>
             </div>

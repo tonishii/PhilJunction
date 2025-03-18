@@ -89,10 +89,10 @@ router.post("/submitcomment", async (req: Request, res: Response): Promise<any> 
   }
 });
 
-router.post("/editcomment", async (req: Request, res: Response): Promise<any> => {
-  const { commentID, body } = req.body;
+router.post("/editcomment/:id", async (req: Request, res: Response): Promise<any> => {
+  const { body } = req.body;
 
-  const comment = await Comment.findOne({ _id: commentID });
+  const comment = await Comment.findOne({ _id: req.params.id });
 
   if (!comment) {
     return res.status(404).json({ message: "Comment not found." });
@@ -114,11 +114,9 @@ router.post("/editcomment", async (req: Request, res: Response): Promise<any> =>
   });
 })
 
-router.post("/deletecomment", async (req: Request, res: Response): Promise<any> => {
-  const { commentID } = req.body;
-
+router.post("/deletecomment/:id", async (req: Request, res: Response): Promise<any> => {
   try {
-    const comment = await Comment.findOne({_id: commentID});
+    const comment = await Comment.findOne({_id: req.params.id});
 
     if (!comment) {
       return res.status(404).json({ message: "Comment not found." });

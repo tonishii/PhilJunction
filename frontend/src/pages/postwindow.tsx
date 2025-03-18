@@ -1,4 +1,5 @@
 import "@/styles/post-styles.css";
+import "@/styles/component-styles.css";
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -10,6 +11,7 @@ import {
   ThumbsDown,
   MessageCircle,
   CornerDownLeft,
+  Ellipsis,
 } from "lucide-react";
 
 import Comment from "@/components/comment";
@@ -17,19 +19,21 @@ import ImageCarousel from "@/components/imagecarousel";
 import { IPost } from "@/models/postType";
 import { IComment } from "@/models/commentType";
 
-export default function PostWindow() {
-  const { postId } = useParams();
+export default function PostWindow({ isEditable = false }: { isEditable?: boolean; }) {
+  const { publicId } = useParams();
   const [post, setPost] = useState<IPost>({} as IPost);
   const [vote, setVote] = useState<boolean | null>(null);
 
   const [commentValue, setCommentValue] = useState("");
   const [comments, setComments] = useState<IComment[]>([]);
   const [commentCount, setCommentCount] = useState(0);
+
+  const [menuVisible, setMenuVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`http://localhost:3001/retrievepost/${postId}`);
+      const response = await fetch(`http://localhost:3001/retrievepost/${publicId}`);
 
       if (response.ok) {
         const { message, post } = await response.json();
@@ -62,7 +66,7 @@ export default function PostWindow() {
     }
 
     async function fetchVote() {
-      const res = await fetch(`http://localhost:3001/retreivevote/${postId}`);
+      const res = await fetch(`http://localhost:3001/retreivevote/${publicId}`);
       const data = await res.json();
 
       if (!res.ok) {
@@ -74,7 +78,7 @@ export default function PostWindow() {
 
     fetchData();
     fetchVote();
-  }, [postId]);
+  }, [publicId]);
 
   function handleDate(datePosted: Date = new Date()): string {
     return moment(datePosted).fromNow();
@@ -154,8 +158,8 @@ export default function PostWindow() {
         body: JSON.stringify({
           username: "ANTHIMON",
           body: commentValue,
-          publicId: postId,
-          parentId: postId,
+          publicId: publicId,
+          parentId: publicId,
           type: "Comment",
         }),
       });
@@ -185,14 +189,59 @@ export default function PostWindow() {
   });
   };
 
+  async function handleDeletePost() {
+    try {
+      const res = await fetch(`http://localhost:3001/deletepost/${publicId}`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        console.log(data.message);
+        navigate(-1);
+      } else {
+        console.error(data.message);
+      }
+    } catch (error: any) {
+      toast.error("Error occurred while deleting post.");
+      console.error(error);
+    }
+  }
+
   return (
     <div className="post-window-container">
       <div className="post-window-header">
         <div className="post-window-title">
           <h1>{post?.title}</h1>
-          <button className="round-button top-right" onClick={() => navigate(-1)}>
-            <CornerDownLeft className="icon black" />
-          </button>
+
+          <div>
+            <button className="round-button top-right" onClick={() => navigate(-1)}>
+              <CornerDownLeft className="icon black" />
+            </button>
+            <button className="ellipsis-button" onClick={() => setMenuVisible(!menuVisible)}>
+              <Ellipsis className="icon" />
+            </button>
+            <div className="edit-menu">
+              { isEditable && menuVisible && (
+                <div className="dropdown-menu">
+                  <ul>
+                    <li>
+                      <div className="comment-menu">
+                        <button onClick={() => navigate(`/holler/${publicId}`)}>Edit</button>
+                      </div>
+                    </li>
+                    <li>
+                      <button onClick={handleDeletePost}>Delete</button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         <hr />
@@ -221,8 +270,7 @@ export default function PostWindow() {
           <span className="like-count">{post?.likes}</span>
           <button
             className={`round-button ${vote === true ? "selected-up" : ""}`}
-            onClick={handleUpvote}
-          >
+            onClick={handleUpvote} >
             <ThumbsUp className="icon" />
           </button>
         </div>

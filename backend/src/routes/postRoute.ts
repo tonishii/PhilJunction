@@ -3,6 +3,8 @@ import multer from 'multer';
 
 import User from "../models/user";
 import Post, { IPost } from "../models/post";
+import Comment from "../models/comment";
+import Vote from "../models/votes";
 
 const router: Router = express.Router();
 const storage = multer.memoryStorage();  // Store the files in memory (Buffer)
@@ -115,7 +117,69 @@ router.get("/retrievepost/:id", async (req: Request, res: Response): Promise<any
   }
 })
 
-router.post("/searchposts", async (req, res) => {
+router.post("/updatepost", upload.array('images'), async (req: Request, res: Response): Promise<any> => {
+  const { publicId, postTitle, postContent, tags } = req.body;
+  console.log(tags);
+
+  if ( !publicId || !postTitle || !postContent || !tags) {
+    return res.status(400).json({ message: 'Title, content, public ID, and tags are required.' });
+  }
+
+  const files = req.files as Express.Multer.File[] || [];
+
+  const images = files.length > 0 ?
+    files.map((file: Express.Multer.File) => ({
+      data: file.buffer,
+      contentType: file.mimetype,
+    })) : [];
+
+  try {
+    const user = await User.findOne({});  // Replace with actual user
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found or authentication required." });
+    }
+
+    // Make sure that the user was the one that actually posted this
+    await Post.updateOne(
+      { publicId: publicId },
+      {
+        $set: {
+          title: postTitle,
+          body: postContent,
+          images: images,
+          tags: JSON.parse(tags),
+        },
+      }
+    );
+
+    return res.status(201).json({ message: "Post updated successfully." });
+  } catch (error: any) {
+    return res.status(500).json({ message: error });
+  }
+});
+
+router.post("/deletepost/:publicId", async(req: Request, res: Response): Promise<any> => {
+  const { publicId } = req.params;
+
+  try {
+    const post = await Post.findOne({ publicId: publicId });
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found." });
+    }
+
+    await Comment.deleteMany({ publicId: publicId });
+    await Vote.deleteMany({ publicId: publicId });
+    await Post.deleteOne({ publicId: publicId });
+
+    return res.status(200).json({ message: "Post and related data deleted successfully." });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+});
+
+router.post("/searchposts", async (req: Request, res: Response) => {
   const { keywords, tags, filterBy } = req.body;
   const parsed = JSON.parse(tags)
   console.log(Date.now() - filterBy)
