@@ -1,0 +1,20 @@
+.error-container {
+
+    display: flex;
+    color: var(--text1);
+    height: 90%;
+
+    align-items: center;
+    justify-content: center;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.error-container .MapPinXIcon {
+    width: 5rem;
+    height: 5rem;
+}

@@ -18,6 +18,7 @@ import SignUp from "@pages/signup";
 // Profile Pages
 import Profile from "@pages/profile";
 import RandoUser from "./pages/randouser";
+import FourOFourPage from "./pages/error";
 
 function App() {
   // USE FOR TESTING
@@ -36,7 +37,7 @@ function App() {
       <Header />
       <ToastContainer
         autoClose={3000}
-        transition={Slide}/>
+        transition={Slide} />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="user" element={<RandoUser />} />
@@ -51,6 +52,7 @@ function App() {
         <Route path="/post/:postId" element={<PostWindow />} />
 
         <Route path="/holler" element={<CreatePost />} />
+        <Route path="*" element={<FourOFourPage />} />
       </Routes>
     </Router>
   );
