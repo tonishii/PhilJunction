@@ -87,7 +87,8 @@ a {
     width: 20px;
     height: 20px;
     color: #F6F7EB;
-    transition: color 0.3s ease;
+    fill: transparent;
+    transition: color 0.3s ease, fill 0.3s ease;
 }
 
 .round-button:hover .icon,

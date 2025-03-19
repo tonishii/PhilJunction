@@ -81,12 +81,10 @@
 .comment-container {
   min-height: 90px;
   width: 100%;
-  border-radius: 5px;
+  border-radius: 4px;
   margin: 20px 0px;
   padding-left: 30px;
-  border-left-width: 3px;
-  border-left-style: solid;
-  border-color: var(--field2); /* #4E565A dark|light #b1a9a5 */
+  border-left: 3px solid var(--field2); /* #4E565A dark|light #b1a9a5 */
 }
 
 .comment-container p {
