@@ -105,22 +105,21 @@
   display: grid;
   font-weight: bold;
   font-size: 18px;
-  color: var(--comment1); /* #ADD8E6 dark|light #522719 */
 }
 
 .comment-name {
   font-weight: 700;
-  color: #2c2f33;
+  color: var(--comment1); /* #ADD8E6 dark|light #522719 */
 }
 
 .comment-date {
-  color: #2c2f33;
+  color: var(--text1);
   font-weight: lighter;
 }
 
 .comment-reply {
   font-size: 12px;
-  color: var(---text1); /* #F6F7EB dark|light #090814 */
+  color: var(--text1); /* #F6F7EB dark|light #090814 */
   font-weight: 400;
 }
 
