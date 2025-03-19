@@ -123,7 +123,7 @@ export default function Main() {
             />
           );
         })}
-        <button onClick={addPosts}>Add More Posts</button>
+        <button className="add-post-button" onClick={addPosts} onScroll={detectBottom}>Add More Posts</button>
       </div>
 
       <div className="popular-posts-list">
