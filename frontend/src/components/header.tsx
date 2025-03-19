@@ -8,8 +8,9 @@ export default function Header() {
   function handleSearch(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter") {
       const searchInput = event.currentTarget.value.trim();
+      const params = new URLSearchParams([["keywords", searchInput], ["tags", "[]"], ["filterBy", "1"]]);
       if (searchInput) {
-        navigate(`/search?q=${encodeURIComponent(searchInput)}`)
+        navigate(`/search?${params.toString()}`)
       }
     }
   }

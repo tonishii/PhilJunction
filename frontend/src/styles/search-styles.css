@@ -144,4 +144,9 @@
     /* white dark|light black*/
     border: 1px solid var(--text1);
     /* #F6F7EB dark|light #090814 */
+    cursor: pointer;
+}
+
+.search-buttons:hover {
+    opacity: 0.8;
 }

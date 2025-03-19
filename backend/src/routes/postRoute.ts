@@ -60,7 +60,7 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
 
 router.get("/retrieveposts", async (req: Request, res: Response) => {
   try {
-    const data = await Post.find({}).sort({postDate: -1}).limit(10).exec();
+    const data = await Post.find({}).sort({ postDate: -1 }).limit(10).exec();
     // const user = data.forEach(async (post) => {
     //   return await User.findOne({ _id: post.userId });
     // });
@@ -92,7 +92,7 @@ router.get("/retrievemoreposts", async (req: Request, res: Response) => {
     let lim = count - currLen > 10 ? 10 : count - currLen;
 
     console.log(req.query.curr_len, currLen, count, lim)
-    const data = await Post.find({}).sort({postDate: -1}).skip(currLen).limit(lim).exec();
+    const data = await Post.find({}).sort({ postDate: -1 }).skip(currLen).limit(lim).exec();
 
     const postsWithImages = data.map((post) => {
       const images = post.images?.map((image) => ({
@@ -115,7 +115,7 @@ router.get("/retrievemoreposts", async (req: Request, res: Response) => {
 
 router.get("/trendingposts", async (req: Request, res: Response) => {
   try {
-    const data = await Post.find({}).sort({likes: -1, dislikes: 1}).limit(5).exec();
+    const data = await Post.find({}).sort({ likes: -1, dislikes: 1 }).limit(5).exec();
     res.json(data)
   }
   catch (error: any) {
@@ -149,7 +149,7 @@ router.post("/updatepost", upload.array('images'), async (req: Request, res: Res
   const { publicId, postTitle, postContent, tags } = req.body;
   console.log(tags);
 
-  if ( !publicId || !postTitle || !postContent || !tags) {
+  if (!publicId || !postTitle || !postContent || !tags) {
     return res.status(400).json({ message: 'Title, content, public ID, and tags are required.' });
   }
 
@@ -187,7 +187,7 @@ router.post("/updatepost", upload.array('images'), async (req: Request, res: Res
   }
 });
 
-router.post("/deletepost/:publicId", async(req: Request, res: Response): Promise<any> => {
+router.post("/deletepost/:publicId", async (req: Request, res: Response): Promise<any> => {
   const { publicId } = req.params;
 
   try {
@@ -207,21 +207,22 @@ router.post("/deletepost/:publicId", async(req: Request, res: Response): Promise
   }
 });
 
-router.post("/searchposts", async (req: Request, res: Response) => {
-  const { keywords, tags, filterBy } = req.body;
-  const parsed = JSON.parse(tags)
-  console.log(Date.now() - filterBy)
+router.get("/searchposts", async (req: Request, res: Response) => {
+  const { keywords, tags, filterBy } = req.query;
+  const parsed = JSON.parse(tags as string ?? "[]");
+  const numericalFilter = Number(filterBy) ?? 1;
+  console.log(Date.now() - numericalFilter)
   try {
     let data: IPost[] = [];
-    const regex = new RegExp(keywords, 'i')
+    const regex = new RegExp(keywords as string, 'i')
     if (keywords && parsed.length > 0) {
-      data = await Post.find({ $or: [{ title: { $regex: regex } }, { description: { $regex: regex } }], tags: JSON.parse(tags), postDate: { $gt: new Date((new Date).getDate() - filterBy) } }).exec();
+      data = await Post.find({ $or: [{ title: { $regex: regex } }, { description: { $regex: regex } }], tags: parsed, postDate: { $gt: new Date((new Date).getDate() - numericalFilter) } }).exec();
     }
     else if (keywords) {
-      data = await Post.find({ $or: [{ title: { $regex: regex } }, { description: { $regex: regex } }], postDate: { $gt: new Date((new Date).getDate() - filterBy) } }).sort({ postDate: -1 }).exec();
+      data = await Post.find({ $or: [{ title: { $regex: regex } }, { description: { $regex: regex } }], postDate: { $gt: new Date((new Date).getDate() - numericalFilter) } }).sort({ postDate: -1 }).exec();
     }
     else if (parsed.length > 0) {
-      data = await Post.find({ tags: JSON.parse(tags), postDate: { $gt: new Date((new Date).getDate() - filterBy) } }).exec();
+      data = await Post.find({ tags: parsed, postDate: { $gt: new Date((new Date).getDate() - numericalFilter) } }).exec();
     }
     console.log(data);
     res.json(data);
