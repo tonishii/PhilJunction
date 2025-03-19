@@ -130,7 +130,7 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
       <section>
         <label htmlFor="theme">Enable dark theme</label>
         <Toggleswitch name="theme" onClick={handleThemeToggle} defaultChecked={theme === "dark"} />
-
+        {/* 
         <label htmlFor="font-style">Customize font-style</label>
         <select name="font-style" id="font-style">
           <option value="times">times</option>
@@ -139,14 +139,14 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
         </select>
 
         <label htmlFor="font-size">Customize font-size</label>
-        <input type="number" name="font-size" id="font-size" />
+        <input type="number" name="font-size" id="font-size" /> */}
       </section>
 
-      <h2>User Privacy</h2>
+      {/* <h2>User Privacy</h2>
       <section>
         <label htmlFor="anonymous">Allow username publicly displayed? </label>
         <Toggleswitch name="anonymous" />
-      </section>
+      </section> */}
 
     </div>
   )
