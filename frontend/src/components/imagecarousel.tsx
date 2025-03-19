@@ -21,9 +21,9 @@ export default function ImageCarousel({
         </button>
       )}
 
-      {images.slice(currImageIndex, currImageIndex + maxImages).map((imageUrl, i) => (
+      {[...images, ...images].slice(currImageIndex, currImageIndex + maxImages).map((imageUrl, i) => (
         <img
-          key={currImageIndex + i}
+          key={(currImageIndex + i) % images.length}
           src={imageUrl.imageUrl}
           alt="post image"
           className="post-image"
