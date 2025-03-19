@@ -48,16 +48,6 @@
     outline: none;
 }
 
-.tag button {
-    background: none;
-    border: none;
-    color: var(--text1);
-    /* #F6F7EB dark|light #090814 */
-    cursor: pointer;
-    margin-left: 5px;
-    font-size: 14px;
-}
-
 .search-body select {
     background-color: var(--field1);
     /* #2c2f33 dark|light #e7e4e0 */
