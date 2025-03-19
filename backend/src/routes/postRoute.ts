@@ -218,13 +218,13 @@ router.get("/searchposts", async (req: Request, res: Response) => {
     let data: IPost[] = [];
     const regex = new RegExp(keywords as string, 'i')
     if (keywords && parsed.length > 0) {
-      data = await Post.find({ $or: [{ title: { $regex: regex } }, { description: { $regex: regex } }], tags: parsed, postDate: { $gt: new Date((new Date).getDate() - numericalFilter) } }).exec();
+      data = await Post.find({ $or: [{ title: { $regex: regex } }, { description: { $regex: regex } }], tags: { $in: parsed }, postDate: { $gt: new Date((new Date).getDate() - numericalFilter) } }).exec();
     }
     else if (keywords) {
       data = await Post.find({ $or: [{ title: { $regex: regex } }, { description: { $regex: regex } }], postDate: { $gt: new Date((new Date).getDate() - numericalFilter) } }).sort({ postDate: -1 }).exec();
     }
     else if (parsed.length > 0) {
-      data = await Post.find({ tags: parsed, postDate: { $gt: new Date((new Date).getDate() - numericalFilter) } }).exec();
+      data = await Post.find({ tags: { $in: parsed }, postDate: { $gt: new Date((new Date).getDate() - numericalFilter) } }).exec();
     }
     console.log(data);
     res.json(data);
