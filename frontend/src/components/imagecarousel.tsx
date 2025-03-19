@@ -21,13 +21,15 @@ export default function ImageCarousel({
         </button>
       )}
 
-      {[...images, ...images].slice(currImageIndex, currImageIndex + maxImages).map((imageUrl, i) => (
-        <img
-          key={(currImageIndex + i) % images.length}
-          src={imageUrl.imageUrl}
-          alt="post image"
-          className="post-image"
-        />
+      { images.length > 0 &&
+        Array.from({ length: Math.min(maxImages, images.length) }, (_, i) =>
+        images[(currImageIndex + i) % images.length]).map((imageUrl, i) => (
+          <img
+            key={(currImageIndex + i) % images.length}
+            src={imageUrl.imageUrl}
+            alt="post image"
+            className="post-image"
+          />
       ))}
 
       {images.length > 2 && (

@@ -167,7 +167,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: "ANTHIMON",
+          username: "Protea",
           body: commentValue,
           publicId: publicId,
           parentId: publicId,

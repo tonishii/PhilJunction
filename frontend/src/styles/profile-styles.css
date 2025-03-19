@@ -177,7 +177,7 @@
 
 .update-user {
     justify-content: center;
-    color: #F6F7EB;
+    color: var(--text1);
     width: 140px;
     margin: 20px auto;
 }
