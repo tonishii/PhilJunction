@@ -29,7 +29,6 @@ function App() {
   //     .catch((error) => console.error("[ERROR] Failed to connect:", error));
   // }, []);
 
-
   document.documentElement.setAttribute("data-theme", localStorage.getItem("theme") ?? "light");
 
   return (

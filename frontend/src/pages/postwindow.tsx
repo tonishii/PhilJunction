@@ -281,7 +281,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
           <span className="like-count">{post?.likes}</span>
           <button
             className={`round-button ${vote === true ? "selected-up" : ""}`}
-            onClick={handleUpvote} >
+            onClick={handleUpvote}>
             <ThumbsUp className="icon" />
           </button>
         </div>
@@ -290,8 +290,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
           <button
             className={`round-button ${vote === false ? " selected-down" : ""
               }`}
-            onClick={handleDownvote}
-          >
+            onClick={handleDownvote}>
             <ThumbsDown className="icon" />
           </button>
           <span className="dislike-count">{post?.dislikes}</span>
