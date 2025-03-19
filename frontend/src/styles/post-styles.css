@@ -198,6 +198,15 @@
   display: flex;
 }
 
+.edit-menu {
+  position: relative;
+}
+
+.edit-menu .dropdown-menu {
+  top: -10px;
+  right: 10px;
+}
+
 .post-window-main {
   background-color: #F6F7EB;
   padding: 10px 20px;

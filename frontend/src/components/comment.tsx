@@ -103,7 +103,7 @@ export default function Comment({
     };
 
     try {
-      const res = await fetch(`http://localhost:3001/editcomment`, {
+      const res = await fetch(`http://localhost:3001/editcomment/${comment.commentID}`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -115,6 +115,7 @@ export default function Comment({
       if (res.ok) {
         setEdited("");
         setEditVisible(false);
+        setMenuVisible(false);
 
         setComment(data.comment);
         console.log(data.message);
@@ -130,14 +131,11 @@ export default function Comment({
 
   async function handleDelete() {
     try {
-      const res = await fetch(`http://localhost:3001/deletecomment`, {
+      const res = await fetch(`http://localhost:3001/deletecomment/${comment.commentID}`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          commentID: comment.commentID,
-        }),
       });
 
       const data = await res.json();

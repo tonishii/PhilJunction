@@ -49,9 +49,9 @@ function App() {
           <Route path="signup" element={<SignUp />} />
         </Route>
 
-        <Route path="/post/:postId" element={<PostWindow />} />
+        <Route path="/post/:publicId" element={<PostWindow isEditable={true} />} />
 
-        <Route path="/holler" element={<CreatePost />} />
+        <Route path="/holler/:publicId?" element={<CreatePost />} />
         <Route path="*" element={<FourOFourPage />} />
       </Routes>
     </Router>
