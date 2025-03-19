@@ -16,7 +16,7 @@ export default function Main() {
         initialDislikes: number;
         initialVote: boolean | null
       }
-    }> ({});
+    }>({});
 
   async function getGeneralPosts() {
     try {
@@ -50,8 +50,8 @@ export default function Main() {
         toast.error("A server error has occured when pulling more posts.");
         console.log(addMore.error);
       }
-      if(!addMore.length)
-        toast.error("No more posts to load.");
+      if (!addMore.length)
+        toast.info("No more posts to load.");
       else
         setPosts(oldposts => [...oldposts, ...addMore]);
     } catch (error: unknown) {
@@ -84,21 +84,22 @@ export default function Main() {
 
   useEffect(() => {
     posts.forEach(async (post) => {
-    const res = await fetch(`http://localhost:3001/retreivevote/${post.publicId}`);
-    const data = await res.json();
+      const res = await fetch(`http://localhost:3001/retreivevote/${post.publicId}`);
+      const data = await res.json();
 
-    if (!res.ok) {
-      toast.error("A server error has occured vote pull.");
-    } else {
-      setVotes(prevVotes => ({
-        ...prevVotes,
-        [post.publicId]: {
-          initialLikes: data.initialLikes,
-          initialDislikes: data.initialDislikes,
-          initialVote: data.initialVote
-        }
-      }));
-    }});
+      if (!res.ok) {
+        toast.error("A server error has occured vote pull.");
+      } else {
+        setVotes(prevVotes => ({
+          ...prevVotes,
+          [post.publicId]: {
+            initialLikes: data.initialLikes,
+            initialDislikes: data.initialDislikes,
+            initialVote: data.initialVote
+          }
+        }));
+      }
+    });
   }, [posts]);
 
   return (
