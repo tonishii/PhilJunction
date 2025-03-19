@@ -18,6 +18,10 @@ export default function Main() {
       }
     }>({});
 
+  function detectBottom() {
+    // do nothing
+  }
+
   async function getGeneralPosts() {
     try {
       const res = await fetch("http://localhost:3001/retrieveposts");
@@ -126,7 +130,7 @@ export default function Main() {
         <button className="add-post-button" onClick={addPosts} onScroll={detectBottom}>Add More Posts</button>
       </div>
 
-      { trendingPosts.length > 0 && (
+      {trendingPosts.length > 0 && (
         <div className="popular-posts-list">
           <span className="popular-posts-header">
             Trending Posts <Flame className="icon" />
