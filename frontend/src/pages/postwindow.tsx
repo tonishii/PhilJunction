@@ -229,12 +229,12 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
         <div className="post-window-title">
           <h1>{post?.title}</h1>
 
-          <div>
-            <button className="round-button top-right" onClick={() => navigate(-1)}>
-              <CornerDownLeft className="icon black" />
+          <div className="post-window-header-buttons">
+            <button className="round-button" onClick={() => navigate(-1)}>
+              <CornerDownLeft className="icon black-color" />
             </button>
             <button className="ellipsis-button" onClick={() => setMenuVisible(!menuVisible)}>
-              <Ellipsis className="icon" />
+              <Ellipsis className="icon black-color" />
             </button>
             <div className="edit-menu">
               {isEditable && menuVisible && (
