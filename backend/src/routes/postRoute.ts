@@ -139,6 +139,7 @@ router.get("/retrievepost/:id", async (req: Request, res: Response): Promise<any
       message: "Post successfully pulled",
       post: { ...data.toObject(), images: images || [] }
     });
+
   } catch (e: unknown) {
     console.log(e);
     res.status(500).json({ message: "Server error" });
@@ -226,8 +227,18 @@ router.get("/searchposts", async (req: Request, res: Response) => {
     else if (parsed.length > 0) {
       data = await Post.find({ tags: { $in: parsed }, postDate: { $gt: new Date((new Date).getDate() - numericalFilter) } }).exec();
     }
+
+    const posts = data.map((post) => {
+      const images = post.images.map((image) => ({
+        contentType: image.contentType,
+        imageUrl: `data:${image.contentType};base64,${image.data.toString('base64')}`,
+      }));
+
+      return { ...post.toObject(), images: images || [] }
+    });
+
     console.log(data);
-    res.json(data);
+    res.json(posts);
   }
   catch (error: any) {
     res.status(500).json({ message: "Internal server error.", error: error.message });
