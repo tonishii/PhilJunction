@@ -37,7 +37,7 @@ export default function Main() {
 
   async function addPosts() {
     try {
-      let url = new URL("http://localhost:3001/retrievemoreposts");
+      const url = new URL("http://localhost:3001/retrievemoreposts");
       url.searchParams.set("curr_len", String(posts.length))
       console.log(posts.length, url)
       const res = await fetch(url, {

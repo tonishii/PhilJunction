@@ -37,7 +37,8 @@ function App() {
       <Header />
       <ToastContainer
         autoClose={3000}
-        transition={Slide} />
+        transition={Slide}
+        theme={localStorage.getItem("theme") ?? "light"} />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="user" element={<RandoUser />} />
