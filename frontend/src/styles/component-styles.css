@@ -256,23 +256,23 @@
 }
 
 /* Tag Input */
-
 .tags-input {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   background-color: #2c2f33;
   border-radius: 10px;
-  padding: 7px 10px;
+  padding: 5px 10px;
+  height: 40px;
   gap: 5px;
   border: none;
   color: #F6F7EB;
   outline: none;
-  max-width: 430px;
 }
 
 .tags-input input {
   border: none;
+  padding: 0px;
   background: transparent;
   color: #F6F7EB;
   outline: none;
