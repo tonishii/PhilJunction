@@ -110,12 +110,14 @@ export default function SearchPage() {
         <button className="search-buttons" type="submit">Search</button>
       </form>
 
-      <div className="search-posts">
-        <h1 className="result-text">Results: </h1>
-        {posts.map((i, j) =>
-          <Post key={j} post={i} />
-        )}
-      </div>
+
+      { posts.length > 0 && (
+        <div className="search-posts">
+          <h1 className="result-text">Results:</h1>
+            {posts.map((i, j) => (
+              <Post key={j} post={i} />
+            ))}
+        </div> )}
     </div>
   );
 }

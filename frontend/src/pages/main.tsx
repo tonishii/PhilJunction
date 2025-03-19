@@ -126,14 +126,16 @@ export default function Main() {
         <button onClick={addPosts}>Add More Posts</button>
       </div>
 
-      <div className="popular-posts-list">
-        <span className="popular-posts-header">
-          Trending Posts <Flame className="icon" />
-        </span>
-        {trendingPosts.map((i, j) => (
-          <SmallPost key={j} post={i} />
-        ))}
-      </div>
+      { trendingPosts.length > 0 && (
+        <div className="popular-posts-list">
+          <span className="popular-posts-header">
+            Trending Posts <Flame className="icon" />
+          </span>
+          {trendingPosts.map((i, j) => (
+            <SmallPost key={j} post={i} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
