@@ -35,6 +35,31 @@ export default function Main() {
     }
   }
 
+  async function addPosts() {
+    try {
+      let url = new URL("http://localhost:3001/retrievemoreposts");
+      url.searchParams.set("curr_len", String(posts.length))
+      console.log(posts.length, url)
+      const res = await fetch(url, {
+        method: "GET"
+      });
+
+      const addMore = await res.json();
+
+      if (!res.ok) {
+        toast.error("A server error has occured when pulling more posts.");
+        console.log(addMore.error);
+      }
+      if(!addMore.length)
+        toast.error("No more posts to load.");
+      else
+        setPosts(oldposts => [...oldposts, ...addMore]);
+    } catch (error: unknown) {
+      toast.error("Something went wrong.");
+      console.log(error);
+    }
+  }
+
   async function getPopularPosts() {
     try {
       const res = await fetch("http://localhost:3001/trendingposts");
@@ -97,6 +122,7 @@ export default function Main() {
             />
           );
         })}
+        <button onClick={addPosts}>Add More Posts</button>
       </div>
 
       <div className="popular-posts-list">
