@@ -36,7 +36,7 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
 
   try {
     // Placeholder user validation (to be replaced with actual authentication logic)
-    const user = await User.findOne({});  // Replace with actual user lookup based on session/token
+    const user = await User.findOne({ username: "ANTHIMON" });  // Replace with actual user lookup based on session/token
     if (!user) {
       return res.status(400).json({ message: "User not found or authentication required." });
     }
