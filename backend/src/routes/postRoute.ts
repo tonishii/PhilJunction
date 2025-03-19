@@ -211,6 +211,8 @@ router.get("/searchposts", async (req: Request, res: Response) => {
   const { keywords, tags, filterBy } = req.query;
   const parsed = JSON.parse(tags as string ?? "[]");
   const numericalFilter = Number(filterBy) ?? 1;
+
+  console.log(keywords, parsed, numericalFilter);
   console.log(Date.now() - numericalFilter)
   try {
     let data: IPost[] = [];
