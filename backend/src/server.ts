@@ -29,7 +29,6 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server is running!");
 });
 
-// <INSERT ROUTES HERE>
 app.use(authRoute);
 app.use(postRoute);
 app.use(userRoute);

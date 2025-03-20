@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 
 export default function Main() {
   const [posts, setPosts] = useState<IPost[]>([]);
+  const [commentCount, setCommentCount] = useState<{ [key: string]: number }>({});
   const [trendingPosts, setTrending] = useState<IPost[]>([]);
   const [votes, setVotes] =
     useState<{
@@ -25,14 +26,20 @@ export default function Main() {
   async function getGeneralPosts() {
     try {
       const res = await fetch("http://localhost:3001/retrieveposts");
-      const general = await res.json();
+      const data = await res.json();
 
       if (!res.ok) {
         toast.error("A server error has occured when pulling general.");
-        console.log(general.error);
+        console.log(data.error);
       }
 
-      setPosts(general);
+      setPosts(data.map((item: { post: IPost }) => item.post));
+      setCommentCount(
+        data.reduce((acc: { [key: string]: number }, item: { post: IPost; commentCount: number }) => {
+          acc[item.post.publicId] = item.commentCount;
+          return acc;
+        }, {})
+      );
     } catch (error: unknown) {
       toast.error("Something went wrong.");
       console.log(error);
@@ -124,6 +131,7 @@ export default function Main() {
               initialLikes={voteData.initialLikes}
               initialDislikes={voteData.initialDislikes}
               initialVote={voteData.initialVote}
+              initialComments={commentCount[post.publicId]}
             />
           );
         })}

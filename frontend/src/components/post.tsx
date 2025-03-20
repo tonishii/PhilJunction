@@ -14,16 +14,18 @@ export default function Post({
   initialVote = null,
   initialLikes = 0,
   initialDislikes = 0,
+  initialComments = 0,
 }: {
   post: IPost;
   initialVote?: boolean | null;
   initialLikes?: number;
   initialDislikes?: number;
+  initialComments?: number;
 }) {
   const [vote, setVote] = useState<boolean | null>(initialVote);
   const [likeCount, setLikeCount] = useState(initialLikes);
   const [dislikeCount, setDislikeCount] = useState(initialDislikes);
-  const [commentCount] = useState(post.comments.length ?? 0);
+  const [commentCount] = useState(initialComments);
 
   function handleDate(datePosted: Date): string {
     return moment(datePosted).fromNow();
