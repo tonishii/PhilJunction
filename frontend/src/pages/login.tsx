@@ -10,6 +10,11 @@ export default function Login() {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
+    const trimmedData = Object.fromEntries(
+      Array.from(formData.entries()).map(([key, value]) => {
+        return [key, value.toString().trim()];
+      })
+    );
 
     try {
       const response = await fetch("http://localhost:3001/login", {
@@ -17,13 +22,15 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(Object.fromEntries(formData.entries())),
+        body: JSON.stringify(trimmedData),
       });
 
+      const data = await response.json();
       if (response.ok) {
         navigate("/");
+        toast.info(data.message);
       } else {
-        toast.error("An error has occured.");
+        toast.error(data.message);
       }
     } catch (error: unknown) {
       toast.error(String(error));
