@@ -1,6 +1,6 @@
 import "@/styles/login-styles.css";
 
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 export default function Login() {
@@ -38,18 +38,19 @@ export default function Login() {
   };
 
   return (
-    <form className="login-contents" onSubmit={login}>
-      <div>
+    <>
+      <form className="login-contents" onSubmit={login}>
         <label htmlFor="uname">Username: </label>
         <input type="text" id="uname" name="username" />
-      </div>
-      <div>
         <label htmlFor="pwrd">Password: </label>
         <input type="password" id="pwrd" name="password" />
-      </div>
-      <button className="round-button authsubmit-button" type="submit">
-        Log In
-      </button>
-    </form>
+
+        <button className="round-button auth-submit-button" type="submit">
+          Continue
+        </button>
+      </form>
+
+      <p className="auth-msg-link">New to PhilJunction? <Link className="auth-link" to="/auth/signup">Sign up</Link></p>
+    </>
   );
 }
