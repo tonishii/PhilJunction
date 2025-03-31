@@ -45,8 +45,6 @@
   width: 100%;
 }
 
-
-
 .post-header>* {
   margin: 0px;
 }
@@ -341,6 +339,6 @@
   width: 400px;
   background-color: var(--field1);
   color: var(--text1);
-  border: 1px solid #2c2f33;
+  border: 1px solid var(--field2);
   border-radius: 5px;
 }

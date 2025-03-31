@@ -1,11 +1,19 @@
 .error-container {
-
     display: flex;
-    color: var(--text1);
+    flex-direction: column;
+    color: var(--field3);
     height: 90%;
 
     align-items: center;
     justify-content: center;
+}
+
+.error-container>*>* {
+    margin: 0px;
+}
+
+.error-container span {
+    font-size: 2rem;
 }
 
 #root {
@@ -14,7 +22,12 @@
     height: 100vh;
 }
 
-.error-container .MapPinXIcon {
-    width: 5rem;
-    height: 5rem;
+.error-404 {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10rem;
+}
+
+.error-404-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
 }
