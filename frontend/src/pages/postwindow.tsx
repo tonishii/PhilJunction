@@ -36,7 +36,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
       const response = await fetch(`http://localhost:3001/retrievepost/${publicId}`);
 
       if (response.ok) {
-        const { message, post } = await response.json();
+        const { message, post, commentCount } = await response.json();
         setPost(post);
         console.log(message);
 
@@ -58,7 +58,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
 
         const filteredComments = commentsData.filter(Boolean);
         setComments(filteredComments);
-        setCommentCount(filteredComments.length);
+        setCommentCount(commentCount);
       } else {
         console.error(response);
         if (response.status === 404) {

@@ -66,17 +66,20 @@ router.get("/retrieveposts", async (req: Request, res: Response) => {
     // });
 
     // res.json({ data: data, user: user });
-    const postsWithImages = data.map((post) => {
-      const images = post.images?.map((image) => ({
-        contentType: image.contentType,
-        imageUrl: `data:${image.contentType};base64,${image.data.toString('base64')}`,
-      }));
+    const postsWithImages = await Promise.all(
+      data.map(async (post) => {
+        const images = post.images?.map((image) => ({
+          contentType: image.contentType,
+          imageUrl: `data:${image.contentType};base64,${image.data.toString('base64')}`,
+        }));
 
-      return {
-        ...post.toObject(),
-        images: images || [],
-      };
-    });
+
+        return {
+          post: { ...post.toObject(), images: images || [] },
+          commentCount: await Comment.countDocuments({ publicId: post.publicId }),
+        };
+      })
+    );
 
     res.json(postsWithImages);
   }
@@ -137,7 +140,8 @@ router.get("/retrievepost/:id", async (req: Request, res: Response): Promise<any
 
     return res.status(200).json({
       message: "Post successfully pulled",
-      post: { ...data.toObject(), images: images || [] }
+      post: { ...data.toObject(), images: images || [] },
+      commentCount: await Comment.countDocuments({ publicId: data.publicId }),
     });
 
   } catch (e: unknown) {
