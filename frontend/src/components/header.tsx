@@ -1,9 +1,13 @@
-import { Menu, Search, User, BadgePlus } from "lucide-react";
+import { Search, User, BadgePlus } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import Logo from "@/components/logo";
+import { useContext } from "react";
+import { AuthContext } from "@/hook/context";
 
 export default function Header() {
   const navigate = useNavigate();
+  // const [isLoggedIn,] = useLoggedIn();
+  const [username] = useContext(AuthContext);
 
   function handleSearch(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter") {
@@ -18,17 +22,19 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header-leftmost">
-        <Link to="user/settings"> {/* FIX  */}
+        {/* <Link to="user/settings"> 
           <button className="round-button">
             <Menu className="icon" />
           </button>
-        </Link>
-        <Link to="holler">
+        </Link> */}
+
+        {username && <Link to="holler">
           <button className="create-post-button">
             <BadgePlus className="icon" />
             <span>Create a Post</span>
           </button>
-        </Link>
+        </Link>}
+
       </div>
 
       <Link to="/" className="header-link">
@@ -49,11 +55,22 @@ export default function Header() {
         />
       </div>
 
-      <Link to="user">
-        <button className="round-button">
-          <User className="icon" />
-        </button>
-      </Link>
+      {
+        username === null
+          ?
+          <div>
+            <Link to="auth/signup">Signup</Link>
+            <Link to="auth/login">Login</Link>
+          </div>
+
+          :
+
+          <Link to={"user/" + username}>
+            <button className="round-button">
+              <User className="icon" />
+            </button>
+          </Link>
+      }
     </header>
   );
 }

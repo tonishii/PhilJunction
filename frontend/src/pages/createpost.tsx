@@ -124,85 +124,84 @@ export default function CreatePost() {
   return (
     <main>
       <div className="create-post-container">
-          <div className="create-post-body">
-            <div className="create-post-header">
+        <div className="create-post-body">
+          <div className="create-post-header">
+            <textarea
+              name="title"
+              id="title"
+              placeholder="Add a Title..."
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+              maxLength={100} />
+            <span
+              className={
+                `title-counter ${title.length == 100 ? "title-max" :
+                  title.length > 40 ? "title-overflow" : ""
+                } `}>
+              {title.length + "/40 "}
+              {title.length == 100 ? <b>Max!!</b> :
+                title.length > 40 ? <i>Overflow!</i> : ""}
+            </span>
+          </div>
+
+          <div className="create-post-main">
+            <div className="textarea-wrapper">
+              <i className="textarea-header">Editor</i>
               <textarea
-                name="title"
-                id="title"
-                placeholder="Add a Title..."
-                onChange={(e) => setTitle(e.target.value)}
-                value={title}
-                maxLength={100}/>
-              <span
-                className={
-                  `title-counter ${
-                    title.length == 100 ? "title-max" :
-                    title.length > 40 ? "title-overflow" : ""
-                  } `}>
-                  {title.length + "/40 "}
-                  {title.length == 100 ? <b>Max!!</b> :
-                   title.length > 40 ? <i>Overflow!</i> : ""}
-              </span>
+                name="editor"
+                id="editor"
+                placeholder="Start typing here..."
+                onChange={(e) => setContent(e.target.value)}
+                value={content} />
             </div>
 
-            <div className="create-post-main">
-              <div className="textarea-wrapper">
-                <i className="textarea-header">Editor</i>
-                <textarea
-                  name="editor"
-                  id="editor"
-                  placeholder="Start typing here..."
-                  onChange={(e) => setContent(e.target.value)}
-                  value={content} />
-              </div>
+            <ReactMarkdown className="create-post-MD" children={content} />
 
-              <ReactMarkdown className="create-post-MD" children={content}/>
+            <div className="image-preview">
+              {images.map((img, index) => (
+                <div key={index} className="create-post-image">
+                  <button onClick={() => setImages(images.filter((_, i) => i !== index))}><X size={12} /></button>
 
-              <div className="image-preview">
-                {images.map((img, index) => (
-                  <div key={index} className="create-post-image">
-                    <button onClick={() => setImages(images.filter((_, i) => i !== index))}><X size={12}/></button>
-
-                    <img
-                      key={index}
-                      src={img}
-                      alt={`attachment-${index}`}
-                      className="post-image" />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="create-post-footer">
-              <TagInput tags={tags} setTags={setTags} />
-
-              <input
-                type="file"
-                accept="image/*"
-                style={{ display: "none" }}
-                id="fileInput"
-                multiple
-                onChange={handleAttachImage} />
+                  <img
+                    key={index}
+                    src={img}
+                    alt={`attachment-${index}`}
+                    className="post-image" />
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="post-sidebar">
-            <div className='sidebar-button'>
-              <button
-                className={`round-button`}
-                onClick={publicId ? handleEdit : handleSubmit}>
-                <Send className="icon" />
-              </button>
-            </div>
+          <div className="create-post-footer">
+            <TagInput tags={tags} setTags={setTags} />
 
-            <div className='sidebar-button'>
-              <button
-                className={`round-button`}
-                onClick={() => document.getElementById("fileInput")?.click()}>
-                <ImagePlus className="icon" />
-              </button>
-            </div>
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              id="fileInput"
+              multiple
+              onChange={handleAttachImage} />
           </div>
+        </div>
+
+        <div className="post-sidebar">
+          <div className='sidebar-button'>
+            <button
+              className={`round-button`}
+              onClick={publicId ? handleEdit : handleSubmit}>
+              <Send className="icon" />
+            </button>
+          </div>
+
+          <div className='sidebar-button'>
+            <button
+              className={`round-button`}
+              onClick={() => document.getElementById("fileInput")?.click()}>
+              <ImagePlus className="icon" />
+            </button>
+          </div>
+        </div>
       </div>
     </main>
   )

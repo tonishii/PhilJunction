@@ -1,10 +1,13 @@
+import { AuthContext } from "@/hook/context";
 import "@/styles/login-styles.css";
+import { useContext } from "react";
 
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [, setUsername] = useContext(AuthContext);
 
   const login = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,11 +25,13 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(trimmedData),
       });
 
       const data = await response.json();
       if (response.ok) {
+        setUsername(formData.get("username") as string);
         navigate("/");
         toast.info(data.message);
       } else {

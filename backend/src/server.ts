@@ -10,9 +10,17 @@ import userRoute from "./routes/userRoute";
 import commentRoute from "./routes/commentRoute";
 import voteRoute from "./routes/voteRoute";
 import User, { IUser } from "./models/user";
+import session from "express-session";
 import { FilterQuery, Model, RootFilterQuery, Schema } from "mongoose";
 
 dotenv.config();
+
+declare module 'express-session' {
+  interface SessionData {
+    isLoggedIn: boolean;
+    username: string;
+  }
+}
 
 const app: Express = express();
 const PORT = process.env.PORT || 3001;
@@ -23,6 +31,15 @@ connectDB();
 // Middleware
 app.use(express.json());
 app.use(cors);
+app.use(session({
+  secret: process.env.SESSION_SECRET!,
+  saveUninitialized: false,
+  resave: false,
+  cookie: {
+    maxAge: 1000 * 60 * 5, // 5 minutes = 1000ms * 60 (minute/ms) * 5 ,
+    secure: false
+  }
+}))
 
 // Routes
 app.get("/", (req: Request, res: Response) => {

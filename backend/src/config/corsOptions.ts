@@ -1,7 +1,8 @@
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 
-const corsOptions = {
-    origin: ["http://localhost:3000", "http://localhost:4173"]
+const corsOptions: CorsOptions = {
+    origin: ["http://localhost:3000", "http://localhost:4173"],
+    credentials: true
 }
 
 export default cors(corsOptions);

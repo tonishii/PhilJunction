@@ -1,9 +1,12 @@
+import { AuthContext } from "@/hook/context";
 import "@/styles/login-styles.css";
+import { useContext } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [, setUsername] = useContext(AuthContext);
 
   const register = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,6 +34,7 @@ export default function SignUp() {
       });
 
       if (response.ok) {
+        setUsername(formData.get("username") as string);
         navigate("/");
       } else {
         toast.error("An error has occured.");

@@ -1,19 +1,40 @@
 {
   "files": [],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
   ],
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"],
-      "@components/*": ["components/*"],
-      "@pages/*": ["pages/*"],
-      "@profile/*": ["pages/profile/*"],
-      "@mockdata/*": ["mockdata/*"],
-      "@styles/*": ["styles/*"],
-      "@models/*": ["models/*"],
+      "@/*": [
+        "*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@pages/*": [
+        "pages/*"
+      ],
+      "@profile/*": [
+        "pages/profile/*"
+      ],
+      "@mockdata/*": [
+        "mockdata/*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@models/*": [
+        "models/*"
+      ],
     }
-  }
+  },
+  "include": [
+    "vite-end.d.ts"
+  ]
 }

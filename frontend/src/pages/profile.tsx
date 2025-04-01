@@ -1,7 +1,7 @@
 import "@/styles/profile-styles.css";
 
-import { useEffect, useState } from "react";
-import { useParams, Link, NavLink, Route, Routes, useNavigate } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import { useParams, NavLink, Route, Routes, useNavigate } from "react-router";
 
 import ProfileInfo from "@profile/info";
 import Settings from "@profile/settings";
@@ -9,11 +9,13 @@ import UserComments from "@profile/comments";
 import UserPosts from "@profile/posts";
 import { IUser } from "@/models/userType";
 import { toast } from "react-toastify";
+import { AuthContext } from "@/hook/context";
 
 export default function Profile() {
   const { username } = useParams();
   const [user, setUser] = useState<IUser | null>(null);
   const navigate = useNavigate();
+  const [, setUsername] = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchUser() {
@@ -35,7 +37,25 @@ export default function Profile() {
     }
 
     fetchUser();
-  }, [username]);
+  }, [username, navigate]);
+
+  const handleLogout = async () => {
+    const res = await fetch(import.meta.env.VITE_SERVER_URL + "logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+
+    if (res.ok) {
+      navigate("/");
+      setUsername(null);
+    } else {
+      toast.error("something went wrong");
+    }
+
+  }
 
   return (
     <div className="profile-page">
@@ -63,9 +83,9 @@ export default function Profile() {
           <NavLink to={`/user/${username}/settings`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
             <span>Settings</span>
           </NavLink>
-          <Link to="/auth/login" className="sidebar-button">
+          <button onClick={handleLogout} className="sidebar-button">
             <span>Sign Out</span>
-          </Link>
+          </button>
         </div>
       </div>
     </div>
