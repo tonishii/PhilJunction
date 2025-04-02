@@ -2,7 +2,7 @@ import "@/styles/post-styles.css";
 import "@/styles/component-styles.css";
 
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import ReactMarkdown from "react-markdown";
 import { toast } from 'react-toastify';
 import moment from "moment";
@@ -235,12 +235,14 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
         <div className="post-window-title">
           <h1>{post?.title}</h1>
 
-          {
-            post.username === username ?
-              <div className="post-window-header-buttons">
-                <button className="round-button" onClick={() => navigate(-1)}>
-                  <CornerDownLeft className="icon black-color" />
-                </button>
+
+          <div className="post-window-header-buttons">
+            <button className="round-button" onClick={() => navigate(-1)}>
+              <CornerDownLeft className="icon black-color" />
+            </button>
+            {
+              post.username === username &&
+              <>
                 <button className="ellipsis-button" onClick={() => setMenuVisible(!menuVisible)}>
                   <Ellipsis className="icon black-color" />
                 </button>
@@ -260,15 +262,16 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
                     </div>
                   )}
                 </div>
-              </div>
-              : <></>
-          }
+              </>
+            }
+          </div>
+
         </div>
 
         <hr />
 
         <div className="post-info">
-          <b className="post-author">Posted by <span className="gray-color">{post?.username}</span> </b>
+          <b className="post-author">Posted by <Link to={`/user/${post?.username}`}><span className="gray-color">{post?.username}</span> </Link></b>
           <i className="post-date">{handleDate(post?.postDate)}</i>
         </div>
       </div>
