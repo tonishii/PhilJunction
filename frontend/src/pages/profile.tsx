@@ -15,14 +15,18 @@ export default function Profile() {
   const { username } = useParams();
   const [user, setUser] = useState<IUser | null>(null);
   const navigate = useNavigate();
-  const [, setUsername] = useContext(AuthContext);
+  const [usernameSession, setUsername] = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchUser() {
-      const res = await fetch(`http://localhost:3001/user/${username}`);
-      const data = await res.json();
 
-      if (!res.ok) {
+      const res = await fetch(`http://localhost:3001/user/${username}`, {
+          credentials: "include",
+      });
+      const data = await res.json();
+      console.log(data)
+
+      if (!res.ok || res.status === 401) {
         if (res.status === 404) {
           toast.info("Can't find that person!")
           navigate("/");
@@ -30,10 +34,19 @@ export default function Profile() {
           toast.error("An error has occured.");
           console.log(data.message);
         }
-      } else {
+      }
+      else { 
+        if (data.logOut) {
+          if (usernameSession) {
+            toast.error("Session has expired!");
+            setUsername(null);
+            navigate("/auth/login");
+          }
+        }
         setUser(data.user);
         console.log(data);
       }
+      
     }
 
     fetchUser();
@@ -80,12 +93,17 @@ export default function Profile() {
           <NavLink to={`/user/${username}/comments`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
             <span>Comments</span>
           </NavLink>
-          <NavLink to={`/user/${username}/settings`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
-            <span>Settings</span>
-          </NavLink>
-          <button onClick={handleLogout} className="sidebar-button">
-            <span>Sign Out</span>
-          </button>
+          { usernameSession === user?.username ?
+          <>
+            <NavLink to={`/user/${username}/settings`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
+              <span>Settings</span>
+            </NavLink>
+            <button onClick={handleLogout} className="sidebar-button">
+              <span>Sign Out</span>
+            </button> 
+          </>
+          : <></>
+          }
         </div>
       </div>
     </div>
