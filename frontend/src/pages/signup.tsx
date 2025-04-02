@@ -1,5 +1,6 @@
 import { AuthContext } from "@/hook/context";
 import "@/styles/login-styles.css";
+import { Link, useNavigate } from "react-router";
 import { useContext } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
@@ -45,27 +46,23 @@ export default function SignUp() {
   };
 
   return (
-    <form className="signup-contents" onSubmit={register}>
-      <div>
+    <>
+      <form className="signup-contents" onSubmit={register}>
         <label htmlFor="uname">New Username: </label>
         <input type="text" id="uname" name="username" />
-      </div>
-      <div>
         <label htmlFor="eml">Email Address: </label>
         <input type="text" id="eml" name="email" />
-      </div>
-      <div>
         <label htmlFor="pwrd">Password: </label>
         <input type="password" id="pwrd" name="password" />
-      </div>
-      <div>
         <label htmlFor="cfrmpwrd">Confirm Password: </label>
         <input type="password" id="cfrmpwrd" name="confirmPW" />
-      </div>
 
-      <button className="round-button authsubmit-button" type="submit">
-        Sign Up
-      </button>
+        <button className="round-button auth-submit-button" type="submit">
+          Continue
+        </button>
     </form>
+
+    <p className="auth-msg-link">Already have an account? <Link className="auth-link" to="/auth/login">Log In</Link></p>
+    </>
   );
 }
