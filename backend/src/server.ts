@@ -9,9 +9,9 @@ import postRoute from "./routes/postRoute";
 import userRoute from "./routes/userRoute";
 import commentRoute from "./routes/commentRoute";
 import voteRoute from "./routes/voteRoute";
-import User, { IUser } from "./models/user";
+import User from "./models/user";
 import session from "express-session";
-import { FilterQuery, Model, RootFilterQuery, Schema } from "mongoose";
+import MongoStore from "connect-mongo";
 
 dotenv.config();
 
@@ -36,10 +36,17 @@ app.use(session({
   secret: process.env.SESSION_SECRET!,
   saveUninitialized: false,
   resave: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    ttl: 24 * 60 * 60,
+    crypto: {
+      secret: process.env.SESSION_SECRET!,
+    }
+  }),
   cookie: {
     maxAge: 1000 * 60 * 5, // 5 minutes = 1000ms * 60 (minute/ms) * 5 ,
     secure: false
-  }
+  },
 }))
 
 // Routes

@@ -22,8 +22,6 @@ export default function Header() {
         const res = await fetch(`http://localhost:3001/user/${username}`);
         const data = await res.json();
 
-        console.log(data);
-
         if (!res.ok) {
           toast.error("An error has occured while fetching icon.");
           console.error(data.message);
@@ -36,7 +34,6 @@ export default function Header() {
         console.error(error);
       }
     }
-    console.log(username);
     fetchIcon();
   }, [username]);
 
