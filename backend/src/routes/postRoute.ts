@@ -1,7 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import multer from 'multer';
 
-import User from "../models/user";
 import Post, { IPost } from "../models/post";
 import Comment from "../models/comment";
 import Vote from "../models/votes";

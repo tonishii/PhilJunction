@@ -37,7 +37,7 @@ app.use(session({
   saveUninitialized: false,
   resave: false,
   cookie: {
-    maxAge: 1000 * 60 * 5, // 5 minutes = 1000ms * 60 (minute/ms) * 5 ,
+    maxAge: 1000 * 60 * 60, // 5 minutes = 1000ms * 60 (minute/ms) * 5 ,
     secure: false
   }
 }))
