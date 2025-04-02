@@ -47,6 +47,7 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
     if (await comparePassword(password, user.password)) {
       req.session.isLoggedIn = true;
       req.session.username = user.username;
+      req.session.userId = user.id;
       req.session.save();
       console.log("this guy just logged in", req.session, req.sessionID);
       res.status(201).json({ message: 'User logged in successfully.' });
