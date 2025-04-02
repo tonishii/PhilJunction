@@ -2,7 +2,6 @@ import { AuthContext } from "@/hook/context";
 import "@/styles/login-styles.css";
 import { Link, useNavigate } from "react-router";
 import { useContext } from "react";
-import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 export default function SignUp() {
