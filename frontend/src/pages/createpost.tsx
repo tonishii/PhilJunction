@@ -17,6 +17,7 @@ export default function CreatePost() {
   const navigate = useNavigate();
   const [username, setUsername] = useContext(AuthContext);
 
+  // grab information if editing
   useEffect(() => {
     if (!publicId) return;
 
@@ -45,6 +46,12 @@ export default function CreatePost() {
       setImages([...images, ...fileArray]);
     }
   }
+
+  const imageUrlToFile = async (url: string): Promise<File> => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], 'image.jpg', { type: blob.type });
+  };
 
   async function handleSubmit() {
     const formData = new FormData();
@@ -112,16 +119,31 @@ export default function CreatePost() {
       const res = await fetch("http://localhost:3001/updatepost", {
         method: "POST",
         body: formData,
+        credentials: "include"
       });
 
-      const data = await res.json();
+      const errorMessage = await res.json();
 
       if (res.ok) {
         navigate("/");
-        console.log(data.message);
+        console.log(errorMessage.message);
       } else {
-        toast.error("An error has occured.");
-        console.error(data.message);
+        if (res.status === 401) {
+          if (username) toast.error("Session has expired!");
+          else toast.error("Login in first!");
+
+          setUsername(null);
+          navigate("/auth/login");
+        } else if (res.status === 403) {
+          toast.error("This is not your post!");
+          navigate("/post/" + publicId);
+        }
+        else if (res.status === 400) {
+          toast.error("Title, content, and tags are required.");
+        } else {
+          toast.error("An error has occured.");
+          console.error(errorMessage);
+        }
       }
     } catch (error: unknown) {
       toast.error("An error has occured.");
@@ -129,11 +151,7 @@ export default function CreatePost() {
     }
   }
 
-  const imageUrlToFile = async (url: string): Promise<File> => {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return new File([blob], 'image.jpg', { type: blob.type });
-  };
+
 
   return (
     <main>
