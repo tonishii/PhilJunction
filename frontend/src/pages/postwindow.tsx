@@ -167,12 +167,12 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: "Protea",
           body: commentValue,
           publicId: publicId,
           parentId: publicId,
           type: "Comment",
         }),
+        credentials: "include"
       });
 
       const data = await res.json();
@@ -183,8 +183,12 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
         setComments((prevComments) => [...prevComments, data.newComment]);
         setCommentCount((prev) => prev + 1);
       } else {
-        toast.error("An error has occured.");
-        console.error(data.message);
+        if (res.status === 401) {
+          toast.error("Not logged in!");
+        } else {
+          toast.error("An error has occured.");
+          console.error(data.message);
+        }
       }
     } catch (err: unknown) {
       toast.error("An error occurred while submitting the comment.");

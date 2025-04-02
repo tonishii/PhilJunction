@@ -1,9 +1,10 @@
 import "@/styles/component-styles.css";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Ellipsis, MessageCircle, Send, Pencil } from "lucide-react";
 import { IComment } from "@/models/commentType";
 import moment from "moment";
 import { toast } from "react-toastify";
+import { AuthContext } from "@/hook/context";
 
 export default function Comment({
   commentData,
@@ -24,6 +25,7 @@ export default function Comment({
   const [reply, setReply] = useState("");
   const [replyVisible, setReplyVisible] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
+  const [username] = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchReplies() {
@@ -66,6 +68,7 @@ export default function Comment({
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: "include",
         body: JSON.stringify({
           username: "ANTHIMON", // TENATIVE NO USER LOGIC
           body: reply,
@@ -85,10 +88,13 @@ export default function Comment({
         setReplies((prevReplies) => [...prevReplies, data.newReply]);
         setCommentCount?.((prev) => prev + 1);
       } else {
+        if (res.status === 401) {
+          toast.error("login first!");
+        }
         toast.error("An error has occured.");
         console.error(data.message);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error("Error occurred while submitting reply.");
       console.error(error);
     }
@@ -109,6 +115,7 @@ export default function Comment({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(updatedComment),
+        credentials: "include"
       });
 
       const data = await res.json();
@@ -120,10 +127,16 @@ export default function Comment({
         setComment(data.comment);
         console.log(data.message);
       } else {
-        toast.error("An error has occured.");
-        console.error(data.message);
+        if (res.status === 401) {
+          toast.error("login first!");
+        } else if (res.status === 403) {
+          toast.error("not your comment")
+        } else {
+          toast.error("An error has occured.");
+          console.error(data.message);
+        }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error("Error occurred while editing reply.");
       console.error(error);
     }
@@ -145,10 +158,16 @@ export default function Comment({
         onDeleteComment?.(comment.commentID as string);
         setCommentCount?.((prev) => prev - 1);
       } else {
-        toast.error("An error has occured.");
-        console.error(data.message);
+        if (res.status === 401) {
+          toast.error("login first!");
+        } else if (res.status === 403) {
+          toast.error("not your comment!")
+        } else {
+          toast.error("An error has occured.");
+          console.error(data.message);
+        }
       }
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error("Error occurred while deleting comment.");
       console.error(error);
     }
@@ -221,41 +240,43 @@ export default function Comment({
               </div>
             )}
 
-            <div className="comment-menu">
-              <button className="ellipsis-button" onClick={toggleMenu}>
-                <Ellipsis className="icon" />
-              </button>
-              {menuVisible && (
-                <div className="dropdown-menu">
-                  <ul>
-                    <li>
-                      <div className="comment-menu">
-                        <button onClick={() => setEditVisible(!editVisible)}>Edit</button>
-                        {editVisible && (
-                          <div className="dropdown-menu">
-                            <input
-                              type="text"
-                              name="edit"
-                              id="edit"
-                              value={edit}
-                              onChange={(e) => setEdited(e.target.value)}
-                              onKeyUp={handleKeyUpEdit}
-                              placeholder="Edit a comment..."
-                            />
-                            <button className="reply-button" onClick={handleEdit}>
-                              <Pencil className="icon" />
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </li>
-                    <li>
-                      <button onClick={handleDelete}>Delete</button>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
+            {username === comment.username &&
+              <div className="comment-menu">
+                <button className="ellipsis-button" onClick={toggleMenu}>
+                  <Ellipsis className="icon" />
+                </button>
+                {menuVisible && (
+                  <div className="dropdown-menu">
+                    <ul>
+                      <li>
+                        <div className="comment-menu">
+                          <button onClick={() => setEditVisible(!editVisible)}>Edit</button>
+                          {editVisible && (
+                            <div className="dropdown-menu">
+                              <input
+                                type="text"
+                                name="edit"
+                                id="edit"
+                                value={edit}
+                                onChange={(e) => setEdited(e.target.value)}
+                                onKeyUp={handleKeyUpEdit}
+                                placeholder="Edit a comment..."
+                              />
+                              <button className="reply-button" onClick={handleEdit}>
+                                <Pencil className="icon" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </li>
+                      <li>
+                        <button onClick={handleDelete}>Delete</button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -263,7 +284,7 @@ export default function Comment({
       <p>{comment.body}</p>
 
       <div className="replies-container">
-        { replies.length > 0 &&
+        {replies.length > 0 &&
           replies.map((reply, i) => (
             <Comment
               key={(reply.commentID ?? "") + i}
