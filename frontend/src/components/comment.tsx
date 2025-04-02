@@ -5,6 +5,7 @@ import { IComment } from "@/models/commentType";
 import moment from "moment";
 import { toast } from "react-toastify";
 import { AuthContext } from "@/hook/context";
+import { Link } from "react-router";
 
 export default function Comment({
   commentData,
@@ -208,7 +209,7 @@ export default function Comment({
       <div className="comment-header">
         <div className="comment-info">
           <div>
-            <span className="comment-name">{comment.username}</span>
+            <Link to={`/user/${comment.username}`}><span className="comment-name">{comment.username}</span></Link>
             <span className="comment-date">
               &nbsp;&sdot; {handleDate(comment.postDate as Date)}
             </span>
