@@ -87,9 +87,12 @@ router.get('/user/:username/comments', async (req: Request, res: Response): Prom
     }
 });
 
-router.post("/updateuser", upload.single("icon"), async (req: Request, res: Response): Promise<any> => {
+router.post("/updateuser", IsLoggedIn, upload.single("icon"), async (req: Request, res: Response): Promise<any> => {
     try {
         const { oldusername, username, email, bio } = req.body;
+        if(oldusername != req.session.username) {
+            return res.status(403).json({ message: "Unauthorized action." });
+        }
 
         const newIcon = req.file ? {
             contentType: req.file.mimetype,
