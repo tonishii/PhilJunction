@@ -20,12 +20,16 @@ router.post("/register", async (req: Request, res: Response): Promise<any> => {
     if (user)
       return res.status(400).json({ message: 'Account already exists.' });
 
-    await User.create({
+    const newUser = await User.create({
       username: username,
       email: email,
       password: await hashPassword(password),
     });
-
+    req.session.isLoggedIn = true;
+    req.session.username = newUser.username;
+    req.session.userId = newUser.id;
+    req.session.save();
+    console.log("this guy just logged in", req.session, req.sessionID);
     return res.status(201).json({ message: 'User registered successfully' });
   }
   catch (error: any) {

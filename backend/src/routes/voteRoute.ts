@@ -4,11 +4,12 @@ import User from "../models/user";
 import Comment from "../models/comment";
 import Post from "../models/post";
 import Vote from "../models/votes";
+import { IsLoggedIn } from "../middlewares/authorizedOnly";
 
 const router: Router = express.Router();
 
 // VOTES
-router.post("/upvote/:id", async (req: Request, res: Response): Promise<any> => {
+router.post("/upvote/:id", IsLoggedIn, async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
     const post = await Post.findOne({ publicId: id });
@@ -18,7 +19,7 @@ router.post("/upvote/:id", async (req: Request, res: Response): Promise<any> => 
     }
 
     // Placeholder user validation (to be replaced with actual authentication logic)
-    const user = await User.findOne({});  // Replace with actual user lookup based on session/token
+    const user = await User.findOne({ _id: req.session.userId });  // Replace with actual user lookup based on session/token
     if (!user) {
       return res.status(400).json({ message: "User not found or authentication required." });
     }
@@ -61,7 +62,7 @@ router.post("/upvote/:id", async (req: Request, res: Response): Promise<any> => 
  }
 );
 
-router.post("/downvote/:id", async (req: Request, res: Response): Promise<any> => {
+router.post("/downvote/:id", IsLoggedIn, async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
     const post = await Post.findOne({ publicId: id });
@@ -71,7 +72,7 @@ router.post("/downvote/:id", async (req: Request, res: Response): Promise<any> =
     }
 
     // Placeholder user validation (to be replaced with actual authentication logic)
-    const user = await User.findOne({});  // Replace with actual user lookup based on session/token
+    const user = await User.findOne({ _id: req.session.userId });  // Replace with actual user lookup based on session/token
     if (!user) {
       return res.status(400).json({ message: "User not found or authentication required." });
     }
@@ -120,7 +121,7 @@ router.get("/retreivevote/:id", async (req: Request, res: Response): Promise<any
 
     if (!post) {
       return res.status(404).json({ message: "Post not found." });
-    }
+    } 
 
     // Placeholder user validation (to be replaced with actual authentication logic)
     const user = await User.findOne({});  // Replace with actual user lookup based on session/token
