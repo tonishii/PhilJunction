@@ -1,11 +1,12 @@
 import "@/styles/create-post.css"
 import { Send, ImagePlus, X } from "lucide-react";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import TagInput from "@/components/taginput";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router";
 import { ImageBuffer } from "@/models/postType";
+import { AuthContext } from "@/hook/context";
 
 export default function CreatePost() {
   const { publicId } = useParams();
@@ -14,6 +15,7 @@ export default function CreatePost() {
   const [tags, setTags] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
   const navigate = useNavigate();
+  const [username, setUsername] = useContext(AuthContext);
 
   useEffect(() => {
     if (!publicId) return;
@@ -65,16 +67,28 @@ export default function CreatePost() {
       const response = await fetch("http://localhost:3001/submitpost", {
         method: "POST",
         body: formData,
+        credentials: "include"
       });
 
       if (response.ok) {
         navigate("/");
       } else {
-        const errorMessage = await response.text();
-        toast.error("An error has occured.");
-        console.error(errorMessage);
+        const errorMessage = await response.json();
+        if (response.status === 401) {
+          if (username) toast.error("Session has expired!");
+          else toast.error("Login in first!");
+
+          setUsername(null);
+          navigate("/auth/login");
+        } else if (response.status === 400) {
+          toast.error("Title, content, and tags are required.");
+        } else {
+          toast.error("An error has occured.");
+          console.error(errorMessage);
+        }
       }
     } catch (error: unknown) {
+
       toast.error("An error has occured.");
       console.error(error);
     }

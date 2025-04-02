@@ -5,6 +5,7 @@ import User from "../models/user";
 import Post, { IPost } from "../models/post";
 import Comment from "../models/comment";
 import Vote from "../models/votes";
+import { IsLoggedIn } from "../middlewares/authorizedOnly";
 
 const router: Router = express.Router();
 const storage = multer.memoryStorage();  // Store the files in memory (Buffer)
@@ -19,10 +20,10 @@ function createId(length: number): string {
   return newId;
 }
 
-router.post("/submitpost", upload.array('images'), async (req: Request, res: Response): Promise<any> => {
+router.post("/submitpost", IsLoggedIn, upload.array('images'), async (req: Request, res: Response): Promise<any> => {
   const { postTitle, postContent, tags } = req.body;
 
-  if (!postTitle || !postContent || !tags) {
+  if (!postTitle || !postContent || JSON.parse(tags).length === 0) {
     return res.status(400).json({ message: 'Title, content, and tags are required.' });
   }
 
@@ -36,14 +37,17 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
 
   try {
     // Placeholder user validation (to be replaced with actual authentication logic)
-    const user = await User.findOne({ username: "ANTHIMON" });  // Replace with actual user lookup based on session/token
-    if (!user) {
-      return res.status(400).json({ message: "User not found or authentication required." });
-    }
+    // const user = await User.findOne({ username: "ANTHIMON" });  // Replace with actual user lookup based on session/token
+    // if (!user) {
+    //   return res.status(400).json({ message: "User not found or authentication required." });
+    // }
+    const { userId, username } = req.session;
+
+
 
     const newPost = new Post({
-      userId: user._id,  // Assuming user is logged in and their ID is available
-      username: user.username,
+      userId,  // Assuming user is logged in and their ID is available
+      username,
       title: postTitle,
       body: postContent,
       images: images,
@@ -58,6 +62,7 @@ router.post("/submitpost", upload.array('images'), async (req: Request, res: Res
   }
 });
 
+// on load front page
 router.get("/retrieveposts", async (req: Request, res: Response) => {
   try {
     const data = await Post.find({}).sort({ postDate: -1 }).limit(10).exec();
@@ -88,6 +93,7 @@ router.get("/retrieveposts", async (req: Request, res: Response) => {
   }
 });
 
+// infinite scroll
 router.get("/retrievemoreposts", async (req: Request, res: Response) => {
   try {
     let currLen = Number(req.query.curr_len)
@@ -126,6 +132,7 @@ router.get("/trendingposts", async (req: Request, res: Response) => {
   }
 });
 
+
 router.get("/retrievepost/:id", async (req: Request, res: Response): Promise<any> => {
   try {
     const data = await Post.findOne({ publicId: req.params.id });
@@ -150,11 +157,23 @@ router.get("/retrievepost/:id", async (req: Request, res: Response): Promise<any
   }
 })
 
-router.post("/updatepost", upload.array('images'), async (req: Request, res: Response): Promise<any> => {
+router.post("/updatepost", IsLoggedIn, upload.array('images'), async (req: Request, res: Response): Promise<any> => {
   const { publicId, postTitle, postContent, tags } = req.body;
-  console.log(tags);
+  const userId = req.session.userId;
 
-  if (!publicId || !postTitle || !postContent || !tags) {
+  const post = await Post.findOne({ publicId });
+  if (!post) {
+    res.status(404).json({ message: "post not found." });
+    return;
+  }
+
+  if (post.userId.toString() !== userId) {
+    res.status(403).json({ message: "not your post!" });
+    return
+  }
+
+
+  if (!publicId || !postTitle || !postContent || tags.length === 0) {
     return res.status(400).json({ message: 'Title, content, public ID, and tags are required.' });
   }
 
@@ -167,11 +186,11 @@ router.post("/updatepost", upload.array('images'), async (req: Request, res: Res
     })) : [];
 
   try {
-    const user = await User.findOne({});  // Replace with actual user
+    // const user = await User.findOne({});  // Replace with actual user
 
-    if (!user) {
-      return res.status(400).json({ message: "User not found or authentication required." });
-    }
+    // if (!user) {
+    //   return res.status(400).json({ message: "User not found or authentication required." });
+    // }
 
     // Make sure that the user was the one that actually posted this
     await Post.updateOne(
@@ -192,7 +211,7 @@ router.post("/updatepost", upload.array('images'), async (req: Request, res: Res
   }
 });
 
-router.post("/deletepost/:publicId", async (req: Request, res: Response): Promise<any> => {
+router.post("/deletepost/:publicId", IsLoggedIn, async (req: Request, res: Response): Promise<any> => {
   const { publicId } = req.params;
 
   try {
