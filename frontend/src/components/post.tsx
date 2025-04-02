@@ -31,7 +31,7 @@ export default function Post({
     return moment(datePosted).fromNow();
   }
 
-  async function handleUpvote(): Promise<any> {
+  async function handleUpvote() {
     try {
       const res = await fetch(`http://localhost:3001/upvote/${post.publicId}`, {
         method: "POST",
@@ -56,13 +56,13 @@ export default function Post({
         }
         console.log(data.message);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       toast.error("A server error occured.");
       console.error(err);
     }
   }
 
-  async function handleDownvote(): Promise<any> {
+  async function handleDownvote() {
     try {
       const res = await fetch(`http://localhost:3001/downvote/${post.publicId}`, {
         method: "POST",
@@ -87,7 +87,7 @@ export default function Post({
         }
         console.log(data.message);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       toast.error("A server error occured.");
       console.error(err);
     }

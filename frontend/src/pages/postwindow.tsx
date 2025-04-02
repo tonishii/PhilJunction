@@ -1,7 +1,7 @@
 import "@/styles/post-styles.css";
 import "@/styles/component-styles.css";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import ReactMarkdown from "react-markdown";
 import { toast } from 'react-toastify';
@@ -18,6 +18,7 @@ import Comment from "@/components/comment";
 import ImageCarousel from "@/components/imagecarousel";
 import { IPost } from "@/models/postType";
 import { IComment } from "@/models/commentType";
+import { AuthContext } from "@/hook/context";
 
 export default function PostWindow({ isEditable = false }: { isEditable?: boolean; }) {
   const { publicId } = useParams();
@@ -30,6 +31,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
 
   const [menuVisible, setMenuVisible] = useState(false);
   const navigate = useNavigate();
+  const [username] = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchData() {
@@ -233,30 +235,34 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
         <div className="post-window-title">
           <h1>{post?.title}</h1>
 
-          <div className="post-window-header-buttons">
-            <button className="round-button" onClick={() => navigate(-1)}>
-              <CornerDownLeft className="icon black-color" />
-            </button>
-            <button className="ellipsis-button" onClick={() => setMenuVisible(!menuVisible)}>
-              <Ellipsis className="icon black-color" />
-            </button>
-            <div className="edit-menu">
-              {isEditable && menuVisible && (
-                <div className="dropdown-menu">
-                  <ul>
-                    <li>
-                      <div className="comment-menu">
-                        <button onClick={() => navigate(`/holler/${publicId}`)}>Edit</button>
-                      </div>
-                    </li>
-                    <li>
-                      <button onClick={handleDeletePost}>Delete</button>
-                    </li>
-                  </ul>
+          {
+            post.username === username ?
+              <div className="post-window-header-buttons">
+                <button className="round-button" onClick={() => navigate(-1)}>
+                  <CornerDownLeft className="icon black-color" />
+                </button>
+                <button className="ellipsis-button" onClick={() => setMenuVisible(!menuVisible)}>
+                  <Ellipsis className="icon black-color" />
+                </button>
+                <div className="edit-menu">
+                  {isEditable && menuVisible && (
+                    <div className="dropdown-menu">
+                      <ul>
+                        <li>
+                          <div className="comment-menu">
+                            <button onClick={() => navigate(`/holler/${publicId}`)}>Edit</button>
+                          </div>
+                        </li>
+                        <li>
+                          <button onClick={handleDeletePost}>Delete</button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </div>
+              </div>
+              : <></>
+          }
         </div>
 
         <hr />
