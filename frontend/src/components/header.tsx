@@ -1,13 +1,44 @@
 import { Search, User, BadgePlus } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import Logo from "@/components/logo";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/hook/context";
+import { toast } from "react-toastify";
 
 export default function Header() {
   const navigate = useNavigate();
   // const [isLoggedIn,] = useLoggedIn();
   const [username] = useContext(AuthContext);
+  const [profileIcon, setProfileIcon] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchIcon() {
+      if (!username) {
+        setProfileIcon(null);
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:3001/user/${username}`);
+        const data = await res.json();
+
+        console.log(data);
+
+        if (!res.ok) {
+          toast.error("An error has occured while fetching icon.");
+          console.error(data.message);
+        } else {
+          setProfileIcon(data.user.icon.imageUrl);
+          console.log(data.message);
+        }
+      } catch (error) {
+        toast.error("An error has occured while fetching icon.");
+        console.error(error);
+      }
+    }
+    console.log(username);
+    fetchIcon();
+  }, [username]);
 
   function handleSearch(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter") {
@@ -22,7 +53,7 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header-leftmost">
-        {/* <Link to="user/settings"> 
+        {/* <Link to="user/settings">
           <button className="round-button">
             <Menu className="icon" />
           </button>
@@ -58,17 +89,21 @@ export default function Header() {
       {
         username === null
           ?
-          <div>
-            <Link to="auth/signup">Signup</Link>
-            <Link to="auth/login">Login</Link>
-          </div>
+          <Link to="auth/login">
+            <button className="login-button">
+              Log In
+            </button>
+          </Link>
 
           :
 
           <Link to={"user/" + username}>
-            <button className="round-button">
-              <User className="icon" />
-            </button>
+             { profileIcon ? (<img src={profileIcon} alt="icon" className="profile-icon" />
+              ) : (
+              <button className="round-button">
+                <User className="icon" />
+              </button>
+              )}
           </Link>
       }
     </header>

@@ -41,17 +41,25 @@
 }
 
 .sidebar-button {
-    display: block;
     padding: 10px 15px;
     color: var(--text1); /* #F6F7EB dark|light #090814 */
-    text-decoration: none;
 }
 
 .sidebar-button.active {
     color: #E94F37; /* previous: #374f6*/
-    background-color: #F6F7EB;
+    background-color: var(--sidebar);
     border-left: 4px solid #E94F37;
     padding-left: 20px;
+}
+
+.signout-button {
+    font-size: 0.8rem;
+    margin-top: 20px;
+    background-color: var(--field4);
+    border-radius: 10px;
+    padding: 10px 15px;
+    border: none;
+    color: var(--text1);
 }
 
 /* Profile Information page */
@@ -87,6 +95,7 @@
     width: 100%;
     height: 100%;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--field1);
 }
 
 .edit-button {
@@ -176,10 +185,21 @@
 }
 
 .update-user {
+    display: flex;
     justify-content: center;
-    color: var(--text1);
     width: 140px;
     margin: 20px auto;
+    padding: 7px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--field1);
+    color: var(--text1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.update-user:active {
+    transform: scale(0.95);
 }
 
 .settings-icon-container {

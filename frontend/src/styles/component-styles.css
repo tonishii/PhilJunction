@@ -36,6 +36,12 @@
   height: 40px;
 }
 
+.header .profile-icon {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
 .search-bar {
   display: flex;
   align-items: center;
@@ -84,6 +90,27 @@
 
 .create-post-button span:hover {
   border-bottom: 1px solid #F6F7EB;
+}
+
+.login-button {
+  display: flex;
+  align-items: center;
+  background-color: hsl(65, 20%, 95%);
+  border: none;
+  border-radius: 10px;
+  height: 100%;
+  padding: 10px 15px;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease-in-out;
+}
+
+.login-button:hover {
+  background-color: hsl(65, 0%, 82%);
+}
+
+.login-button:active {
+  transform: scale(0.9);
 }
 
 /* Comment */
