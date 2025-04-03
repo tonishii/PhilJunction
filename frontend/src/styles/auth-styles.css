@@ -1,0 +1,143 @@
+.auth-background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  min-height: 100%;
+
+  background-image: url("@/public/signupbg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  position: relative;
+}
+
+.auth-background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+  z-index: 0;
+}
+
+.auth-center {
+  backdrop-filter: brightness(40%);
+  z-index: 9999;
+  min-height: 240px;
+  min-width: 500px;
+  border-radius: 10px;
+  padding-bottom: 20px;
+}
+
+.auth-header {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px 10px 0 0;
+  min-height: 120px;
+  min-width: 500px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-header-button {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0px;
+}
+
+.auth-header-button .header-logo {
+  width: 3.4rem;
+  height: 3.4rem;
+}
+
+.auth-header-text {
+  font-weight: 800;
+  font-size: 3rem;
+  color: #F6F7EB;
+  margin: 0px;
+}
+
+.auth-header-text img {
+  width: 60px;
+  height: 60px;
+}
+
+.auth-header i {
+  color: var(--highlight1);
+  font-size: 0.9rem;
+}
+
+/* login page */
+.login-contents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* signup page */
+.signup-contents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-contents label,
+.signup-contents label {
+  font-size: 0.9rem;
+  font-weight: 100;
+  color: var(--text1);
+  letter-spacing: 1px;
+  margin: 0px auto 0.2rem 21%;
+}
+
+.login-contents input,
+.signup-contents input {
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.25);
+  color: var(--text1);
+  padding-left: 5px;
+  outline: none;
+  border: 1px solid #2c2f33;
+  width: 60%;
+  height: 1.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.login-contents input:focus,
+.signup-contents input:focus {
+  border: 2px solid #2c2f33;
+}
+
+.auth-submit-button {
+  justify-self: center;
+  background-color: var(--highlight1);
+  color: #F6F7EB;
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  margin: 0px;
+  margin-bottom: 15px;
+}
+
+.auth-msg-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px;
+  color: var(--text1);
+  font-size: 0.8rem;
+}
+
+.auth-link {
+  padding-left: 3px;
+  color: var(--comment1);
+}

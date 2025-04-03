@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import fs from 'fs';
 
+// Sets the default icon
 const defaultIcon = fs.readFileSync('./src/public/defaultIcon.png');
 
 export interface IUser extends mongoose.Document {

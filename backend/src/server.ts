@@ -9,9 +9,9 @@ import postRoute from "./routes/postRoute";
 import userRoute from "./routes/userRoute";
 import commentRoute from "./routes/commentRoute";
 import voteRoute from "./routes/voteRoute";
-import User, { IUser } from "./models/user";
+import User from "./models/user";
 import session from "express-session";
-import { FilterQuery, Model, RootFilterQuery, Schema } from "mongoose";
+import MongoStore from "connect-mongo";
 
 dotenv.config();
 
@@ -24,7 +24,7 @@ declare module 'express-session' {
 }
 
 const app: Express = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT!;
 
 // Connect to DB
 connectDB();
@@ -36,10 +36,17 @@ app.use(session({
   secret: process.env.SESSION_SECRET!,
   saveUninitialized: false,
   resave: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    ttl: 24 * 60 * 60, // 1 day = 60s * 60 * 24
+    crypto: {
+      secret: process.env.SESSION_SECRET!,
+    }
+  }),
   cookie: {
     maxAge: 1000 * 60 * 60, // 5 minutes = 1000ms * 60 (minute/ms) * 5 ,
     secure: false
-  }
+  },
 }))
 
 // Routes
@@ -53,7 +60,6 @@ app.use(userRoute);
 app.use(commentRoute);
 app.use(voteRoute);
 
-// create default users.
 app.listen(PORT, async () => {
   console.log(`[SERVER]: Running at http://localhost:${PORT}`);
 
@@ -82,6 +88,7 @@ app.listen(PORT, async () => {
   createDefaultUser("Protea", "bro@gmail.com")
 });
 
+// Shutdown DB
 process.on('SIGINT', gracefulShutdown);
 process.on('SIGTERM', gracefulShutdown);
 process.on('SIGQUIT', gracefulShutdown);

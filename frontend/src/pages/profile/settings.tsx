@@ -134,14 +134,14 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
         type="button"
         id="update"
         name="update"
-        className="round-button update-user"
+        className="update-user"
         onClick={handleSubmit}>Update user</button>
 
       <h2>Web Interface</h2>
       <section>
         <label htmlFor="theme">Enable dark theme</label>
         <Toggleswitch name="theme" onClick={handleThemeToggle} defaultChecked={theme === "dark"} />
-        {/* 
+        {/*
         <label htmlFor="font-style">Customize font-style</label>
         <select name="font-style" id="font-style">
           <option value="times">times</option>

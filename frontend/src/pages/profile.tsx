@@ -21,7 +21,7 @@ export default function Profile() {
     async function fetchUser() {
 
       const res = await fetch(`http://localhost:3001/user/${username}`, {
-          credentials: "include",
+        credentials: "include",
       });
       const data = await res.json();
       console.log(data)
@@ -35,7 +35,7 @@ export default function Profile() {
           console.log(data.message);
         }
       }
-      else { 
+      else {
         if (data.logOut) {
           if (usernameSession) {
             toast.error("Session has expired!");
@@ -46,7 +46,7 @@ export default function Profile() {
         setUser(data.user);
         console.log(data);
       }
-      
+
     }
 
     fetchUser();
@@ -93,16 +93,16 @@ export default function Profile() {
           <NavLink to={`/user/${username}/comments`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
             <span>Comments</span>
           </NavLink>
-          { usernameSession === user?.username ?
-          <>
-            <NavLink to={`/user/${username}/settings`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
-              <span>Settings</span>
-            </NavLink>
-            <button onClick={handleLogout} className="sidebar-button">
-              <span>Sign Out</span>
-            </button> 
-          </>
-          : <></>
+          {usernameSession === user?.username ?
+            <>
+              <NavLink to={`/user/${username}/settings`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
+                <span>Settings</span>
+              </NavLink>
+              <button onClick={handleLogout} className="sidebar-button">
+                <span>Sign Out</span>
+              </button>
+            </>
+            : <></>
           }
         </div>
       </div>
