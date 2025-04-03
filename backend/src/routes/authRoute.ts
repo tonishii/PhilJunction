@@ -14,7 +14,6 @@ router.post("/register", async (req: Request, res: Response): Promise<any> => {
   if (password !== confirmPW)
     return res.status(400).json({ message: 'Passwords do not match.' });
 
-
   if (!(email as string).match(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/)) {
     res.status(400).json({ message: 'Must be an email!' });
     return;
@@ -31,11 +30,13 @@ router.post("/register", async (req: Request, res: Response): Promise<any> => {
       email: email,
       password: await hashPassword(password),
     });
+
     req.session.isLoggedIn = true;
     req.session.username = newUser.username;
     req.session.userId = newUser.id;
     req.session.save();
-    console.log("this guy just logged in", req.session, req.sessionID);
+
+    console.log("New user registered:", req.session, req.sessionID);
     return res.status(201).json({ message: 'User registered successfully' });
   }
   catch (error: any) {
@@ -59,7 +60,7 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
       req.session.username = user.username;
       req.session.userId = user.id;
       req.session.save();
-      console.log("this guy just logged in", req.session, req.sessionID);
+      console.log("New user logged in:", req.session, req.sessionID);
       res.status(201).json({ message: 'User logged in successfully.' });
     } else {
       res.status(401).json({ message: "Wrong password entered." });

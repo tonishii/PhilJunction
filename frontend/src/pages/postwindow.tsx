@@ -186,12 +186,8 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
         setComments((prevComments) => [...prevComments, data.newComment]);
         setCommentCount((prev) => prev + 1);
       } else {
-        if (res.status === 401) {
-          toast.error("Not logged in!");
-        } else {
-          toast.error("An error has occured.");
-          console.error(data.message);
-        }
+        toast.error(data.message);
+        console.error(data.message);
       }
     } catch (err: unknown) {
       toast.error("An error occurred while submitting the comment.");
