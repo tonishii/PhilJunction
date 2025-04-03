@@ -1,5 +1,5 @@
+import "@/styles/auth-styles.css";
 import { AuthContext } from "@/hook/context";
-import "@/styles/login-styles.css";
 import { Link, useNavigate } from "react-router";
 import { useContext } from "react";
 import { toast } from "react-toastify";
@@ -47,13 +47,13 @@ export default function SignUp() {
   return (
     <>
       <form className="signup-contents" onSubmit={register}>
-        <label htmlFor="uname">New Username: </label>
+        <label htmlFor="uname">New Username</label>
         <input type="text" id="uname" name="username" />
-        <label htmlFor="eml">Email Address: </label>
+        <label htmlFor="eml">Email Address</label>
         <input type="text" id="eml" name="email" />
-        <label htmlFor="pwrd">Password: </label>
+        <label htmlFor="pwrd">Password</label>
         <input type="password" id="pwrd" name="password" />
-        <label htmlFor="cfrmpwrd">Confirm Password: </label>
+        <label htmlFor="cfrmpwrd">Confirm Password</label>
         <input type="password" id="cfrmpwrd" name="confirmPW" />
 
         <button className="round-button auth-submit-button" type="submit">

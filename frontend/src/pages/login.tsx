@@ -1,5 +1,5 @@
+import "@/styles/auth-styles.css";
 import { AuthContext } from "@/hook/context";
-import "@/styles/login-styles.css";
 import { useContext } from "react";
 
 import { Link, useNavigate } from "react-router";
@@ -45,9 +45,9 @@ export default function Login() {
   return (
     <>
       <form className="login-contents" onSubmit={login}>
-        <label htmlFor="uname">Username: </label>
+        <label htmlFor="uname">Username</label>
         <input type="text" id="uname" name="username" />
-        <label htmlFor="pwrd">Password: </label>
+        <label htmlFor="pwrd">Password</label>
         <input type="password" id="pwrd" name="password" />
 
         <button className="round-button auth-submit-button" type="submit">

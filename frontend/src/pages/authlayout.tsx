@@ -1,7 +1,7 @@
-import '@/styles/login-styles.css'
+import '@/styles/auth-styles.css'
 
 import Logo from "@/components/logo"
-import { Outlet } from "react-router"
+import { Link, Outlet } from "react-router"
 
 export default function AuthLayout() {
   return (
@@ -11,9 +11,12 @@ export default function AuthLayout() {
       <div className="auth-background">
         <div className="auth-center">
           <div className="auth-header">
-            <div className="auth-header-text">
-              <Logo /> PhilJunction!
-            </div>
+            <Link to="/" className="header-link">
+              <button className="auth-header-button">
+                <Logo />
+              </button>
+              <h1 className="auth-header-text">PhilJunction!</h1>
+            </Link>
             <i>Your one-stop transit forum</i>
           </div>
           <Outlet />
