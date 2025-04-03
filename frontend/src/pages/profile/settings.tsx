@@ -52,7 +52,10 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
       const data = await response.json();
 
       if (!response.ok) {
-        if (response.status === 401) {
+        if (response.status === 400) {
+          toast.error(data.message)
+        }
+        else if (response.status === 401) {
           toast.error(data.message)
           navigate("/auth/login")
         }
@@ -60,7 +63,8 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
           toast.error(data.message)
           navigate("../")
         }
-        toast.error("Failed to update details.");
+        else
+          toast.error("Failed to update details.");
         console.error(data.message);
       } else {
         toast.success("Details updated successfully!");
