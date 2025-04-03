@@ -25,6 +25,13 @@ declare module 'express-session' {
 
 const app: Express = express();
 const PORT = process.env.PORT ?? 3001;
+const cookieSettings: { sameSite: "none" | "lax", maxAge: number, secure: boolean } = {
+  maxAge: 1000 * 60 * 60, // 5 minutes = 1000ms * 60 (minute/ms) * 5 ,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+}
+
+if (process.env.NODE_ENV === "production") app.set('trust proxy', 1);
 
 // Connect to DB
 connectDB();
@@ -43,10 +50,7 @@ app.use(session({
       secret: process.env.SESSION_SECRET!,
     }
   }),
-  cookie: {
-    maxAge: 1000 * 60 * 60, // 5 minutes = 1000ms * 60 (minute/ms) * 5 ,
-    secure: false
-  },
+  cookie: cookieSettings
 }))
 
 // Routes
@@ -62,6 +66,7 @@ app.use(voteRoute);
 
 app.listen(PORT, async () => {
   console.log(`[SERVER]: Running at http://localhost:${PORT}`);
+  console.log("cookie Settings: \n", cookieSettings);
 
   async function createDefaultUser(username: string, email: string) {
     const hasBeenCreated = await User.findOne({ username });

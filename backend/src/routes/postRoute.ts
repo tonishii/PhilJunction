@@ -99,7 +99,7 @@ router.get("/retrievemoreposts", async (req: Request, res: Response) => {
     let count = await Post.countDocuments();
     let lim = count - currLen > 10 ? 10 : count - currLen;
 
-    console.log(req.query.curr_len, currLen, count, lim)
+    // console.log(req.query.curr_len, currLen, count, lim)
     const data = await Post.find({}).sort({ postDate: -1 }).skip(currLen).limit(lim).exec();
 
     const postsWithImages = data.map((post) => {
@@ -235,8 +235,8 @@ router.get("/searchposts", async (req: Request, res: Response) => {
   const parsed = JSON.parse(tags as string ?? "[]");
   const numericalFilter = Number(filterBy) ?? 1;
 
-  console.log(keywords, parsed, numericalFilter);
-  console.log(Date.now() - numericalFilter)
+  // console.log(keywords, parsed, numericalFilter);
+  // console.log(Date.now() - numericalFilter)
   try {
     let data: IPost[] = [];
     const regex = new RegExp(keywords as string, 'i')
@@ -259,7 +259,7 @@ router.get("/searchposts", async (req: Request, res: Response) => {
       return { ...post.toObject(), images: images || [] }
     });
 
-    console.log(data);
+    // console.log(data);
     res.json(posts);
   }
   catch (error: any) {
