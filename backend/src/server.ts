@@ -45,7 +45,8 @@ app.use(session({
   }),
   cookie: {
     maxAge: 1000 * 60 * 60, // 5 minutes = 1000ms * 60 (minute/ms) * 5 ,
-    secure: process.env.NODE_ENV === "production"
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
   },
 }))
 
