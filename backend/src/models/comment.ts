@@ -7,7 +7,7 @@ export interface IComment extends mongoose.Document {
   publicId: string;
   parentId: mongoose.Types.ObjectId;
   replies: mongoose.Types.ObjectId[];
-  createdAt: Date;
+  createdAt: Date; // from timestamps
   updatedAt: Date;
 }
 

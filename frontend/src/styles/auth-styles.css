@@ -37,7 +37,6 @@
 .auth-header {
   display: flex;
   flex-direction: column;
-  backdrop-filter: brightness(40%);
   border-radius: 10px 10px 0 0;
   min-height: 120px;
   min-width: 500px;
@@ -94,22 +93,21 @@
   font-size: 0.9rem;
   font-weight: 100;
   color: var(--text1);
-  letter-spacing: 2px;
-  margin-right: auto;
-  margin-left: 26%;
+  letter-spacing: 1px;
+  margin: 0px auto 0.2rem 21%;
 }
 
 .login-contents input,
 .signup-contents input {
   border-radius: 5px;
-  background-color: rgba(255,255,255, 0.3);
+  background-color: rgba(255, 255, 255, 0.25);
   color: var(--text1);
   padding-left: 5px;
   outline: none;
   border: 1px solid #2c2f33;
-  width: 50%;
-  height: 1.5rem;
-  margin-bottom: 20px;
+  width: 60%;
+  height: 1.8rem;
+  margin-bottom: 0.8rem;
 }
 
 .login-contents input:focus,
