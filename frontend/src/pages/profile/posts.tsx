@@ -1,4 +1,5 @@
 import SmallPost from "@/components/smallpost";
+import SmallPostSkeleton from "@/components/skeletons/smallPostSkeleton";
 
 import { IUser } from "@/models/userType";
 import { IPost } from "@/models/postType";
@@ -7,7 +8,7 @@ import { toast } from "react-toastify";
 import { makeServerURL } from "@/hook/url";
 
 export default function UserPosts({ user }: { user: IUser; }) {
-  const [posts, setPosts] = useState<IPost[]>([]);
+  const [posts, setPosts] = useState<IPost[] | null>(null);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -28,10 +29,17 @@ export default function UserPosts({ user }: { user: IUser; }) {
 
   return (
     <div className="user-posts-container">
-      {(posts.length > 0) ? posts.map((post, i) =>
-        <SmallPost key={post.publicId + i} post={post} />
-      ) : (
+      {posts === null ? (                                 // Initial post list
+        <> {
+          Array.from({ length: 5 }, (_, i) => (
+            <SmallPostSkeleton key={i} />
+          ))} </>
+      ) : posts.length === 0 ? (                          // Empty post list
         <p className="error">No posts found!</p>
+      ) : (                                               // Loaded post list
+        posts.map((post, i) => {
+          return <SmallPost key={post.publicId + i} post={post} />;
+        })
       )}
     </div>
   );

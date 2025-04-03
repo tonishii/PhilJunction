@@ -75,7 +75,7 @@ export default function Profile() {
     <div className="profile-page">
       <div className="profile-container">
         <div className="profile-body">
-          {user ? (
+          { user ? (
             <Routes>
               <Route index element={<ProfileInfo user={user} />} />
               <Route path="posts" element={<UserPosts user={user} />} />
