@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
 import { IPost } from '@/models/postType';
 import { toast } from 'react-toastify';
+import { makeServerURL } from '@/hook/url';
 
 export default function Post({
   post,
@@ -33,7 +34,7 @@ export default function Post({
 
   async function handleUpvote() {
     try {
-      const res = await fetch(`http://localhost:3001/upvote/${post.publicId}`, {
+      const res = await fetch(makeServerURL(`upvote/${post.publicId}`), {
         method: "POST",
         credentials: "include",
       });
@@ -65,7 +66,7 @@ export default function Post({
 
   async function handleDownvote() {
     try {
-      const res = await fetch(`http://localhost:3001/downvote/${post.publicId}`, {
+      const res = await fetch(makeServerURL(`downvote/${post.publicId}`), {
         method: "POST",
         credentials: "include",
       });

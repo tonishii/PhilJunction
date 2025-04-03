@@ -3,13 +3,14 @@ import { IUser } from "@/models/userType"
 import { useEffect, useState } from "react";
 import { IComment } from "@/models/commentType";
 import { toast } from "react-toastify";
+import { makeServerURL } from "@/hook/url";
 
 export default function UserComments({ user }: { user: IUser; }) {
   const [comments, setComments] = useState<IComment[]>([]);
 
   useEffect(() => {
     async function fetchComments() {
-      const res = await fetch(`http://localhost:3001/user/${user.username}/comments`);
+      const res = await fetch(makeServerURL(`/user/${user.username}/comments`));
       const data = await res.json();
 
       if (res.ok) {
@@ -27,7 +28,7 @@ export default function UserComments({ user }: { user: IUser; }) {
     <div className="user-comments-container">
       {(comments.length > 0) ? (comments.map((comment, i) =>
         <Comment key={comment.commentID ?? "" + i} commentData={comment} />
-      )) : <p className="error">No comments found!</p> }
+      )) : <p className="error">No comments found!</p>}
     </div>
   )
 }

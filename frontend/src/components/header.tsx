@@ -4,6 +4,7 @@ import Logo from "@/components/logo";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/hook/context";
 import { toast } from "react-toastify";
+import { makeServerURL } from "@/hook/url";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function Header() {
       }
 
       try {
-        const res = await fetch(`http://localhost:3001/user/${username}`);
+        const res = await fetch(makeServerURL(`user/${username}`));
         const data = await res.json();
 
         if (!res.ok) {
@@ -95,12 +96,12 @@ export default function Header() {
           :
 
           <Link to={"user/" + username}>
-             { profileIcon ? (<img src={profileIcon} alt="icon" className="profile-icon" />
-              ) : (
+            {profileIcon ? (<img src={profileIcon} alt="icon" className="profile-icon" />
+            ) : (
               <button className="round-button">
                 <User className="icon" />
               </button>
-              )}
+            )}
           </Link>
       }
     </header>

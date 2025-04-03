@@ -5,6 +5,7 @@ import { IUser } from "@/models/userType";
 import { toast } from "react-toastify";
 import { UserRoundPen } from "lucide-react";
 import { useNavigate } from "react-router";
+import { makeServerURL } from "@/hook/url";
 
 export default function Settings({ user, setUser }: { user: IUser; setUser: React.Dispatch<React.SetStateAction<IUser | null>> }) {
   const [theme, setTheme] = useLocalStorage("theme", "light");
@@ -42,7 +43,7 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
         formData.append("icon", new File([blob], "icon.jpg", { type: blob.type }));
       }
 
-      const response = await fetch("http://localhost:3001/updateuser", {
+      const response = await fetch(makeServerURL(`/updateuser`), {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -51,11 +52,11 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
       const data = await response.json();
 
       if (!response.ok) {
-        if(response.status === 401) {
+        if (response.status === 401) {
           toast.error(data.message)
           navigate("/auth/login")
         }
-        else if(response.status == 403) {
+        else if (response.status == 403) {
           toast.error(data.message)
           navigate("../")
         }

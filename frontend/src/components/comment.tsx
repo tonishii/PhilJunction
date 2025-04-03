@@ -6,6 +6,7 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import { AuthContext } from "@/hook/context";
 import { Link } from "react-router";
+import { makeServerURL } from "@/hook/url";
 
 export default function Comment({
   commentData,
@@ -34,7 +35,7 @@ export default function Comment({
 
       const commentsData = await Promise.all(
         comment.replies.map(async (replyId: string) => {
-          const res = await fetch(`http://localhost:3001/retrievecomment/${replyId}`);
+          const res = await fetch(makeServerURL(`retrievecomment/${replyId}`));
           const data = await res.json();
 
           if (!res.ok) {
@@ -64,7 +65,7 @@ export default function Comment({
     if ("key" in event && event.key !== "Enter") return;
 
     try {
-      const res = await fetch("http://localhost:3001/submitcomment", {
+      const res = await fetch(makeServerURL(`submitcomment`), {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -110,7 +111,7 @@ export default function Comment({
     };
 
     try {
-      const res = await fetch(`http://localhost:3001/editcomment/${comment.commentID}`, {
+      const res = await fetch(makeServerURL(`editcomment/${comment.commentID}`), {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -145,7 +146,7 @@ export default function Comment({
 
   async function handleDelete() {
     try {
-      const res = await fetch(`http://localhost:3001/deletecomment/${comment.commentID}`, {
+      const res = await fetch(makeServerURL(`deletecomment/${comment.commentID}`), {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

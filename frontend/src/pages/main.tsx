@@ -1,6 +1,7 @@
 import Post from "@/components/post.tsx";
 import SmallPost from "@/components/smallpost";
 import { AuthContext } from "@/hook/context";
+import { makeServerURL } from "@/hook/url";
 import { IPost } from "@/models/postType";
 
 import { Flame } from "lucide-react";
@@ -29,7 +30,7 @@ export default function Main() {
 
   async function getGeneralPosts() {
     try {
-      const res = await fetch("http://localhost:3001/retrieveposts");
+      const res = await fetch(makeServerURL(`retrieveposts`));
       const data = await res.json();
 
       if (!res.ok) {
@@ -52,7 +53,7 @@ export default function Main() {
 
   async function addPosts() {
     try {
-      const url = new URL("http://localhost:3001/retrievemoreposts");
+      const url = new URL(makeServerURL(`retrievemoreposts`));
       url.searchParams.set("curr_len", String(posts.length))
       console.log(posts.length, url)
       const res = await fetch(url, {
@@ -77,7 +78,7 @@ export default function Main() {
 
   async function getPopularPosts() {
     try {
-      const res = await fetch("http://localhost:3001/trendingposts");
+      const res = await fetch(makeServerURL(`trendingposts`));
       const popular = await res.json();
 
       if (!res.ok) {
@@ -103,7 +104,7 @@ export default function Main() {
     async function fetchVotes() {
       try {
         const postIds = posts.map(post => post.publicId).join(",");
-        const res = await fetch(`http://localhost:3001/retrievevote?ids=${postIds}`);
+        const res = await fetch(makeServerURL(`/retrievevote?ids=${postIds}`));
         const data = await res.json();
 
         if (!res.ok) {

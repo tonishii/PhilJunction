@@ -10,6 +10,7 @@ import UserPosts from "@profile/posts";
 import { IUser } from "@/models/userType";
 import { toast } from "react-toastify";
 import { AuthContext } from "@/hook/context";
+import { makeServerURL } from "@/hook/url";
 
 export default function Profile() {
   const { username } = useParams();
@@ -20,7 +21,7 @@ export default function Profile() {
   useEffect(() => {
     async function fetchUser() {
 
-      const res = await fetch(`http://localhost:3001/user/${username}`, {
+      const res = await fetch(makeServerURL(`user/${username}`), {
         credentials: "include",
       });
       const data = await res.json();

@@ -3,6 +3,7 @@ import { AuthContext } from "@/hook/context";
 import { Link, useNavigate } from "react-router";
 import { useContext } from "react";
 import { toast } from "react-toastify";
+import { makeServerURL } from "@/hook/url";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function SignUp() {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/register", {
+      const response = await fetch(makeServerURL(`register`), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,9 +61,9 @@ export default function SignUp() {
         <button className="round-button auth-submit-button" type="submit">
           Continue
         </button>
-    </form>
+      </form>
 
-    <p className="auth-msg-link">Already have an account? <Link className="auth-link" to="/auth/login">Log In</Link></p>
+      <p className="auth-msg-link">Already have an account? <Link className="auth-link" to="/auth/login">Log In</Link></p>
     </>
   );
 }

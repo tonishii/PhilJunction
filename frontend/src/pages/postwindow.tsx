@@ -19,6 +19,7 @@ import ImageCarousel from "@/components/imagecarousel";
 import { IPost } from "@/models/postType";
 import { IComment } from "@/models/commentType";
 import { AuthContext } from "@/hook/context";
+import { makeServerURL } from "@/hook/url";
 
 export default function PostWindow({ isEditable = false }: { isEditable?: boolean; }) {
   const { publicId } = useParams();
@@ -35,7 +36,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`http://localhost:3001/retrievepost/${publicId}`);
+      const response = await fetch(makeServerURL(`retrievepost/${publicId}`));
 
       if (response.ok) {
         const { message, post, commentCount } = await response.json();
@@ -44,7 +45,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
 
         const commentsData = await Promise.all(
           post.comments.map(async (commentId: string) => {
-            const res = await fetch(`http://localhost:3001/retrievecomment/${commentId}`);
+            const res = await fetch(makeServerURL(`retrievecomment/${commentId}`));
             const data = await res.json();
 
             if (!res.ok) {
@@ -75,7 +76,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     }
 
     async function fetchVote() {
-      const res = await fetch(`http://localhost:3001/retreivevote/${publicId}`);
+      const res = await fetch(makeServerURL(`retreivevote/${publicId}`));
       const data = await res.json();
 
       if (!res.ok) {
@@ -99,7 +100,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
 
   async function handleUpvote() {
     try {
-      const res = await fetch(`http://localhost:3001/upvote/${post.publicId}`, {
+      const res = await fetch(makeServerURL(`upvote/${post.publicId}`), {
         method: "POST",
       });
 
@@ -130,7 +131,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
 
   async function handleDownvote() {
     try {
-      const res = await fetch(`http://localhost:3001/downvote/${post.publicId}`, {
+      const res = await fetch(makeServerURL(`downvote/${post.publicId}`), {
         method: "POST",
       });
 
@@ -163,7 +164,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     if (event.key !== "Enter" || commentValue.trim() === "") return;
 
     try {
-      const res = await fetch("http://localhost:3001/submitcomment", {
+      const res = await fetch(makeServerURL(`submitcomment`), {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -208,7 +209,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
 
   async function handleDeletePost() {
     try {
-      const res = await fetch(`http://localhost:3001/deletepost/${publicId}`, {
+      const res = await fetch(makeServerURL(`deletepost/${publicId}`), {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router";
 import { ImageBuffer } from "@/models/postType";
 import { AuthContext } from "@/hook/context";
+import { makeServerURL } from "@/hook/url";
 
 export default function CreatePost() {
   const { publicId } = useParams();
@@ -22,7 +23,7 @@ export default function CreatePost() {
     if (!publicId) return;
 
     async function fetchData() {
-      const response = await fetch(`http://localhost:3001/retrievepost/${publicId}`);
+      const response = await fetch(makeServerURL(`retrievepost/${publicId}`));
 
       if (response.ok) {
         const { message, post } = await response.json();
@@ -71,7 +72,7 @@ export default function CreatePost() {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/submitpost", {
+      const response = await fetch(makeServerURL(`submitpost`), {
         method: "POST",
         body: formData,
         credentials: "include"
@@ -116,7 +117,7 @@ export default function CreatePost() {
 
     console.log(formData);
     try {
-      const res = await fetch("http://localhost:3001/updatepost", {
+      const res = await fetch(makeServerURL(`updatepost`), {
         method: "POST",
         body: formData,
         credentials: "include"

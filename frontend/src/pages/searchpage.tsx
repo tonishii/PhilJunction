@@ -6,6 +6,7 @@ import { toast } from "react-toastify"
 import { useEffect, useState } from "react";
 import { IPost } from "@/models/postType";
 import { useSearchParams } from "react-router";
+import { makeServerURL } from "@/hook/url";
 
 export default function SearchPage() {
   const [tags, setTags] = useState<string[]>([]);
@@ -16,7 +17,7 @@ export default function SearchPage() {
     async function fetchPosts() {
       console.log(searchParams.get("keywords"));
       try {
-        const response = await fetch("http://localhost:3001/searchposts?" + searchParams.toString(), {
+        const response = await fetch(`${makeServerURL(`searchposts`)}?${searchParams.toString()}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -64,7 +65,7 @@ export default function SearchPage() {
     // formData.append("filterBy", (document.getElementById("filter-by") as HTMLSelectElement).value)
 
     // try {
-    //   const response = await fetch("http://localhost:3001/searchposts", {
+    //   const response = await fetch(makeServerURL(`searchposts`), {
     //     method: "POST",
     //     headers: {
     //       "Content-Type": "application/json",
@@ -111,13 +112,13 @@ export default function SearchPage() {
       </form>
 
 
-      { posts.length > 0 && (
+      {posts.length > 0 && (
         <div className="search-posts">
           <h1 className="result-text">Results:</h1>
-            {posts.map((i, j) => (
-              <Post key={j} post={i} />
-            ))}
-        </div> )}
+          {posts.map((i, j) => (
+            <Post key={j} post={i} />
+          ))}
+        </div>)}
     </div>
   );
 }
