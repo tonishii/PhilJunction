@@ -35,6 +35,7 @@ export default function Post({
     try {
       const res = await fetch(`http://localhost:3001/upvote/${post.publicId}`, {
         method: "POST",
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -66,6 +67,7 @@ export default function Post({
     try {
       const res = await fetch(`http://localhost:3001/downvote/${post.publicId}`, {
         method: "POST",
+        credentials: "include",
       });
 
       const data = await res.json();

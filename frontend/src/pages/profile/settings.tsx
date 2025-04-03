@@ -4,6 +4,7 @@ import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { IUser } from "@/models/userType";
 import { toast } from "react-toastify";
 import { UserRoundPen } from "lucide-react";
+import { useNavigate } from "react-router";
 
 export default function Settings({ user, setUser }: { user: IUser; setUser: React.Dispatch<React.SetStateAction<IUser | null>> }) {
   const [theme, setTheme] = useLocalStorage("theme", "light");
@@ -11,6 +12,7 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
   const [email, setEmail] = useState(user.email);
   const [bio, setBio] = useState(user.description);
   const [iconUrl, setIconUrl] = useState<string>(user.icon.imageUrl);
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -43,11 +45,20 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
       const response = await fetch("http://localhost:3001/updateuser", {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       const data = await response.json();
 
       if (!response.ok) {
+        if(response.status === 401) {
+          toast.error(data.message)
+          navigate("/auth/login")
+        }
+        else if(response.status == 403) {
+          toast.error(data.message)
+          navigate("../")
+        }
         toast.error("Failed to update details.");
         console.error(data.message);
       } else {

@@ -14,8 +14,8 @@ export default function CreatePost() {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
-  const navigate = useNavigate();
   const [username, setUsername] = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // grab information if editing
   useEffect(() => {

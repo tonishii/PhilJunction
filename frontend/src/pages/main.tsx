@@ -1,9 +1,11 @@
 import Post from "@/components/post.tsx";
 import SmallPost from "@/components/smallpost";
+import { AuthContext } from "@/hook/context";
 import { IPost } from "@/models/postType";
 
 import { Flame } from "lucide-react";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 export default function Main() {
@@ -18,6 +20,8 @@ export default function Main() {
         initialVote: boolean | null
       }
     }>({});
+  const [username, setUsername] = useContext(AuthContext);
+  const navigate = useNavigate();
 
   function detectBottom() {
     // do nothing
@@ -94,23 +98,53 @@ export default function Main() {
   }, []);
 
   useEffect(() => {
-    posts.forEach(async (post) => {
-      const res = await fetch(`http://localhost:3001/retreivevote/${post.publicId}`);
-      const data = await res.json();
+    if (posts.length === 0) return;
 
-      if (!res.ok) {
-        toast.error("A server error has occured vote pull.");
-      } else {
-        setVotes(prevVotes => ({
-          ...prevVotes,
-          [post.publicId]: {
-            initialLikes: data.initialLikes,
-            initialDislikes: data.initialDislikes,
-            initialVote: data.initialVote
+    async function fetchVotes() {
+      try {
+        const postIds = posts.map(post => post.publicId).join(",");
+        const res = await fetch(`http://localhost:3001/retrievevote?ids=${postIds}`);
+        const data = await res.json();
+
+        if (!res.ok) {
+          if (res.status === 401) {
+            if (username) toast.error("Session has expired!");
+            else toast.error("Please log in first.");
+
+            setUsername(null);
+            navigate("/auth/login");
+          } else {
+            toast.error("Error retrieving votes.");
           }
-        }));
+
+          return;
+        }
+
+        setVotes(() => {
+          return data.reduce((
+            acc: {
+              [key: string]: {
+                initialLikes: number;
+                initialDislikes: number;
+                initialVote: boolean
+              }
+            }, post: any) => {
+            acc[post.publicId] = {
+              initialLikes: post.initialLikes,
+              initialDislikes: post.initialDislikes,
+              initialVote: post.initialVote,
+            };
+            return acc;
+          }, {});
+        });
+
+      } catch (error) {
+        toast.error("An error has occured while pulling votes.");
+        console.error(error);
       }
-    });
+    }
+
+    fetchVotes();
   }, [posts]);
 
   return (

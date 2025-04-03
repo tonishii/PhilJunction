@@ -1,14 +1,14 @@
 import express, { Request, Response, Router } from "express";
 
 import User from "../models/user";
-import Comment from "../models/comment";
 import Post from "../models/post";
 import Vote from "../models/votes";
+import { IsLoggedIn } from "../middlewares/authorizedOnly";
 
 const router: Router = express.Router();
 
 // VOTES
-router.post("/upvote/:id", async (req: Request, res: Response): Promise<any> => {
+router.post("/upvote/:id", IsLoggedIn, async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
     const post = await Post.findOne({ publicId: id });
@@ -17,8 +17,7 @@ router.post("/upvote/:id", async (req: Request, res: Response): Promise<any> => 
       return res.status(404).json({ message: "Post not found." });
     }
 
-    // Placeholder user validation (to be replaced with actual authentication logic)
-    const user = await User.findOne({});  // Replace with actual user lookup based on session/token
+    const user = await User.findOne({ _id: req.session.userId });
     if (!user) {
       return res.status(400).json({ message: "User not found or authentication required." });
     }
@@ -61,7 +60,7 @@ router.post("/upvote/:id", async (req: Request, res: Response): Promise<any> => 
  }
 );
 
-router.post("/downvote/:id", async (req: Request, res: Response): Promise<any> => {
+router.post("/downvote/:id", IsLoggedIn, async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
     const post = await Post.findOne({ publicId: id });
@@ -70,8 +69,7 @@ router.post("/downvote/:id", async (req: Request, res: Response): Promise<any> =
       return res.status(404).json({ message: "Post not found." });
     }
 
-    // Placeholder user validation (to be replaced with actual authentication logic)
-    const user = await User.findOne({});  // Replace with actual user lookup based on session/token
+    const user = await User.findOne({ _id: req.session.userId });
     if (!user) {
       return res.status(400).json({ message: "User not found or authentication required." });
     }
@@ -113,37 +111,34 @@ router.post("/downvote/:id", async (req: Request, res: Response): Promise<any> =
  }
 );
 
-router.get("/retreivevote/:id", async (req: Request, res: Response): Promise<any> => {
+router.get("/retrievevote", async (req: Request, res: Response): Promise<any> => {
   try {
-    const { id } = req.params;
-    const post = await Post.findOne({ publicId: id });
+    const ids = req.query.ids;
 
-    if (!post) {
-      return res.status(404).json({ message: "Post not found." });
-    }
+    if (!ids) return res.status(400).json({ message: "No post IDs provided." });
 
-    // Placeholder user validation (to be replaced with actual authentication logic)
-    const user = await User.findOne({});  // Replace with actual user lookup based on session/token
+    const postIds: string[] = typeof ids === "string" ? ids.split(",") : [];
+
+    const posts = await Post.find({ publicId: { $in: postIds } });
+
+    if (!posts.length) return res.status(404).json({ message: "Posts not found." });
+
+    const user = await User.findOne({ _id: req.session.userId });
+    let votes;
     if (!user) {
-      return res.status(400).json({ message: "User not found or authentication required."});
+      votes = {};
+    } else {
+      votes = await Vote.find({ publicId: { $in: postIds }, userId: user._id });
     }
 
-    const vote = await Vote.findOne({ publicId: id, userId: user._id });
-    if (!vote) {
-      return res.status(200).json({
-          message: `No vote for publicId: ${id}`,
-          initialLikes: post.likes,
-          initialDislikes: post.dislikes,
-          initialVote: null
-      });
-    } else {
-      return res.status(200).json({
-          message: `User has ${vote.type ? "liked": "disliked"} publicId: ${id}`,
-          initialLikes: post.likes,
-          initialDislikes: post.dislikes,
-          initialVote: vote.type
-      });
-    }
+    return res.status(200).json(
+      posts.map(post => ({
+        publicId: post.publicId,
+        initialLikes: post.likes,
+        initialDislikes: post.dislikes,
+        initialVote: votes,
+      }))
+    );
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
