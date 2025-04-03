@@ -31,6 +31,8 @@ const cookieSettings: { sameSite: "none" | "lax", maxAge: number, secure: boolea
   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
 }
 
+if (process.env.NODE_ENV === "production") app.set('trust proxy', 1);
+
 // Connect to DB
 connectDB();
 
