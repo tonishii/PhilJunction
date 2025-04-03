@@ -7,7 +7,7 @@ export async function IsLoggedIn(req: Request, res: Response, next: NextFunction
     // checking if logged in.
     if (userId === undefined || userId === null) {
         console.log("entered the thing");
-        res.status(401).json({ message: "user not logged in!" });
+        res.status(401).json({ message: "User not logged in!" });
         return;
     }
 
