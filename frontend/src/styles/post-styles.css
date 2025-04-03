@@ -33,6 +33,7 @@
 
 .post-header {
   display: flex;
+  justify-content: center;
   align-items: center;
   background-color: var(--light-gray-color);
   width: 100%;
@@ -52,6 +53,8 @@
 .post-header hr {
   margin: 5px 0px;
   width: 100%;
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   color: rgba(0, 0, 0, 0.05);
 }
 
@@ -77,7 +80,6 @@
 .post-body-container {
   background-color: #F6F7EB;
   height: 400px;
-  text-overflow: ellipsis;
   overflow: hidden;
   padding: 10px 20px;
 }
@@ -273,16 +275,17 @@
 
 /* Small Post */
 .smallpost-container {
-  min-height: 150px;
-  min-width: 250px;
-  max-width: 350px;
+  display: flex;
+  flex-direction: column;
 }
 
 .smallpost-header {
   display: grid;
   grid-template-columns: 0.5fr 1fr;
   align-items: center;
-
+  min-height: 50px;
+  max-height: 100px;
+  overflow: hidden;
   padding: 10px 20px;
   border-radius: 10px 10px 0px 0px;
   background-color: var(--smallpost-header);
@@ -305,13 +308,14 @@
 }
 
 .smallpost-body {
-  display: -webkit-box;
   border-radius: 0px 0px 10px 10px;
   background-color: #23272A;
+  min-height: 80px;
+  max-height: 120px;
   padding: 10px 20px;
+  line-clamp: 4;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
-  max-height: 80px;
   text-overflow: ellipsis;
   overflow: hidden;
 }

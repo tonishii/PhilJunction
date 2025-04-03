@@ -14,6 +14,7 @@ export default defineConfig({
       "@mockdata": path.resolve(__dirname, "src/mockdata"),
       "@styles": path.resolve(__dirname, "src/styles"),
       "@models": path.resolve(__dirname, "src/models"),
+      "@skeleton": path.resolve(__dirname, "src/components/skeletons"),
     },
   },
   server: {

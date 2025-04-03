@@ -1,5 +1,8 @@
 import Post from "@/components/post.tsx";
 import SmallPost from "@/components/smallpost";
+import PostSkeleton from "@skeleton/postSkeleton";
+import SmallPostSkeleton from "@skeleton/smallPostSkeleton";
+
 import { AuthContext } from "@/hook/context";
 import { makeServerURL } from "@/hook/url";
 import { IPost } from "@/models/postType";
@@ -11,8 +14,8 @@ import { toast } from "react-toastify";
 
 export default function Main() {
   const [posts, setPosts] = useState<IPost[]>([]);
-  const [commentCount, setCommentCount] = useState<{ [key: string]: number }>({});
   const [trendingPosts, setTrending] = useState<IPost[]>([]);
+  const [commentCount, setCommentCount] = useState<{ [key: string]: number }>({});
   const [votes, setVotes] =
     useState<{
       [key: string]: {
@@ -34,8 +37,7 @@ export default function Main() {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error("A server error has occured when pulling general.");
-        console.log(data.error);
+        return;
       }
 
       setPosts(data.map((item: { post: IPost }) => item.post));
@@ -46,8 +48,7 @@ export default function Main() {
         }, {})
       );
     } catch (error: unknown) {
-      toast.error("Something went wrong.");
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -55,7 +56,6 @@ export default function Main() {
     try {
       const url = new URL(makeServerURL(`retrievemoreposts`));
       url.searchParams.set("curr_len", String(posts.length))
-      console.log(posts.length, url)
       const res = await fetch(url, {
         method: "GET"
       });
@@ -63,39 +63,36 @@ export default function Main() {
       const addMore = await res.json();
 
       if (!res.ok) {
-        toast.error("A server error has occured when pulling more posts.");
-        console.log(addMore.error);
+        return;
       }
-      if (!addMore.length)
+      if (!addMore.length) {
         toast.info("No more posts to load.");
-      else
+      } else {
         setPosts(oldposts => [...oldposts, ...addMore]);
+      }
     } catch (error: unknown) {
-      toast.error("Something went wrong.");
-      console.log(error);
+      console.error(error);
     }
   }
 
-  async function getPopularPosts() {
+  async function getTrendingPosts() {
     try {
       const res = await fetch(makeServerURL(`trendingposts`));
-      const popular = await res.json();
+      const trending = await res.json();
 
       if (!res.ok) {
-        toast.error("A server error has occured when pulling popular.");
-        console.log(popular.error);
+        return;
       }
 
-      setTrending(popular);
+      setTrending(trending);
     } catch (error: unknown) {
-      toast.error("Something went wrong.");
-      console.log(error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
     getGeneralPosts();
-    getPopularPosts();
+    getTrendingPosts();
   }, []);
 
   useEffect(() => {
@@ -114,8 +111,6 @@ export default function Main() {
 
             setUsername(null);
             navigate("/auth/login");
-          } else {
-            toast.error("Error retrieving votes.");
           }
 
           return;
@@ -140,7 +135,6 @@ export default function Main() {
         });
 
       } catch (error) {
-        toast.error("An error has occured while pulling votes.");
         console.error(error);
       }
     }
@@ -152,37 +146,49 @@ export default function Main() {
     <div className="main-container">
       <div className="left-container"></div>
       <div className="general-container">
-        {posts.map((post, i) => {
-          const voteData = votes[post.publicId];
+        { posts && posts.length === 0 ? (
+          <> {
+            Array.from({ length: 5 }, (_, i) => (
+              <PostSkeleton key={i} />
+            ))} </>
+        ) : (
+          posts.map((post, i) => {
+            const voteData = votes[post.publicId];
 
-          if (!voteData) {
-            return <div key={i}>Loading...</div>;
-          }
+            if (!voteData) {
+              return <PostSkeleton key={post.publicId + i} />;
+            }
 
-          return (
-            <Post
-              key={i}
-              post={post}
-              initialLikes={voteData.initialLikes}
-              initialDislikes={voteData.initialDislikes}
-              initialVote={voteData.initialVote}
-              initialComments={commentCount[post.publicId]}
-            />
-          );
-        })}
+            return (
+              <Post
+                key={i}
+                post={post}
+                initialLikes={voteData.initialLikes}
+                initialDislikes={voteData.initialDislikes}
+                initialVote={voteData.initialVote}
+                initialComments={commentCount[post.publicId]}
+              />
+            );
+          })
+        )}
         <button className="add-post-button" onClick={addPosts} onScroll={detectBottom}>Add More Posts</button>
       </div>
 
-      {trendingPosts.length > 0 && (
-        <div className="popular-posts-list">
-          <span className="popular-posts-header">
-            Trending Posts <Flame className="icon" />
-          </span>
-          {trendingPosts.map((i, j) => (
-            <SmallPost key={j} post={i} />
-          ))}
-        </div>
-      )}
+      <div className="popular-posts-list">
+        <span className="popular-posts-header">
+          Trending Posts <Flame className="icon" />
+        </span>
+        { trendingPosts && trendingPosts.length === 0 ? (
+          <> {
+            Array.from({ length: 5 }, (_, i) => (
+              <SmallPostSkeleton key={i} />
+            ))} </>
+        ) : (
+          trendingPosts.map((post, i) => {
+            return <SmallPost key={post.publicId + i} post={post} />;
+          })
+        )}
+      </div>
     </div>
   );
 }

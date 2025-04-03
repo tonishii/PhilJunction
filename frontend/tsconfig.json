@@ -32,6 +32,9 @@
       "@models/*": [
         "models/*"
       ],
+      "@skeleton/*": [
+        "components/skeletons/*"
+      ],
     }
   },
   "include": [

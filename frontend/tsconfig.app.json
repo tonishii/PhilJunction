@@ -31,6 +31,7 @@
       "@mockdata/*": ["mockdata/*"],
       "@styles/*": ["styles/*"],
       "@models/*": ["models/*"],
+      "@skeleton/*": ["components/skeletons/*"],
     }
   },
   "forceConsistentCasingInFileNames": true,
