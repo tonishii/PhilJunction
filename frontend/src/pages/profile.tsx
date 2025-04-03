@@ -98,7 +98,7 @@ export default function Profile() {
               <NavLink to={`/user/${username}/settings`} className={({ isActive }) => (isActive ? "sidebar-button active" : "sidebar-button")}>
                 <span>Settings</span>
               </NavLink>
-              <button onClick={handleLogout} className="sidebar-button">
+              <button onClick={handleLogout} className="signout-button">
                 <span>Sign Out</span>
               </button>
             </>
