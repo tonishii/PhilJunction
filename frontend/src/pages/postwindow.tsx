@@ -102,12 +102,13 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     try {
       const res = await fetch(makeServerURL(`upvote/${post.publicId}`), {
         method: "POST",
+        credentials: "include"
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error("An error has occured.");
+        toast.error(data.message);
         console.error(data.message);
         return;
       }
@@ -133,12 +134,13 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     try {
       const res = await fetch(makeServerURL(`downvote/${post.publicId}`), {
         method: "POST",
+        credentials: "include"
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error("An error has occured.");
+        toast.error(data.message);
         console.error(data.message);
         return;
       }
