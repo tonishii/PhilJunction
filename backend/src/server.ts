@@ -24,7 +24,7 @@ declare module 'express-session' {
 }
 
 const app: Express = express();
-const PORT = process.env.PORT!;
+const PORT = process.env.PORT ?? 3001;
 
 // Connect to DB
 connectDB();
