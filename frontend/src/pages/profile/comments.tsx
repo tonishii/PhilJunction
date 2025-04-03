@@ -15,10 +15,8 @@ export default function UserComments({ user }: { user: IUser; }) {
 
       if (res.ok) {
         setComments(data.comments);
-        console.log(data.message);
       } else {
         toast.error("An error has occured.");
-        console.error(data.message);
       }
     }
     fetchComments();

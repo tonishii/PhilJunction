@@ -65,15 +65,12 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
         }
         else
           toast.error("Failed to update details.");
-        console.error(data.message);
       } else {
         toast.success("Details updated successfully!");
         setUser(data.user);
-        console.log(data);
       }
     } catch (error) {
       toast.error("An error has occurred.");
-      console.error("Error updating user:", error);
     }
   }
 

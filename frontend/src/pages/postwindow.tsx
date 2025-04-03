@@ -76,18 +76,21 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     }
 
     async function fetchVote() {
-      const res = await fetch(makeServerURL(`retrievevote?ids=${publicId}`));
+      const res = await fetch(makeServerURL(`retrievevote?ids=${publicId}`), {
+        credentials: "include",
+      });
+
       const data = await res.json();
 
       if (!res.ok) {
-        if (res.status === 404) {
-          // do nothing
-        } else {
-          toast.error("A server error has occured vote pull.");
+        if (res.status === 401) {
+          console.error("User is not logged in.");
         }
-      } else {
-        setVote(data.initialVote);
+
+        return;
       }
+
+      setVote(data[0].initialVote);
     }
 
     fetchData();
@@ -102,14 +105,13 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     try {
       const res = await fetch(makeServerURL(`upvote/${post.publicId}`), {
         method: "POST",
-        credentials: "include"
+        credentials: "include",
       });
 
       const data = await res.json();
 
       if (!res.ok) {
         toast.error(data.message);
-        console.error(data.message);
         return;
       }
 
@@ -122,7 +124,6 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
         } else {
           setVote(true);
         }
-        console.log(data.message);
       }
     } catch (err: unknown) {
       toast.error("A server error occured.");
@@ -134,14 +135,13 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     try {
       const res = await fetch(makeServerURL(`downvote/${post.publicId}`), {
         method: "POST",
-        credentials: "include"
+        credentials: "include",
       });
 
       const data = await res.json();
 
       if (!res.ok) {
         toast.error(data.message);
-        console.error(data.message);
         return;
       }
 
@@ -154,7 +154,6 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
         } else {
           setVote(false);
         }
-        console.log(data.message);
       }
     } catch (err: unknown) {
       toast.error("A server error occured.");
@@ -177,7 +176,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
           parentId: publicId,
           type: "Comment",
         }),
-        credentials: "include"
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -189,7 +188,6 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
         setCommentCount((prev) => prev + 1);
       } else {
         toast.error(data.message);
-        console.error(data.message);
       }
     } catch (err: unknown) {
       toast.error("An error occurred while submitting the comment.");
@@ -212,6 +210,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -220,6 +219,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
         console.log(data.message);
         navigate(-1);
       } else {
+        toast.error(data.message);
         console.error(data.message);
       }
     } catch (error: unknown) {

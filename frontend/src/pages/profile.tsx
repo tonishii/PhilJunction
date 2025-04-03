@@ -25,7 +25,6 @@ export default function Profile() {
         credentials: "include",
       });
       const data = await res.json();
-      console.log(data)
 
       if (!res.ok || res.status === 401) {
         if (res.status === 404) {
@@ -33,7 +32,6 @@ export default function Profile() {
           navigate("/");
         } else {
           toast.error("An error has occured.");
-          console.log(data.message);
         }
       }
       else {
@@ -45,7 +43,6 @@ export default function Profile() {
           }
         }
         setUser(data.user);
-        console.log(data);
       }
 
     }

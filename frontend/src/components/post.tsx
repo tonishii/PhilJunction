@@ -56,7 +56,6 @@ export default function Post({
         } else {
           setVote(true);
         }
-        console.log(data.message);
       }
     } catch (err: unknown) {
       toast.error("A server error occured.");
@@ -88,7 +87,6 @@ export default function Post({
         } else {
           setVote(false);
         }
-        console.log(data.message);
       }
     } catch (err: unknown) {
       toast.error("A server error occured.");

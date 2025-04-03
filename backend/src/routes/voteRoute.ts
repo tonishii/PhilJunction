@@ -2,8 +2,9 @@ import express, { Request, Response, Router } from "express";
 
 import User from "../models/user";
 import Post from "../models/post";
-import Vote from "../models/votes";
-import { IsLoggedIn } from "../middlewares/authorizedOnly";
+import Vote, { IVote } from "../models/votes";
+import { IsLoggedIn } from "../middleware/authorizedOnly";
+import { Document } from "mongoose";
 
 const router: Router = express.Router();
 
@@ -11,6 +12,7 @@ const router: Router = express.Router();
 router.post("/upvote/:id", IsLoggedIn, async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
+
     const post = await Post.findOne({ publicId: id });
 
     if (!post) {
@@ -36,7 +38,13 @@ router.post("/upvote/:id", IsLoggedIn, async (req: Request, res: Response): Prom
       await post.save();
 
       return res.status(200).json({ message: "Upvote successful.", likes: post.likes, dislike: post.dislikes  });
+
     } else if (vote.type === true) {
+
+      if (req.session.userId !== vote.userId.toString()) {
+        return res.status(401).json({ message: "Unauthorized action. Delete your own vote???" });
+      }
+
       await vote.deleteOne();
 
       post.likes -= 1;
@@ -44,6 +52,11 @@ router.post("/upvote/:id", IsLoggedIn, async (req: Request, res: Response): Prom
 
       return res.status(200).json({ message: "Upvote removed.", likes: post.likes, dislike: post.dislikes  });
     } else if (vote.type === false) {
+
+      if (req.session.userId !== vote.userId.toString()) {
+        return res.status(401).json({ message: "Unauthorized action. Delete your own vote???" });
+      }
+
       vote.type = true;
       await vote.save();
 
@@ -89,13 +102,24 @@ router.post("/downvote/:id", IsLoggedIn, async (req: Request, res: Response): Pr
 
       return res.status(200).json({ message: "Downvote successful.", likes: post.likes, dislike: post.dislikes });
     } else if (vote.type === false) {
+
+      if (req.session.userId !== vote.userId.toString()) {
+        return res.status(401).json({ message: "Unauthorized action. Delete your own vote???" });
+      }
+
       await vote.deleteOne();
 
       post.dislikes -= 1;
       await post.save();
 
       return res.status(200).json({ message: "Downvote removed.", likes: post.likes, dislike: post.dislikes  });
+
     } else if (vote.type === true) {
+
+      if (req.session.userId !== vote.userId.toString()) {
+        return res.status(401).json({ message: "Unauthorized action. Delete your own vote???" });
+      }
+
       vote.type = false;
       await vote.save();
 
@@ -124,19 +148,21 @@ router.get("/retrievevote", async (req: Request, res: Response): Promise<any> =>
     if (!posts.length) return res.status(404).json({ message: "Posts not found." });
 
     const user = await User.findOne({ _id: req.session.userId });
-    let votes;
-    if (!user) {
-      votes = {};
-    } else {
-      votes = await Vote.find({ publicId: { $in: postIds }, userId: user._id });
-    }
 
     return res.status(200).json(
-      posts.map(post => ({
-        publicId: post.publicId,
-        initialLikes: post.likes,
-        initialDislikes: post.dislikes,
-        initialVote: votes,
+      await Promise.all(posts.map(async (post) => {
+        let vote = null;
+
+        if (user) {
+          vote = await Vote.findOne({ publicId: post.publicId, userId: user._id });
+        }
+
+        return {
+          publicId: post.publicId,
+          initialLikes: post.likes,
+          initialDislikes: post.dislikes,
+          initialVote: vote?.type,
+        };
       }))
     );
   } catch (error: any) {

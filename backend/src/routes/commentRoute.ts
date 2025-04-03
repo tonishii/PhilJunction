@@ -4,7 +4,7 @@ import User from "../models/user";
 import Comment, { IComment } from "../models/comment";
 import mongoose from "mongoose";
 import Post from "../models/post";
-import { IsLoggedIn } from "../middlewares/authorizedOnly";
+import { IsLoggedIn } from "../middleware/authorizedOnly";
 
 const router: Router = express.Router();
 
@@ -104,7 +104,7 @@ router.post("/editcomment/:id", IsLoggedIn, async (req: Request, res: Response):
   }
 
   if (comment.userId.toString() !== req.session.userId) {
-    res.status(403).json({ message: "This is not your comment" });
+    res.status(403).json({ message: "Unauthorized action. This is not your comment." });
     return;
   }
 
@@ -133,7 +133,7 @@ router.post("/deletecomment/:id", IsLoggedIn, async (req: Request, res: Response
     }
 
     if (comment.userId.toString() !== req.session.userId) {
-      res.status(403).json({ message: "Not your comment!" });
+      res.status(403).json({ message: "Unauthorized action. Not your comment!" });
       return;
     }
 

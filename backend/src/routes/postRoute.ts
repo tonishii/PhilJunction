@@ -4,7 +4,7 @@ import multer from 'multer';
 import Post, { IPost } from "../models/post";
 import Comment from "../models/comment";
 import Vote from "../models/votes";
-import { IsLoggedIn } from "../middlewares/authorizedOnly";
+import { IsLoggedIn } from "../middleware/authorizedOnly";
 
 const router: Router = express.Router();
 const storage = multer.memoryStorage();  // Store the files in memory (Buffer)
@@ -167,7 +167,7 @@ router.post("/updatepost", IsLoggedIn, upload.array('images'), async (req: Reque
   }
 
   if (post.userId.toString() !== userId) {
-    res.status(403).json({ message: "not your post!" });
+    res.status(403).json({ message: "Unauthorized deletion. Not ur damn post!" });
     return
   }
 
@@ -218,6 +218,10 @@ router.post("/deletepost/:publicId", IsLoggedIn, async (req: Request, res: Respo
 
     if (!post) {
       return res.status(404).json({ message: "Post not found." });
+    }
+
+    if (post.userId.toString() !== req.session.id) {
+      return res.status(401).json({ message: "Unauthorized deletion. How bout u delete ur own post?" });
     }
 
     await Comment.deleteMany({ publicId: publicId });

@@ -24,8 +24,7 @@ export default function Main() {
         initialVote: boolean | null
       }
     }>({});
-  const [username, setUsername] = useContext(AuthContext);
-  const navigate = useNavigate();
+  const [, setUsername] = useContext(AuthContext);
 
   function detectBottom() {
     // do nothing
@@ -101,22 +100,24 @@ export default function Main() {
     async function fetchVotes() {
       try {
         const postIds = posts.map(post => post.publicId).join(",");
-        const res = await fetch(makeServerURL(`/retrievevote?ids=${postIds}`));
+        const res = await fetch(makeServerURL(`/retrievevote?ids=${postIds}`), {
+          credentials: "include",
+        });
+
         const data = await res.json();
 
         if (!res.ok) {
           if (res.status === 401) {
-            if (username) toast.error("Session has expired!");
-            else toast.error("Please log in first.");
-
+            console.error("User is not logged in.");
             setUsername(null);
-            navigate("/auth/login");
           }
 
           return;
         }
 
-        setVotes(() => {
+        console.log(data);
+
+        setVotes((prevVotes) => {
           return data.reduce((
             acc: {
               [key: string]: {
@@ -130,10 +131,11 @@ export default function Main() {
               initialDislikes: post.initialDislikes,
               initialVote: post.initialVote,
             };
-            return acc;
+            return { ...prevVotes, ...acc };
           }, {});
         });
 
+        console.log(votes);
       } catch (error) {
         console.error(error);
       }
