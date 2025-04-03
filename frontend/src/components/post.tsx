@@ -74,7 +74,7 @@ export default function Post({
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error("An error has occured.");
+        toast.error(data.message);
         console.error(data.message);
         return;
       }

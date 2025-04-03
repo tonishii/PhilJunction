@@ -76,7 +76,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     }
 
     async function fetchVote() {
-      const res = await fetch(makeServerURL(`retreivevote/${publicId}`));
+      const res = await fetch(makeServerURL(`retrievevote?ids=${publicId}`));
       const data = await res.json();
 
       if (!res.ok) {
