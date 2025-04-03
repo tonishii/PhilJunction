@@ -39,7 +39,11 @@ export default function SignUp() {
         setUsername(formData.get("username") as string);
         navigate("/");
       } else {
-        toast.error("An error has occured.");
+        if (response.status === 400) {
+          toast.error((await response.json()).message);
+        } else {
+          toast.error("An error has occured.");
+        }
       }
     } catch (error: unknown) {
       console.log(error);
