@@ -36,7 +36,7 @@ router.post("/register", async (req: Request, res: Response): Promise<any> => {
     req.session.userId = newUser.id;
     req.session.save();
 
-    console.log("New user registered:", req.session, req.sessionID);
+    console.log("New user registered:", req.session.username);
     return res.status(201).json({ message: 'User registered successfully' });
   }
   catch (error: any) {
@@ -60,7 +60,7 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
       req.session.username = user.username;
       req.session.userId = user.id;
       req.session.save();
-      console.log("New user logged in:", req.session, req.sessionID);
+      console.log("New user logged in:", req.session.username);
       res.status(201).json({ message: 'User logged in successfully.' });
     } else {
       res.status(401).json({ message: "Wrong password entered." });
@@ -73,8 +73,8 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
 });
 
 router.get("/checkLoggedIn", async (req: Request, res: Response) => {
-  console.log("this person is checking if they are logged in:");
-  console.log(req.session, req.sessionID, req.session.username);
+  console.log("this person is checking if they are logged in:", req.session.username);
+  // console.log(req.session, req.sessionID, req.session.username);
   if (!req.session.isLoggedIn) {
     res.status(200).json({ isLoggedIn: false, username: null });
     return;
@@ -84,14 +84,15 @@ router.get("/checkLoggedIn", async (req: Request, res: Response) => {
 })
 
 router.post("/logout", async (req: Request, res: Response) => {
+  const username = req.session.username;
   req.session.destroy((err) => {
     if (!err) {
-      console.log("logged-out user.");
+      console.log("logged-out user: ", username);
       res.status(200).json({ message: "Logged out successfully." });
       return;
     }
 
-    console.log("could not log user out.");
+    console.log("could not log user out: ", username);
     console.log(err);
     res.status(500).json({ message: "something happened." });
   });
