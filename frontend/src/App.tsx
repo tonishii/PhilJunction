@@ -18,6 +18,7 @@ import SignUp from "@pages/signup";
 // Profile Pages
 import Profile from "@pages/profile";
 import FourOFourPage from "@pages/error";
+import About from "@/pages/about";
 import ContextProviders from "@components/contextprovider";
 
 function App() {
@@ -33,7 +34,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="user/:username/*" element={<Profile />} />
           <Route path="search" element={<SearchPage />} />
-
+          <Route path="about" element={<About />} />
           <Route path="auth" element={<AuthLayout />}>
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<SignUp />} />

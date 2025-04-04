@@ -2,7 +2,7 @@
 #### Intro to Web Application Development
 
 <div style="display: flex; justify-content: center; align-items: center;">
-<img src="./frontend/src/public/logo.svg" alt="Logo" width="100" height="100" />
+<img src="./frontend/src/public/logo.svg" alt="Logo" width="200" height="00" />
 </div>
 
 # Overview

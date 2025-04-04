@@ -9,7 +9,6 @@ import { IPost } from "@/models/postType";
 
 import { Flame } from "lucide-react";
 import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 export default function Main() {

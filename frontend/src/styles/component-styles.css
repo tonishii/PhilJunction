@@ -20,10 +20,6 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.header-link:active {
-  transform: scale(0.9);
-}
-
 .header-button {
   cursor: pointer;
   background: transparent;
@@ -40,6 +36,8 @@
   border-radius: 50%;
   width: 40px;
   height: 40px;
+  margin-right: 10px;
+  transition: transform 0.3s ease-in-out;
 }
 
 .search-bar {
@@ -76,6 +74,7 @@
   border-radius: 20px;
   height: 40px;
   padding: 7px 10px;
+  margin-left: 10px;
   gap: 5px;
   background-color: transparent;
   color: #F6F7EB;
@@ -92,6 +91,24 @@
   border-bottom: 1px solid #F6F7EB;
 }
 
+.aboutus-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: hsl(65, 20%, 95%);
+  border: none;
+  border-radius: 10px;
+  height: 100%;
+  padding: 10px 15px;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease-in-out;
+}
+
+.aboutus-arrow {
+  margin-bottom: auto;
+}
+
 .login-button {
   display: flex;
   align-items: center;
@@ -105,12 +122,16 @@
   transition: background-color 0.3s ease, transform 0.3s ease-in-out;
 }
 
-.login-button:hover {
-  background-color: hsl(65, 0%, 82%);
+.login-button:hover,
+.aboutus-button:hover {
+  background-color: hsl(65, 0%, 88%);
 }
 
-.login-button:active {
-  transform: scale(0.9);
+.login-button:active,
+.aboutus-button:active,
+.header .profile-icon:active,
+.header-link:active {
+  transform: scale(0.95);
 }
 
 /* Comment */

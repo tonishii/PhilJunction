@@ -1,4 +1,4 @@
-import { Search, User, BadgePlus } from "lucide-react";
+import { Search, User, BadgePlus, ArrowUpRight } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -83,6 +83,16 @@ export default function Header() {
           onKeyDown={handleSearch}
         />
       </div>
+
+      <Link to="about">
+        <button className="aboutus-button">
+          <span>About us</span>
+          <ArrowUpRight
+            className="aboutus-arrow"
+            color="#4E565A"
+            size={13}/>
+        </button>
+      </Link>
 
       {
         username === null
