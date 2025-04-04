@@ -16,7 +16,6 @@ router.post("/submitcomment", IsLoggedIn, async (req: Request, res: Response): P
       return res.status(400).json({ message: "Body, post, type, and parent comment are required." })
     }
 
-
     const user = await User.findOne({ _id: req.session.userId });
 
     if (!user) {

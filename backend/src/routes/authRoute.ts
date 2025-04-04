@@ -36,11 +36,11 @@ router.post("/register", async (req: Request, res: Response): Promise<any> => {
     req.session.userId = newUser.id;
     req.session.save();
 
-    console.log("New user registered:", req.session.username);
+    console.log("[UPDATE] New user registered:", req.session.username);
     return res.status(201).json({ message: 'User registered successfully' });
   }
   catch (error: any) {
-    console.error("Error during registration:", error);
+    console.error("[ERROR] Error during registration:", error);
     return res.status(500).json({ messsage: error });
   }
 });
@@ -60,20 +60,19 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
       req.session.username = user.username;
       req.session.userId = user.id;
       req.session.save();
-      console.log("New user logged in:", req.session.username);
+      console.log("[UPDATE] New user logged in:", req.session.username);
       res.status(201).json({ message: 'User logged in successfully.' });
     } else {
       res.status(401).json({ message: "Wrong password entered." });
     }
     return;
   } catch (error: any) {
-    console.log(error);
+    console.log("[ERROR] Error during login:", error);
     return res.status(500).json({ message: "Internal server error.", error: error.message });
   }
 });
 
 router.get("/checkLoggedIn", async (req: Request, res: Response) => {
-  console.log("this person is checking if they are logged in:", req.session.username);
   // console.log(req.session, req.sessionID, req.session.username);
   if (!req.session.isLoggedIn) {
     res.status(200).json({ isLoggedIn: false, username: null });
@@ -87,13 +86,12 @@ router.post("/logout", async (req: Request, res: Response) => {
   const username = req.session.username;
   req.session.destroy((err) => {
     if (!err) {
-      console.log("logged-out user: ", username);
+      console.log(`[SERVER] User ${username} has logged out.`);
       res.status(200).json({ message: "Logged out successfully." });
       return;
     }
 
-    console.log("could not log user out: ", username);
-    console.log(err);
+    console.log(`[ERROR] User ${username} could not log out:`, err);
     res.status(500).json({ message: "something happened." });
   });
 })

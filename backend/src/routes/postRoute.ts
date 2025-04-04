@@ -5,6 +5,7 @@ import Post, { IPost } from "../models/post";
 import Comment from "../models/comment";
 import Vote from "../models/votes";
 import { IsLoggedIn } from "../middleware/authorizedOnly";
+import User from "../models/user";
 
 const router: Router = express.Router();
 const storage = multer.memoryStorage();  // Store the files in memory (Buffer)
@@ -41,8 +42,6 @@ router.post("/submitpost", IsLoggedIn, upload.array('images'), async (req: Reque
     //   return res.status(400).json({ message: "User not found or authentication required." });
     // }
     const { userId, username } = req.session;
-
-
 
     const newPost = new Post({
       userId,  // Assuming user is logged in and their ID is available
@@ -151,8 +150,8 @@ router.get("/retrievepost/:id", async (req: Request, res: Response): Promise<any
     });
 
   } catch (e: unknown) {
-    console.log(e);
-    res.status(500).json({ message: "Server error" });
+    console.log("[ERROR] Error during post retrieval:", e);
+    res.status(500).json({ message: "Internal server error." });
   }
 })
 
@@ -160,38 +159,37 @@ router.post("/updatepost", IsLoggedIn, upload.array('images'), async (req: Reque
   const { publicId, postTitle, postContent, tags } = req.body;
   const userId = req.session.userId;
 
-  const post = await Post.findOne({ publicId });
-  if (!post) {
-    res.status(404).json({ message: "post not found." });
-    return;
-  }
-
-  if (post.userId.toString() !== userId) {
-    res.status(403).json({ message: "Unauthorized deletion. Not ur damn post!" });
-    return
-  }
-
-
-  if (!publicId || !postTitle || !postContent || tags.length === 0) {
-    return res.status(400).json({ message: 'Title, content, public ID, and tags are required.' });
-  }
-
-  const files = req.files as Express.Multer.File[] || [];
-
-  const images = files.length > 0 ?
-    files.map((file: Express.Multer.File) => ({
-      data: file.buffer,
-      contentType: file.mimetype,
-    })) : [];
-
   try {
-    // const user = await User.findOne({});  // Replace with actual user
+    const user = await User.findOne({ _id: userId });
 
-    // if (!user) {
-    //   return res.status(400).json({ message: "User not found or authentication required." });
-    // }
+    if (!user) {
+      return res.status(400).json({ message: "User not found or authentication required." });
+    }
+
+    const post = await Post.findOne({ publicId });
+    if (!post) {
+      res.status(404).json({ message: "Post not found." });
+      return;
+    }
 
     // Make sure that the user was the one that actually posted this
+    if (post.userId.toString() !== userId) {
+      res.status(403).json({ message: "Unauthorized deletion. Not ur damn post!" });
+      return
+    }
+
+    if (!publicId || !postTitle || !postContent || tags.length === 0) {
+      return res.status(400).json({ message: 'Title, content, public ID, and tags are required.' });
+    }
+
+    const files = req.files as Express.Multer.File[] || [];
+
+    const images = files.length > 0 ?
+      files.map((file: Express.Multer.File) => ({
+        data: file.buffer,
+        contentType: file.mimetype,
+      })) : [];
+
     await Post.updateOne(
       { publicId: publicId },
       {

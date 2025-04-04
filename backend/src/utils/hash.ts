@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 
 const saltRounds = parseInt(process.env.SALT_ROUNDS!);
 
+// self-explanatory
 export const hashPassword = async (password: string): Promise<any> => {
   try {
     const salt = await bcrypt.genSalt(saltRounds);

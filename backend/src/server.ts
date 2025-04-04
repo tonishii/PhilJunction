@@ -25,6 +25,7 @@ declare module 'express-session' {
 
 const app: Express = express();
 const PORT = process.env.PORT ?? 3001;
+
 const cookieSettings: { sameSite: "none" | "lax", maxAge: number, secure: boolean } = {
   maxAge: 1000 * 60 * 60, // 5 minutes = 1000ms * 60 (minute/ms) * 5 ,
   secure: process.env.NODE_ENV === "production",
@@ -33,10 +34,10 @@ const cookieSettings: { sameSite: "none" | "lax", maxAge: number, secure: boolea
 
 if (process.env.NODE_ENV === "production") app.set('trust proxy', 1);
 
-// Connect to DB
+// connects to DB
 connectDB();
 
-// Middleware
+// middleware stuff
 app.use(express.json());
 app.use(cors);
 app.use(session({
@@ -53,11 +54,12 @@ app.use(session({
   cookie: cookieSettings
 }))
 
-// Routes
+// routes
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server is running!");
 });
 
+// endpoints
 app.use(authRoute);
 app.use(postRoute);
 app.use(userRoute);
@@ -65,9 +67,10 @@ app.use(commentRoute);
 app.use(voteRoute);
 
 app.listen(PORT, async () => {
-  console.log(`[SERVER]: Running at http://localhost:${PORT}`);
-  console.log("cookie Settings: \n", cookieSettings);
+  console.log(`[SERVER] Running at http://localhost:${PORT}`);
+  console.log("[SERVER] Cookie Settings, Age:", cookieSettings.maxAge + "ms", "Secure:", cookieSettings.secure);
 
+  // create default users (FOR TESTING)
   async function createDefaultUser(username: string, email: string) {
     const hasBeenCreated = await User.findOne({ username });
     if (!hasBeenCreated) {
@@ -93,7 +96,7 @@ app.listen(PORT, async () => {
   createDefaultUser("Protea", "bro@gmail.com")
 });
 
-// Shutdown DB
+// shutdown DB
 process.on('SIGINT', gracefulShutdown);
 process.on('SIGTERM', gracefulShutdown);
 process.on('SIGQUIT', gracefulShutdown);
