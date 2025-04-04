@@ -12,7 +12,10 @@
   padding: 10px 30px;
 }
 
-.about-container h1, h2, p, ul>li {
+.about-container h1,
+.about-container h2,
+.about-container p,
+.about-container ul>li {
   color: var(--text1);
 }
 
