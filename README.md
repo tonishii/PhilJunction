@@ -1,9 +1,9 @@
 # **CCAPDEV Major Course Output**
 #### Intro to Web Application Development
 
-<div style="display: flex; justify-content: center; align-items: center;">
-<img src="./frontend/src/public/logo.svg" alt="Logo" width="100" height="100" />
-</div>
+<p align="center">
+  <img src="./frontend/src/public/logo.svg" alt="Logo" width="200" height"200" />
+</p>
 
 # Overview
 Compilation of MCO submissions for **CCAPDEV AY 2024-2025, Term 2**. This forum web application caters specifically
