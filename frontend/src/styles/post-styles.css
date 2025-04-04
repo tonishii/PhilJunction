@@ -140,16 +140,15 @@
 .tag {
   display: flex;
   align-items: center;
-  justify-content: center;
   color: #F6F7EB;
-  border-radius: 20px;
+  border-radius: 15px;
   background-color: #CA2E16;
-  width: fit-content;
-  min-width: 100px;
   height: 30px;
-  padding: 5px 7px;
+  padding: 10px;
   font-size: 0.9rem;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .popular-posts-list {
@@ -234,7 +233,7 @@
 .post-window-main {
   background-color: #F6F7EB;
   padding: 10px 20px;
-  min-height: 200px;
+  height: max-content;
 }
 
 .post-body>* {
@@ -310,8 +309,8 @@
 }
 
 .tag-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(60px, 100px));
+  display: flex;
+  flex-wrap: wrap;
   gap: 4px;
   margin: 4px;
   overflow: hidden;

@@ -9,12 +9,13 @@
     --dislike-color: #CA2E16;
     --highlight1: #E53E24;
 
-    --field1: #e7e4e0;
+    --field1: #e7e3df;
     --field2: #b1a9a5;
     --field3: #2c2f33;
     --field4: #c6c1be;
     --sidebar: #f9f9f5;
     --smallpost-header: #d3d0cc;
+    --suggestion-item: hsl(36, 7%, 86%);
 
     --text1: #090815;
     --text2: #303030;
@@ -24,12 +25,13 @@
 
 [data-theme="dark"] {
     --bg-color: #222526;
-    --field1: #2c2f33;
+    --field1: #2d3034;
     --field2: #4E565A;
     --field3: #d3d0cc;
     --field4: #393E41;
     --sidebar: #F6F7EB;
     --smallpost-header: #2c2f33;
+    --suggestion-item: hsl(214, 7%, 17%);
 
     --text1: #F6F7EB;
     --text2: #cfcfcf;

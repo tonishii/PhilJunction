@@ -2,12 +2,13 @@ import "@/styles/create-post.css"
 import { Send, ImagePlus, X } from "lucide-react";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import ReactMarkdown from 'react-markdown';
-import TagInput from "@/components/taginput";
+import TagInput from "@components/taginput";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router";
-import { ImageBuffer } from "@/models/postType";
-import { AuthContext } from "@/helpers/context";
-import { makeServerURL } from "@/helpers/url";
+import { ImageBuffer } from "@models/postType";
+import { AuthContext } from "@helpers/context";
+import { makeServerURL } from "@helpers/url";
+import RouteMap from "@components/map/routemap";
 
 export default function CreatePost() {
   const { publicId } = useParams();
@@ -15,6 +16,8 @@ export default function CreatePost() {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
+  const [origin, setOrigin] = useState({ id: "", place: "" });
+  const [destination, setDestination] = useState({ id: "", place: "" });
   const [isDisabled, setDisabled] = useState(false);
   const [username, setUsername] = useContext(AuthContext);
   const navigate = useNavigate();
@@ -27,12 +30,13 @@ export default function CreatePost() {
       const response = await fetch(makeServerURL(`retrievepost/${publicId}`));
 
       if (response.ok) {
-        const { message, post } = await response.json();
+        const { post } = await response.json();
         setTitle(post.title);
         setContent(post.body);
         setTags(post.tags);
         setImages(post.images.map((image: ImageBuffer) => image.imageUrl));
-        console.log(message);
+        setOrigin(post.origin);
+        setDestination(post.destination);
       } else {
         toast.error("An error has occured");
         console.error(response);
@@ -64,6 +68,8 @@ export default function CreatePost() {
       formData.append("postTitle", title || "");
       formData.append("postContent", content || "");
       formData.append("tags", JSON.stringify(tags));
+      formData.append("origin", JSON.stringify(origin));
+      formData.append("destination", JSON.stringify(destination));
 
       // console.log("Post Title:", title);
       // console.log("Post Content:", content);
@@ -114,6 +120,8 @@ export default function CreatePost() {
       formData.append("postTitle", title || "");
       formData.append("postContent", content || "");
       formData.append("tags", JSON.stringify(tags));
+      formData.append("origin", JSON.stringify(origin));
+      formData.append("destination", JSON.stringify(destination));
 
       for (let i = 0; i < images.length; i++) {
         const file = await imageUrlToFile(images[i]);
@@ -192,6 +200,13 @@ export default function CreatePost() {
             </div>
 
             <ReactMarkdown className="create-post-MD" children={content} />
+
+            <RouteMap
+              origin={origin}
+              destination={destination}
+              setOrigin={setOrigin}
+              setDestination={setDestination}
+              isEditable={true} />
 
             <div className="image-preview">
               {images.map((img, index) => (

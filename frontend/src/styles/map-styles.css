@@ -1,0 +1,74 @@
+.map-container {
+  width: 100%;
+  height: 300px;
+
+  .route-step-marker {
+    width: 8px;
+    height: 8px;
+    border: 1px solid black;
+    border-radius: 50%;
+    background: #777;
+  }
+}
+
+.map-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.location-wrapper {
+  display: flex;
+  column-gap: 1px;
+}
+
+.location-input-wrapper {
+  margin-top: 30px;
+  width: 200px;
+  position: relative;
+}
+
+.location-input {
+  display: flex;
+  align-items: center;
+  background-color: var(--field1);
+  color: var(--text1);
+  border-radius: 10px 10px 0px 0px;
+  padding: 7px 10px;
+  gap: 5px;
+  border: none;
+  outline: none;
+  width: 100%;
+  border: 1px solid var(--bg-color);
+}
+
+.location-suggestions-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: var(--field1);
+  color: var(--text1);
+  font-size: 0.8rem;
+  border: none;
+  margin: 0px;
+  border-radius: 0px 0px 10px 10px;
+  padding: 0;
+  list-style: none;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 999;
+  width: 100%;
+}
+
+.location-suggestions {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.location-suggestions:hover {
+  background-color: var(--suggestion-item);
+}
+
+.selected {
+  background-color: var(--suggestion-item);
+}

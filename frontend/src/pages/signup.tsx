@@ -1,17 +1,38 @@
 import "@/styles/auth-styles.css";
 import { AuthContext } from "@/helpers/context";
 import { Link, useNavigate } from "react-router";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import ReCAPTCHA from 'react-google-recaptcha';
 import { makeServerURL } from "@/helpers/url";
 
 export default function SignUp() {
+  const recaptcha = useRef<ReCAPTCHA | null>(null);
   const navigate = useNavigate();
   const [isDisabled, setDisabled] = useState(false);
   const [, setUsername] = useContext(AuthContext);
 
   const register = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const captchaVal = recaptcha.current?.getValue();
+
+    if (!captchaVal) {
+      toast.error('Please verify the reCAPTCHA!');
+    } else {
+      const res = await fetch(makeServerURL('verify'), {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({ captchaVal: captchaVal }),
+      })
+
+      if (!res.ok) {
+        toast.error('reCAPTCHA validation failed!');
+        return;
+      }
+    }
 
     const formData = new FormData(e.target as HTMLFormElement);
     for (const [key, value] of formData.entries()) {
@@ -65,6 +86,11 @@ export default function SignUp() {
         <input type="password" id="pwrd" name="password" />
         <label htmlFor="cfrmpwrd">Confirm Password</label>
         <input type="password" id="cfrmpwrd" name="confirmPW" />
+
+        <ReCAPTCHA
+          ref={recaptcha}
+          theme="dark"
+          sitekey={import.meta.env.VITE_APP_SITE_KEY} />
 
         <button
           className="round-button auth-submit-button"

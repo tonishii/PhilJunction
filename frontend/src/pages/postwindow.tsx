@@ -15,6 +15,8 @@ import {
 
 import Comment from "@components/comment";
 import ImageCarousel from "@components/imagecarousel";
+import RouteMap from "@/components/map/routemap";
+
 import { IPost } from "@models/postType";
 import { IComment } from "@models/commentType";
 import { AuthContext } from "@helpers/context";
@@ -39,9 +41,8 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
       const response = await fetch(makeServerURL(`retrievepost/${publicId}`));
 
       if (response.ok) {
-        const { message, post, commentCount } = await response.json();
+        const { post, commentCount } = await response.json();
         setPost(post);
-        console.log(message);
 
         const commentsData = await Promise.all(
           post.comments.map(async (commentId: string) => {
@@ -293,6 +294,12 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
 
         <ImageCarousel images={post.images} maxImages={3} />
         <ReactMarkdown className="post-body" children={post?.body} />
+
+        { post.origin?.id && post.origin?.place && post.destination?.id && post.destination?.place &&
+          <RouteMap
+            origin={post?.origin}
+            destination={post?.destination} /> }
+
       </div>
 
       <div className="post-window-footer">

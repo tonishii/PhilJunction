@@ -114,8 +114,6 @@ export default function Main() {
           return;
         }
 
-        console.log(data);
-
         setVotes((prevVotes) => {
           return data.reduce((
             acc: {
@@ -133,8 +131,6 @@ export default function Main() {
             return { ...prevVotes, ...acc };
           }, {});
         });
-
-        console.log(votes);
       } catch (error) {
         console.error(error);
       }

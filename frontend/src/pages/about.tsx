@@ -1,4 +1,4 @@
-import "@styles/about.css"
+import "@styles/about-styles.css"
 
 export default function About() {
   return (
