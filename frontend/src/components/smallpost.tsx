@@ -2,7 +2,7 @@ import '@/styles/post-styles.css'
 
 import { Link } from "react-router";
 import ReactMarkdown from 'react-markdown';
-import { IPost } from '@/models/postType';
+import { IPost } from '@models/postType';
 
 export default function SmallPost({ post }: { post: IPost; }) {
   return (

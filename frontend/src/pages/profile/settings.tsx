@@ -5,7 +5,7 @@ import { IUser } from "@/models/userType";
 import { toast } from "react-toastify";
 import { UserRoundPen } from "lucide-react";
 import { useNavigate } from "react-router";
-import { makeServerURL } from "@/hook/url";
+import { makeServerURL } from "@/helpers/url";
 
 export default function Settings({ user, setUser }: { user: IUser; setUser: React.Dispatch<React.SetStateAction<IUser | null>> }) {
   const [theme, setTheme] = useLocalStorage("theme", "light");
@@ -13,6 +13,7 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
   const [email, setEmail] = useState(user.email);
   const [bio, setBio] = useState(user.description);
   const [iconUrl, setIconUrl] = useState<string>(user.icon.imageUrl);
+  const [isDisabled, setDisabled] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
 
   const handleSubmit = async () => {
     try {
+      setDisabled(true);
       const formData = new FormData();
       formData.append("oldusername", user.username);
       formData.append("username", username);
@@ -71,6 +73,8 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
       }
     } catch (error) {
       toast.error("An error has occurred.");
+    } finally {
+      setDisabled(false);
     }
   }
 
@@ -137,7 +141,10 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
         id="update"
         name="update"
         className="update-user"
-        onClick={handleSubmit}>Update user</button>
+        onClick={handleSubmit}
+        disabled={isDisabled}>
+          Update user
+      </button>
 
       <h2>Web Interface</h2>
       <section>

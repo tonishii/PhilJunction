@@ -5,7 +5,6 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import ReactMarkdown from "react-markdown";
 import { toast } from 'react-toastify';
-import moment from "moment";
 import {
   ThumbsUp,
   ThumbsDown,
@@ -14,12 +13,13 @@ import {
   Ellipsis,
 } from "lucide-react";
 
-import Comment from "@/components/comment";
-import ImageCarousel from "@/components/imagecarousel";
-import { IPost } from "@/models/postType";
-import { IComment } from "@/models/commentType";
-import { AuthContext } from "@/hook/context";
-import { makeServerURL } from "@/hook/url";
+import Comment from "@components/comment";
+import ImageCarousel from "@components/imagecarousel";
+import { IPost } from "@models/postType";
+import { IComment } from "@models/commentType";
+import { AuthContext } from "@helpers/context";
+import { makeServerURL } from "@helpers/url";
+import { handleDate } from "@/helpers/moment";
 
 export default function PostWindow({ isEditable = false }: { isEditable?: boolean; }) {
   const { publicId } = useParams();
@@ -29,10 +29,10 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
   const [commentValue, setCommentValue] = useState("");
   const [comments, setComments] = useState<IComment[]>([]);
   const [commentCount, setCommentCount] = useState(0);
-
+  const [isDisabled, setDisabled] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
-  const navigate = useNavigate();
   const [username] = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -97,12 +97,9 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     fetchVote();
   }, [publicId, navigate]);
 
-  function handleDate(datePosted: Date = new Date()): string {
-    return moment(datePosted).fromNow();
-  }
-
   async function handleUpvote() {
     try {
+      setDisabled(true);
       const res = await fetch(makeServerURL(`upvote/${post.publicId}`), {
         method: "POST",
         credentials: "include",
@@ -128,11 +125,14 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     } catch (err: unknown) {
       toast.error("A server error occured.");
       console.error(err);
+    } finally {
+      setDisabled(false);
     }
   }
 
   async function handleDownvote() {
     try {
+      setDisabled(true);
       const res = await fetch(makeServerURL(`downvote/${post.publicId}`), {
         method: "POST",
         credentials: "include",
@@ -158,13 +158,16 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     } catch (err: unknown) {
       toast.error("A server error occured.");
       console.error(err);
+    } finally {
+      setDisabled(false);
     }
   }
 
   async function handleAddComment(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key !== "Enter" || commentValue.trim() === "") return;
+    if (event.key !== "Enter" || commentValue.trim() === "" || isDisabled) return;
 
     try {
+      setDisabled(true);
       const res = await fetch(makeServerURL(`submitcomment`), {
         method: "POST",
         headers: {
@@ -192,6 +195,8 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     } catch (err: unknown) {
       toast.error("An error occurred while submitting the comment.");
       console.log(err);
+    } finally {
+      setDisabled(false);
     }
   }
 
@@ -205,6 +210,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
 
   async function handleDeletePost() {
     try {
+      setDisabled(true);
       const res = await fetch(makeServerURL(`deletepost/${publicId}`), {
         method: "POST",
         headers: {
@@ -225,6 +231,8 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
     } catch (error: unknown) {
       toast.error("Error occurred while deleting post.");
       console.error(error);
+    } finally {
+      setDisabled(false);
     }
   }
 
@@ -233,7 +241,6 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
       <div className="post-window-header">
         <div className="post-window-title">
           <h1>{post?.title}</h1>
-
 
           <div className="post-window-header-buttons">
             <button className="round-button" onClick={() => navigate(-1)}>
@@ -255,7 +262,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
                           </div>
                         </li>
                         <li>
-                          <button onClick={handleDeletePost}>Delete</button>
+                          <button onClick={handleDeletePost} disabled={isDisabled}>Delete</button>
                         </li>
                       </ul>
                     </div>
@@ -293,7 +300,8 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
           <span className="like-count">{post?.likes}</span>
           <button
             className={`round-button ${vote === true ? "selected-up" : ""}`}
-            onClick={handleUpvote}>
+            onClick={handleUpvote}
+            disabled={isDisabled}>
             <ThumbsUp className="icon" />
           </button>
         </div>
@@ -302,7 +310,8 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
           <button
             className={`round-button ${vote === false ? " selected-down" : ""
               }`}
-            onClick={handleDownvote}>
+            onClick={handleDownvote}
+            disabled={isDisabled}>
             <ThumbsDown className="icon" />
           </button>
           <span className="dislike-count">{post?.dislikes}</span>

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 import { Slide, ToastContainer } from "react-toastify";
+
 // Components
 import Header from "@components/header";
 
@@ -16,9 +17,8 @@ import SignUp from "@pages/signup";
 
 // Profile Pages
 import Profile from "@pages/profile";
-import RandoUser from "./pages/randouser";
-import FourOFourPage from "./pages/error";
-import ContextProviders from "./components/contextprovider";
+import FourOFourPage from "@pages/error";
+import ContextProviders from "@components/contextprovider";
 
 function App() {
   return (
@@ -31,7 +31,6 @@ function App() {
           theme={localStorage.getItem("theme") ?? "light"} />
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="user" element={<RandoUser />} />
           <Route path="user/:username/*" element={<Profile />} />
           <Route path="search" element={<SearchPage />} />
 
@@ -41,7 +40,6 @@ function App() {
           </Route>
 
           <Route path="/post/:publicId" element={<PostWindow isEditable={true} />} />
-
           <Route path="/holler/:publicId?" element={<CreatePost />} />
           <Route path="*" element={<FourOFourPage />} />
         </Routes>

@@ -6,8 +6,8 @@ import TagInput from "@/components/taginput";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router";
 import { ImageBuffer } from "@/models/postType";
-import { AuthContext } from "@/hook/context";
-import { makeServerURL } from "@/hook/url";
+import { AuthContext } from "@/helpers/context";
+import { makeServerURL } from "@/helpers/url";
 
 export default function CreatePost() {
   const { publicId } = useParams();
@@ -15,6 +15,7 @@ export default function CreatePost() {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
+  const [isDisabled, setDisabled] = useState(false);
   const [username, setUsername] = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -55,23 +56,24 @@ export default function CreatePost() {
   };
 
   async function handleSubmit() {
-    const formData = new FormData();
-
-    // Add text data
-    formData.append("postTitle", title || "");
-    formData.append("postContent", content || "");
-    formData.append("tags", JSON.stringify(tags));
-
-    console.log("Post Title:", title);
-    console.log("Post Content:", content);
-    console.log("Tags:", tags);
-
-    for (let i = 0; i < images.length; i++) {
-      const file = await imageUrlToFile(images[i]);
-      formData.append('images', file)
-    }
-
     try {
+      setDisabled(true);
+      const formData = new FormData();
+
+      // Add text data
+      formData.append("postTitle", title || "");
+      formData.append("postContent", content || "");
+      formData.append("tags", JSON.stringify(tags));
+
+      // console.log("Post Title:", title);
+      // console.log("Post Content:", content);
+      // console.log("Tags:", tags);
+
+      for (let i = 0; i < images.length; i++) {
+        const file = await imageUrlToFile(images[i]);
+        formData.append('images', file)
+      }
+
       const response = await fetch(makeServerURL(`submitpost`), {
         method: "POST",
         body: formData,
@@ -96,27 +98,28 @@ export default function CreatePost() {
         }
       }
     } catch (error: unknown) {
-
       toast.error("An error has occured.");
       console.error(error);
+    } finally {
+      setDisabled(false);
     }
   };
 
   async function handleEdit() {
-    const formData = new FormData();
-
-    formData.append("publicId", publicId || "");
-    formData.append("postTitle", title || "");
-    formData.append("postContent", content || "");
-    formData.append("tags", JSON.stringify(tags));
-
-    for (let i = 0; i < images.length; i++) {
-      const file = await imageUrlToFile(images[i]);
-      formData.append('images', file)
-    }
-
-    console.log(formData);
     try {
+      setDisabled(true);
+      const formData = new FormData();
+
+      formData.append("publicId", publicId || "");
+      formData.append("postTitle", title || "");
+      formData.append("postContent", content || "");
+      formData.append("tags", JSON.stringify(tags));
+
+      for (let i = 0; i < images.length; i++) {
+        const file = await imageUrlToFile(images[i]);
+        formData.append('images', file)
+      }
+
       const res = await fetch(makeServerURL(`updatepost`), {
         method: "POST",
         body: formData,
@@ -149,6 +152,8 @@ export default function CreatePost() {
     } catch (error: unknown) {
       toast.error("An error has occured.");
       console.error(error);
+    } finally {
+      setDisabled(false);
     }
   }
 
@@ -220,7 +225,8 @@ export default function CreatePost() {
           <div className='sidebar-button'>
             <button
               className={`round-button`}
-              onClick={publicId ? handleEdit : handleSubmit}>
+              onClick={publicId ? handleEdit : handleSubmit}
+              disabled={isDisabled}>
               <Send className="icon" />
             </button>
           </div>

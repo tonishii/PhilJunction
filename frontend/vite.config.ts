@@ -15,6 +15,7 @@ export default defineConfig({
       "@styles": path.resolve(__dirname, "src/styles"),
       "@models": path.resolve(__dirname, "src/models"),
       "@skeleton": path.resolve(__dirname, "src/components/skeletons"),
+      "@helpers": path.resolve(__dirname, "src/helpers"),
     },
   },
   server: {

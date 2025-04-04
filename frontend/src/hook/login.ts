@@ -11,7 +11,6 @@ export function useLoggedIn(): [boolean, string | null] {
             const res = await status.json();
             setIsloggedIn(res.isLoggedIn);
             setUsername(res.username);
-            console.log("hi tried fetching your stuff", res);
         }
         theThing();
     }, []);

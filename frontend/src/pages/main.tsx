@@ -3,8 +3,8 @@ import SmallPost from "@/components/smallpost";
 import PostSkeleton from "@skeleton/postSkeleton";
 import SmallPostSkeleton from "@skeleton/smallPostSkeleton";
 
-import { AuthContext } from "@/hook/context";
-import { makeServerURL } from "@/hook/url";
+import { AuthContext } from "@/helpers/context";
+import { makeServerURL } from "@/helpers/url";
 import { IPost } from "@/models/postType";
 
 import { Flame } from "lucide-react";

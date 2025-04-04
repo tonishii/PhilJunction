@@ -2,7 +2,7 @@ import "@/styles/component-styles.css";
 
 import { useState } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { ImageBuffer } from "@/models/postType";
+import { ImageBuffer } from "@models/postType";
 
 export default function ImageCarousel({
   images = [],

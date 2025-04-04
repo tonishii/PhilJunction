@@ -1,14 +1,14 @@
 import { Search, User, BadgePlus } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import Logo from "@/components/logo";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@/hook/context";
 import { toast } from "react-toastify";
-import { makeServerURL } from "@/hook/url";
+
+import Logo from "@/components/logo";
+import { AuthContext } from "@helpers/context";
+import { makeServerURL } from "@helpers/url";
 
 export default function Header() {
   const navigate = useNavigate();
-  // const [isLoggedIn,] = useLoggedIn();
   const [username] = useContext(AuthContext);
   const [profileIcon, setProfileIcon] = useState<string | null>(null);
 
@@ -99,7 +99,7 @@ export default function Header() {
             {profileIcon ? (<img src={profileIcon} alt="icon" className="profile-icon" />
             ) : (
               <button className="round-button">
-                <User className="icon" />
+                <User className="pulse icon" />
               </button>
             )}
           </Link>

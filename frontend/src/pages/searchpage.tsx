@@ -6,17 +6,20 @@ import { toast } from "react-toastify"
 import { useEffect, useState } from "react";
 import { IPost } from "@/models/postType";
 import { useSearchParams } from "react-router";
-import { makeServerURL } from "@/hook/url";
+import { makeServerURL } from "@/helpers/url";
 
 export default function SearchPage() {
   const [tags, setTags] = useState<string[]>([]);
   const [posts, setPosts] = useState<IPost[]>([]);
+  const [isDisabled, setDisabled] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     async function fetchPosts() {
-      console.log(searchParams.get("keywords"));
       try {
+        // console.log(searchParams.get("keywords"));
+        setDisabled(true)
+
         const response = await fetch(`${makeServerURL(`searchposts`)}?${searchParams.toString()}`, {
           method: "GET",
           headers: {
@@ -36,6 +39,8 @@ export default function SearchPage() {
       }
       catch (e: unknown) {
         console.log(e);
+      } finally {
+        setDisabled(false);
       }
     }
     setTags(JSON.parse(searchParams.get("tags") ?? "[]"))
@@ -52,39 +57,11 @@ export default function SearchPage() {
 
     const formData = new FormData(e.currentTarget);
 
-
     setSearchParams([
       ["keywords", formData.get("keywords")?.toString() ?? ""],
       ["tags", JSON.stringify(tags)],
       ["filterBy", formData.get("filterBy")?.toString() ?? "1"]
-    ])
-
-    // const formData = new FormData();
-    // formData.append("keywords", (document.getElementById("keywords") as HTMLInputElement).value)
-    // formData.append("tags", JSON.stringify(tags))
-    // formData.append("filterBy", (document.getElementById("filter-by") as HTMLSelectElement).value)
-
-    // try {
-    //   const response = await fetch(makeServerURL(`searchposts`), {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(Object.fromEntries(formData.entries())),
-    //   });
-
-    //   const result = await response.json();
-
-    //   if (response.ok) {
-    //     console.log(result)
-    //     setPosts(result)
-    //   } else {
-    //     const errorMessage = JSON.stringify(result, null, 2);
-    //     toast.error(`${errorMessage || "Server Error"}`);
-    //   }
-    // } catch (error: unknown) {
-    //   console.log(error)
-    // }
+    ]);
   };
 
   return (
@@ -108,7 +85,7 @@ export default function SearchPage() {
           <option value={Date.now()}>None</option>
         </select>
         <button className="search-buttons" onClick={clear}>Clear</button>
-        <button className="search-buttons" type="submit">Search</button>
+        <button className="search-buttons" type="submit" disabled={isDisabled}>Search</button>
       </form>
 
 

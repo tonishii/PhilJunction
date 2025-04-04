@@ -1,7 +1,7 @@
 import { useLocalStorage } from "@/hook/storage";
 import { useState, useEffect } from "react";
-import { ThemeContext, AuthContext } from "@/hook/context";
-import { makeServerURL } from "@/hook/url";
+import { ThemeContext, AuthContext } from "@helpers/context";
+import { makeServerURL } from "@helpers/url";
 
 export default function ContextProviders({ children }: { children: React.ReactNode }) {
     const [theme, setTheme] = useLocalStorage("theme", "light");
@@ -19,8 +19,8 @@ export default function ContextProviders({ children }: { children: React.ReactNo
         }
         checker();
     })
-    return (
 
+    return (
         <ThemeContext.Provider value={[theme, setTheme]}>
             <AuthContext.Provider value={[user, setUser]}>
                 {children}

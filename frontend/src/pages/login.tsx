@@ -1,13 +1,14 @@
 import "@/styles/auth-styles.css";
-import { AuthContext } from "@/hook/context";
-import { useContext } from "react";
+import { AuthContext } from "@/helpers/context";
+import { useContext, useState } from "react";
 
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { makeServerURL } from "@/hook/url";
+import { makeServerURL } from "@/helpers/url";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [isDisabled, setDisabled] = useState(false);
   const [, setUsername] = useContext(AuthContext);
 
   const login = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -21,6 +22,7 @@ export default function Login() {
     );
 
     try {
+      setDisabled(true);
       const response = await fetch(makeServerURL(`login`), {
         method: "POST",
         headers: {
@@ -40,6 +42,8 @@ export default function Login() {
       }
     } catch (error: unknown) {
       toast.error(String(error));
+    } finally {
+      setDisabled(false);
     }
   };
 
@@ -51,8 +55,11 @@ export default function Login() {
         <label htmlFor="pwrd">Password</label>
         <input type="password" id="pwrd" name="password" />
 
-        <button className="round-button auth-submit-button" type="submit">
-          Continue
+        <button
+          className="round-button auth-submit-button"
+          type="submit"
+          disabled={isDisabled}>
+            Continue
         </button>
       </form>
 
