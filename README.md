@@ -69,16 +69,10 @@ Start the backend server using **Nodemon**:
 ```
 
 The frontend should now be accessible at http://localhost:3000 (default Vite port).
-
 The backend should be accessible at http://localhost:3001 (default Express port).
 
-run this command for both front-end and back-end. Front-end should run a vite server, and back-end should run nodemon.
-
-### Environment Variables
-
-Ensure that the environment is properly configured for both the frontend and backend.
-
 ### Troubleshooting
+Ensure that the environment is properly configured for both the frontend and backend.
 
 If you encounter a *"Port already in use"* error,
 make sure the ports used by your backend and frontend (default 3001 for backend, 3000 for frontend) are not in use by other applications.
