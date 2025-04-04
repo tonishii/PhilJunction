@@ -40,10 +40,18 @@
   min-height: 100px;
   border-radius: 10px 0px 0px 0px;
   padding: 0px 20px 10px;
+  overflow: hidden;
 }
 
 .post-header>a {
   width: 100%;
+
+}
+
+.post-header>a>h2 {
+  width: 100%;
+  white-space: nowrap;
+  overflow: auto;
 }
 
 .post-header>* {
@@ -210,6 +218,7 @@
 .post-window-title {
   display: flex;
   width: 100%;
+  overflow: auto;
 }
 
 .edit-menu {
