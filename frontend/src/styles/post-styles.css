@@ -90,6 +90,7 @@
   height: 400px;
   overflow: hidden;
   padding: 10px 20px;
+  object-fit: contain;
 }
 
 .post-sidebar {
@@ -342,6 +343,7 @@
 }
 
 .matchWidth {
+  max-height: 100%;
   width: 100%;
   object-fit: content;
 }

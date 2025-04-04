@@ -239,14 +239,24 @@
 
 .image-carousel {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   position: relative;
   max-height: 200px;
   width: 100%;
   margin: 1rem auto;
   gap: 5px;
+  object-fit: contain;
 }
+
+.post-body-container .image-carousel {
+  overflow: clip;
+}
+
+.post-window-main .image-carousel {
+  overflow: auto;
+}
+
 
 .post-image {
   max-width: 30%;
