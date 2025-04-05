@@ -49,17 +49,24 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
   const { username, password } = req.body;
 
   try {
+    console.log("started finding user at :", new Date());
     const user = await User.findOne({ username }).exec();
+    console.log("found at :", new Date());
 
     if (!user) {
       return res.status(400).json({ message: 'Account does not exist.' });
     }
 
-    if (await comparePassword(password, user.password)) {
+    console.log("started checking password at: ", new Date());
+    const isCorrectPassword = await comparePassword(password, user.password);
+    console.log("finished checking password at: ", new Date());
+    if (isCorrectPassword) {
       req.session.isLoggedIn = true;
       req.session.username = user.username;
       req.session.userId = user.id;
+      console.log("started saving session to db at: ", new Date());
       req.session.save();
+      console.log("finished saving session to db at: ", new Date());
       console.log("New user logged in:", req.session.username);
       res.status(201).json({ message: 'User logged in successfully.' });
     } else {
