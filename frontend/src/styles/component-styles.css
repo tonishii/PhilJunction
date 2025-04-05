@@ -136,17 +136,16 @@
 
 /* Comment */
 .comment-container {
-  min-height: 90px;
   width: 100%;
   border-radius: 4px;
   margin: 20px 0px;
-  padding-left: 30px;
+  padding: 10px 0px 5px 25px;
   border-left: 3px solid var(--field2); /* #4E565A dark|light #b1a9a5 */
 }
 
 .comment-container p {
   color: var(--text1); /* #f6f7eb dark|light #090814 */
-  margin: 0px;
+  margin: 10px 0px 0px 20px;
 }
 
 .comment-header {

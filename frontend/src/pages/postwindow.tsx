@@ -352,7 +352,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
               isReplyable={true}
               onDeleteComment={handleDeleteComment}
               setCommentCount={setCommentCount} />)
-          : comments.length === 0 ? <p>No comments yet!</p>
+          : comments.length === 0 ? <p className="empty">No comments yet!</p>
             : <p>"Loading..."</p>}
       </div >
     </div >

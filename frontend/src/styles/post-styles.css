@@ -38,6 +38,8 @@
   min-height: 100px;
   border-radius: 10px 0px 0px 0px;
   padding: 0px 20px 10px;
+  word-wrap: break-word;
+  word-break: break-all;
   overflow: hidden;
 }
 
@@ -177,6 +179,7 @@
   margin: 30px auto;
   border-radius: 10px;
   width: 700px;
+  height: auto;
 }
 
 .post-window-header {
@@ -210,6 +213,8 @@
 .post-window-title {
   display: flex;
   width: 100%;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .edit-menu {
@@ -225,7 +230,12 @@
 .post-window-main {
   background-color: #F6F7EB;
   padding: 10px 20px;
-  height: max-content;
+  height: auto;
+}
+
+.post-body {
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .post-body>* {
@@ -237,6 +247,7 @@
   align-items: center;
   justify-content: space-around;
   background-color: #2c2f33;
+  min-height: 60px;
   padding: 10px;
   gap: 4px;
 }
@@ -262,16 +273,29 @@
 .post-window-comments {
   display: flex;
   flex-direction: column;
+  min-height: 200px;
   background-color: var(--field4);
-  /* #393E41 dark|light #c6c1be*/
   color: var(--text1);
-  /* #F6F7EB dark|light #090814 */
   border-radius: 0px 0px 10px 10px;
-  padding: 20px;
+  padding: 10px 30px;
 }
 
 .post-window-comments-header h1 {
   margin: 0;
+}
+
+.post-window-comments h1 {
+  background: radial-gradient(circle, var(--field1), var(--field4));
+  border-top: 1px solid var(--field1);
+  border-bottom: 1px solid var(--field1);
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.post-window-comments .empty {
+  align-self: center;
+  font-size: 1.2rem;
+  font-family: Courier, monospace;
 }
 
 .post-window-header-buttons .round-button,
@@ -328,6 +352,8 @@
   min-height: 80px;
   max-height: 120px;
   padding: 10px 20px;
+  word-wrap: break-word;
+  word-break: break-all;
   line-clamp: 4;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;

@@ -32,19 +32,6 @@
   height: 100%;
 }
 
-.editor-container, .result-container {
-  width: 100%;
-  height: 100%;
-  word-wrap: break-word;
-  word-break: break-all;
-  padding: 1em;
-}
-
-.result-container {
-  display: flex;
-  flex-flow: column;
-}
-
 .title {
   height: 2em;
   background-color: red;
@@ -168,6 +155,8 @@
 .create-post-MD>* {
   margin: 0;
   line-height: 1em;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .create-post-text {
