@@ -21,6 +21,11 @@
     --text2: #303030;
     --comment1: #522719;
     --search-buttons-color: #2c2f33;
+
+    /* toastify colors */
+    --toastify-color-light: #e3e3e3;
+    --toastify-color-info: #ADD8E6;
+    --toastify-color-error: #E53E24;
 }
 
 [data-theme="dark"] {
@@ -37,6 +42,9 @@
     --text2: #cfcfcf;
     --comment1: #ADD8E6;
     --search-buttons-color: #F6F7EB;
+
+    /* toastify colors */
+    --toastify-color-dark: #2c2f33;
 }
 
 * {
