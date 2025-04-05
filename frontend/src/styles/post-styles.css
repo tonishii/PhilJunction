@@ -316,25 +316,27 @@
 .smallpost-container {
   display: flex;
   flex-direction: column;
+  min-height: 150px;
+  max-width: 400px;
 }
 
 .smallpost-header {
-  display: grid;
-  grid-template-columns: 0.5fr 1fr;
+  display: flex;
   align-items: center;
   min-height: 50px;
-  max-height: 100px;
+  max-height: 200px;
   overflow: hidden;
   padding: 10px 20px;
   border-radius: 10px 10px 0px 0px;
   background-color: var(--smallpost-header);
-  /* #2c2f33 dark|light #d3d0cc*/
 }
 
 .smallpost-header p {
   color: var(--text2);
   /* #cfcfcf dark|light #303030 */
   font-size: 0.9rem;
+  word-wrap: break-word;
+  word-break: break-all;
   margin: 0;
 }
 
