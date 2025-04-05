@@ -1,5 +1,6 @@
 import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Directions({
   origin,
@@ -39,7 +40,10 @@ export default function Directions({
       travelMode: google.maps.TravelMode.TRANSIT,
     }).then(res => {
       directionRenderer.setDirections(res);
-    }).catch((error) => console.error(error));
+    }).catch((error) => {
+      toast.error("No routes found!");
+      console.error(error);
+    });
 
   }, [origin, destination, directionService, directionRenderer]);
 

@@ -103,8 +103,9 @@ export default function LocationInput({
           { suggestions.map((text, i) => (
             <li
               key={i}
-              onClick={() => {
-                onChange(text);
+              onMouseDown={() => {
+                console.log(text);
+                onChange({ id: text.id, place: text.place });
                 clearSuggestions();
               }}
 
