@@ -22,6 +22,7 @@ import { IComment } from "@models/commentType";
 import { AuthContext } from "@helpers/context";
 import { makeServerURL } from "@helpers/url";
 import { handleDate } from "@/helpers/moment";
+import PostWindowSkeleton from "@skeleton/postWindowSkeleton";
 
 export default function PostWindow({ isEditable = false }: { isEditable?: boolean; }) {
   const { publicId } = useParams();
@@ -238,7 +239,9 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
   }
 
   return (
-    <div className="post-window-container">
+    !post.publicId ? (
+      <PostWindowSkeleton />
+    ) : (<div className="post-window-container">
       <div className="post-window-header">
         <div className="post-window-title">
           <h1>{post?.title}</h1>
@@ -355,6 +358,6 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
           : comments.length === 0 ? <p className="empty">No comments yet!</p>
             : <p>"Loading..."</p>}
       </div >
-    </div >
+    </div >)
   );
 }

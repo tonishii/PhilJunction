@@ -25,13 +25,17 @@ export default function PostWindowSkeleton() {
           <div className='skeleton skeleton-image'></div>
         </div>
         <div className='skeleton skeleton-body'></div>
-        {/* REPLACE THIS ANTHONY */}
+
+        <div className="skeleton skeleton-map"></div>
       </div>
 
       <div className="post-window-footer">
+        <div className='skeleton skeleton-buttons'></div>
       </div>
 
       <div className="post-window-comments">
+        <div className='skeleton skeleton-comments'></div>
+        <div className='skeleton skeleton-comments'></div>
       </div >
     </div >
   );

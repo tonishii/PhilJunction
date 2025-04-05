@@ -12,7 +12,6 @@ import CreatePost from "@pages/createpost";
 import Login from "@pages/login";
 import Main from "@pages/main";
 import PostWindow from "@pages/postwindow";
-import PostWindowSkeleton from "./components/skeletons/postWindowSkeleton";
 import SearchPage from "@pages/searchpage";
 import SignUp from "@pages/signup";
 
@@ -41,7 +40,6 @@ function App() {
             <Route path="signup" element={<SignUp />} />
           </Route>
 
-          <Route path="/posts" element={<PostWindowSkeleton />} />
           <Route path="/post/:publicId" element={<PostWindow isEditable={true} />} />
           <Route path="/holler/:publicId?" element={<CreatePost />} />
           <Route path="*" element={<FourOFourPage />} />
