@@ -21,7 +21,10 @@ function createId(length: number): string {
 }
 
 router.post("/submitpost", IsLoggedIn, upload.array('images'), async (req: Request, res: Response): Promise<any> => {
-  const { postTitle, postContent, tags } = req.body;
+  const { postTitle, postContent, tags, origin, destination } = req.body;
+
+  console.log("HERE");
+  console.log(origin, destination);
 
   if (!postTitle || !postContent || JSON.parse(tags).length === 0) {
     return res.status(400).json({ message: 'Title, content, and tags are required.' });
@@ -36,21 +39,18 @@ router.post("/submitpost", IsLoggedIn, upload.array('images'), async (req: Reque
     })) : [];
 
   try {
-    // Placeholder user validation (to be replaced with actual authentication logic)
-    // const user = await User.findOne({ username: "ANTHIMON" });  // Replace with actual user lookup based on session/token
-    // if (!user) {
-    //   return res.status(400).json({ message: "User not found or authentication required." });
-    // }
     const { userId, username } = req.session;
 
     const newPost = new Post({
-      userId,  // Assuming user is logged in and their ID is available
+      userId,                       // Assuming user is logged in and their ID is available
       username,
       title: postTitle,
       body: postContent,
       images: images,
       tags: JSON.parse(tags),
-      publicId: createId(10)
+      publicId: createId(10),
+      origin: JSON.parse(origin),
+      destination: JSON.parse(destination),
     });
 
     await newPost.save();
@@ -131,6 +131,7 @@ router.get("/trendingposts", async (req: Request, res: Response) => {
 });
 
 
+// sends post for post window page
 router.get("/retrievepost/:id", async (req: Request, res: Response): Promise<any> => {
   try {
     const data = await Post.findOne({ publicId: req.params.id });
@@ -156,7 +157,7 @@ router.get("/retrievepost/:id", async (req: Request, res: Response): Promise<any
 })
 
 router.post("/updatepost", IsLoggedIn, upload.array('images'), async (req: Request, res: Response): Promise<any> => {
-  const { publicId, postTitle, postContent, tags } = req.body;
+  const { publicId, postTitle, postContent, tags, origin, destination } = req.body;
   const userId = req.session.userId;
 
   try {
@@ -198,6 +199,8 @@ router.post("/updatepost", IsLoggedIn, upload.array('images'), async (req: Reque
           body: postContent,
           images: images,
           tags: JSON.parse(tags),
+          origin: JSON.parse(origin),
+          destination: JSON.parse(destination),
         },
       }
     );

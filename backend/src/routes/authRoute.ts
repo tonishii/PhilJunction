@@ -96,4 +96,22 @@ router.post("/logout", async (req: Request, res: Response) => {
   });
 })
 
+router.post('/verify', async (req: Request, res: Response) => {
+  const { captchaVal } = req.body;
+
+  try {
+    const data = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.SECRET_KEY}&response=${captchaVal}`, {
+      method: "POST",
+      // body: JSON.stringify({
+      //   secret: process.env.SECRET_KEY,
+      //   response: captchaVal,
+      // })
+    });
+
+    res.send(data);
+  } catch (error) {
+    console.error("[ERROR] An error occured while verifying captcha:", error);
+  }
+})
+
 export default router;
