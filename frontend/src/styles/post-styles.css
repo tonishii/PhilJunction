@@ -225,6 +225,7 @@
   position: absolute;
   top: 25px;
   right: 0px;
+  width: max-content;
 }
 
 .post-window-main {
