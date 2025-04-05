@@ -84,10 +84,10 @@
 
 .create-post-button span {
   border-bottom: 1px solid transparent;
-  transition: border-bottom 0.3s ease;
+  transition: border-bottom 0.15s ease;
 }
 
-.create-post-button span:hover {
+.create-post-button:hover span {
   border-bottom: 1px solid #F6F7EB;
 }
 
@@ -131,7 +131,7 @@
 .aboutus-button:active,
 .header .profile-icon:active,
 .header-link:active {
-  transform: scale(0.95);
+  transform: scale(0.9);
 }
 
 /* Comment */

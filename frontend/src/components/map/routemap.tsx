@@ -5,6 +5,10 @@ import { Dispatch, SetStateAction, useContext } from "react";
 import Directions from "./directions";
 import LocationInput from "./locationpicker";
 
+const style: React.CSSProperties = {
+  borderRadius: "10px",
+}
+
 export default function RouteMap({
   center,
   origin,
@@ -42,7 +46,8 @@ export default function RouteMap({
           defaultCenter={center ?? { lat: 13.41, lng: 122.56 }}
           colorScheme={theme[0].toUpperCase() as keyof typeof ColorScheme}
           defaultZoom={5}
-          disableDefaultUI={true}>
+          disableDefaultUI={true}
+          style={style}>
 
         { origin && destination &&
           <Directions

@@ -242,7 +242,8 @@ export default function CreatePost() {
               className={`round-button`}
               onClick={publicId ? handleEdit : handleSubmit}
               disabled={isDisabled}>
-              <Send className="icon" />
+              <span className="create-post-text">Create</span>
+              <Send className="icon small"/>
             </button>
           </div>
 
@@ -250,7 +251,8 @@ export default function CreatePost() {
             <button
               className={`round-button`}
               onClick={() => document.getElementById("fileInput")?.click()}>
-              <ImagePlus className="icon" />
+              <span className="create-post-text">Add</span>
+              <ImagePlus className="icon small" />
             </button>
           </div>
         </div>

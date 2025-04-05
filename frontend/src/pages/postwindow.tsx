@@ -244,9 +244,6 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
           <h1>{post?.title}</h1>
 
           <div className="post-window-header-buttons">
-            <button className="round-button" onClick={() => navigate(-1)}>
-              <CornerDownLeft className="icon black-color" />
-            </button>
             {
               post.username === username &&
               <>
@@ -255,7 +252,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
                 </button>
                 <div className="edit-menu">
                   {isEditable && menuVisible && (
-                    <div className="dropdown-menu">
+                    <div className={`dropdown-menu`}>
                       <ul>
                         <li>
                           <div className="comment-menu">
@@ -271,6 +268,9 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
                 </div>
               </>
             }
+            <button className="round-button" onClick={() => navigate(-1)}>
+              <CornerDownLeft className="icon black-color" />
+            </button>
           </div>
 
         </div>

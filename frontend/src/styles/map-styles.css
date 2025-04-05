@@ -1,7 +1,7 @@
 .map-container {
   width: 100%;
   height: 300px;
-
+  border-radius: 10px;
   .route-step-marker {
     width: 8px;
     height: 8px;
