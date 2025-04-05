@@ -23,7 +23,7 @@ function createId(length: number): string {
 router.post("/submitpost", IsLoggedIn, upload.array('images'), async (req: Request, res: Response): Promise<any> => {
   const { postTitle, postContent, tags, origin, destination } = req.body;
 
-  console.log("HERE");
+  // console.log("HERE");
   console.log(origin, destination);
 
   if (!postTitle || !postContent || JSON.parse(tags).length === 0) {
