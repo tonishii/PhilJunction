@@ -57,9 +57,9 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
       return res.status(400).json({ message: 'Account does not exist.' });
     }
 
-    // console.log("started checking password at: ", new Date());
+    console.log("started checking password at: ", new Date());
     const isCorrectPassword = await comparePassword(password, user.password);
-    // console.log("finished checking password at: ", new Date());
+    console.log("finished checking password at: ", new Date());
     if (isCorrectPassword) {
       req.session.isLoggedIn = true;
       req.session.username = user.username;
