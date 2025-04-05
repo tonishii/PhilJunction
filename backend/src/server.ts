@@ -73,7 +73,7 @@ app.listen(PORT, async () => {
     const hasBeenCreated = await User.findOne({ username });
     if (!hasBeenCreated) {
 
-      const response = await fetch(`http://localhost:{PORT}/register`, {
+      const response = await fetch(`http://localhost:${PORT}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
