@@ -5,7 +5,7 @@
     --black3-color: #4E565A;
     --light-gray-color: #DAD8D7;
     --white1-color: #F6F7EB;
-    --like-color: green;
+    --like-color: #07bc0c;
     --dislike-color: #CA2E16;
     --highlight1: #E53E24;
 
@@ -25,6 +25,7 @@
     /* toastify colors */
     --toastify-color-light: #e3e3e3;
     --toastify-color-info: #ADD8E6;
+    --toastify-color-success: #07bc0c;
     --toastify-color-error: #E53E24;
 }
 
