@@ -33,8 +33,6 @@
 
 .post-header {
   display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: var(--light-gray-color);
   width: 100%;
   min-height: 100px;
@@ -45,6 +43,10 @@
 
 .post-header>* {
   margin: 0px;
+}
+
+.post-header-link {
+  width: 100%;
 }
 
 .post-header hr {

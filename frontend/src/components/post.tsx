@@ -102,7 +102,7 @@ export default function Post({
     <div className="post-container">
       <div className="post-main">
         <div className="post-header">
-          <Link to={`/post/${post.publicId}`} className="black-color">
+          <Link to={`/post/${post.publicId}`} className="black-color post-header-link">
             <h2>{post.title}</h2>
             <hr />
             <div className="post-info">

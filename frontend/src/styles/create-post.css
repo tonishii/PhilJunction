@@ -1,6 +1,6 @@
 .create-post-container {
   display: grid;
-  width: min(800px, 100vw);
+  width: 800px;
   height: 600px;
   border-radius: 10px;
   grid-template-columns: auto 90px;
@@ -35,6 +35,8 @@
 .editor-container, .result-container {
   width: 100%;
   height: 100%;
+  word-wrap: break-word;
+  word-break: break-all;
   padding: 1em;
 }
 
@@ -158,9 +160,9 @@
 }
 
 .create-post-MD {
+  width: 100%;
   padding: 10px 20px 0px;
   height: auto;
-  word-wrap: break-word;
 }
 
 .create-post-MD>* {
