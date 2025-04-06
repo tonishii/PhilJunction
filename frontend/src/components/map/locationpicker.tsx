@@ -1,4 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
+import debounce from "lodash.debounce";
+
+const debounceWait = 400;
 
 export default function LocationInput({
   label,
@@ -14,29 +17,29 @@ export default function LocationInput({
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    async function fetchSuggestions() {
+    const fetchSuggestions = debounce(async () => {
       if (value.place.trim() === "") return;
 
       try {
         const res = await fetch(`https://places.googleapis.com/v1/places:autocomplete`, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Goog-Api-Key': import.meta.env.VITE_MAPS_API_KEY,
-        },
-        body: JSON.stringify({
-          input: value.place,
-          locationBias: {
-          circle: {
-            center: {
-              latitude: 13.41,
-              longitude: 122.56,
-            },
-            radius: 300.0,
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Goog-Api-Key': import.meta.env.VITE_MAPS_API_KEY,
+          },
+          body: JSON.stringify({
+            input: value.place,
+            locationBias: {
+            circle: {
+              center: {
+                latitude: 13.41,
+                longitude: 122.56,
+              },
+              radius: 300.0,
+            }
           }
-        }
-        }),
-      });
+          }),
+        });
 
       if (!res.ok) return;
 
@@ -51,9 +54,13 @@ export default function LocationInput({
       } catch (error) {
         console.error(error);
       }
-    }
+    }, debounceWait);
 
     fetchSuggestions();
+
+    return () => {
+      fetchSuggestions.cancel();
+    };
   }, [value]);
 
   // useEffect(() => {
