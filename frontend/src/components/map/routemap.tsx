@@ -1,11 +1,11 @@
-import { ThemeContext } from "@/helpers/context";
 import "@/styles/map-styles.css";
+import { ThemeContext } from "@/helpers/context";
 import { APIProvider, ColorScheme, Map } from "@vis.gl/react-google-maps";
-import { Dispatch, SetStateAction, useContext } from "react";
+import { Dispatch, memo, SetStateAction, useContext } from "react";
 import Directions from "./directions";
 import LocationInput from "./locationpicker";
 
-export default function RouteMap({
+function RouteMap({
   center,
   origin,
   destination,
@@ -13,7 +13,7 @@ export default function RouteMap({
   setDestination,
   isEditable = false,
 } : {
-  center?: { // auto-centers
+  center?: {
     lat: number,
     lng: number,
   };
@@ -53,3 +53,5 @@ export default function RouteMap({
     </APIProvider>
   );
 }
+
+export default memo(RouteMap);

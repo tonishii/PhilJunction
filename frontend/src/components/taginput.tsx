@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { X } from "lucide-react";
 import { toast } from "react-toastify";
 
 const maxTagLength = 20;
 const minTagLength = 2;
 
-export default function TagInput({
+function TagInput({
     tags,
     setTags,
     disabled = false,
@@ -69,3 +69,5 @@ export default function TagInput({
         </div>
     )
 }
+
+export default memo(TagInput);

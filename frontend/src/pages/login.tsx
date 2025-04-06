@@ -19,20 +19,21 @@ export default function Login() {
     const captchaVal = recaptcha.current?.getValue();
 
     if (!captchaVal) {
-      toast.error('Please verify the reCAPTCHA!');
-    } else {
-      const res = await fetch(makeServerURL('verify'), {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({ captchaVal: captchaVal }),
-      })
+      toast.error('Please complete the reCAPTCHA!');
+      return;
+    }
 
-      if (!res.ok) {
-        toast.error('reCAPTCHA validation failed!');
-        return;
-      }
+    const res = await fetch(makeServerURL('verify'), {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ captchaVal: captchaVal }),
+    })
+
+    if (!res.ok) {
+      toast.error('reCAPTCHA validation failed!');
+      return;
     }
 
     const formData = new FormData(e.target as HTMLFormElement);

@@ -1,13 +1,19 @@
 import Toggleswitch from "@/components/toggleswitch"
 import { useLocalStorage } from "@/hook/storage";
-import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
+import { ChangeEvent, memo, SyntheticEvent, useEffect, useState } from "react";
 import { IUser } from "@/models/userType";
 import { toast } from "react-toastify";
 import { UserRoundPen } from "lucide-react";
 import { useNavigate } from "react-router";
 import { makeServerURL } from "@/helpers/url";
 
-export default function Settings({ user, setUser }: { user: IUser; setUser: React.Dispatch<React.SetStateAction<IUser | null>> }) {
+function Settings({
+  user,
+  setUser
+} : {
+  user: IUser;
+  setUser: React.Dispatch<React.SetStateAction<IUser | null>>
+}) {
   const [theme, setTheme] = useLocalStorage("theme", "light");
   const [username, setUsername] = useState(user.username);
   const [email, setEmail] = useState(user.email);
@@ -73,6 +79,7 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
       }
     } catch (error) {
       toast.error("An error has occurred.");
+      console.error(error);
     } finally {
       setDisabled(false);
     }
@@ -171,3 +178,5 @@ export default function Settings({ user, setUser }: { user: IUser; setUser: Reac
     </div>
   )
 }
+
+export default memo(Settings);

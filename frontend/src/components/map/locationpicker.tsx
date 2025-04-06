@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 
 export default function LocationInput({
   label,
@@ -43,9 +43,9 @@ export default function LocationInput({
       const data = await res.json();
       // console.log(data, data.suggestions);
 
-      setSuggestions(data.suggestions?.map((suggestion: any) => ({
-        id: suggestion.placePrediction.placeId,
-        place: suggestion.placePrediction.text.text,
+      setSuggestions(data.suggestions?.map((suggestion: google.maps.places.AutocompleteSuggestion) => ({
+        id: suggestion?.placePrediction?.placeId ?? '',
+        place: suggestion?.placePrediction?.text?.text ?? '',
       })) || []);
 
       } catch (error) {
@@ -67,7 +67,7 @@ export default function LocationInput({
     }, 100);
   }
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) =>{
     if (e.key === "Enter") {
       if (selectedIndex !== null && suggestions[selectedIndex]) {
         onChange(suggestions[selectedIndex]);
@@ -80,7 +80,7 @@ export default function LocationInput({
       e.preventDefault();
       setSelectedIndex((prevIndex) => (prevIndex === null ? 0 : Math.max(prevIndex - 1, 0)));
     }
-  }
+  }, [suggestions, selectedIndex, onChange]);
 
   return (
     <div className="location-input-wrapper">

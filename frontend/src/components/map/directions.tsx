@@ -17,13 +17,8 @@ export default function Directions({
   useEffect(() => {
     if (!routesLib || !map) return;
 
-    if (!directionService) {
-      setDirectionService(new routesLib.DirectionsService());
-    }
-
-    if (!directionRenderer) {
-      setDirectionRenderer(new routesLib.DirectionsRenderer({ map }));
-    }
+    setDirectionService(new routesLib.DirectionsService());
+    setDirectionRenderer(new routesLib.DirectionsRenderer({ map }));
   }, [map, routesLib]);
 
   useEffect(() => {

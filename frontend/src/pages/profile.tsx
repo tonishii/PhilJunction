@@ -48,7 +48,7 @@ export default function Profile() {
     }
 
     fetchUser();
-  }, [username, navigate]);
+  }, [username, navigate, setUsername, usernameSession]);
 
   const handleLogout = async () => {
     const res = await fetch(import.meta.env.VITE_SERVER_URL + "logout", {

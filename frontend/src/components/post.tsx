@@ -1,7 +1,7 @@
 import '@/styles/post-styles.css'
 
 import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Link } from "react-router";
 import ReactMarkdown from 'react-markdown';
 import { toast } from 'react-toastify';
@@ -11,7 +11,7 @@ import ImageCarousel from './imagecarousel';
 import { makeServerURL } from '@helpers/url';
 import { handleDate } from '@helpers/moment';
 
-export default function Post({
+function Post({
   post,
   initialVote = null,
   initialLikes = 0,
@@ -161,3 +161,5 @@ export default function Post({
     </div>
   );
 }
+
+export default memo(Post);

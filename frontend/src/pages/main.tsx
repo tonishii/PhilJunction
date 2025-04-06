@@ -11,6 +11,13 @@ import { Flame } from "lucide-react";
 import { useState, useEffect, useContext } from 'react';
 import { toast } from "react-toastify";
 
+interface InitialPost {
+  publicId: string;
+  initialLikes: number;
+  initialDislikes: number;
+  initialVote: boolean;
+}
+
 export default function Main() {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [trendingPosts, setTrending] = useState<IPost[]>([]);
@@ -122,7 +129,7 @@ export default function Main() {
                 initialDislikes: number;
                 initialVote: boolean
               }
-            }, post: any) => {
+            }, post: InitialPost) => {
             acc[post.publicId] = {
               initialLikes: post.initialLikes,
               initialDislikes: post.initialDislikes,
@@ -137,7 +144,7 @@ export default function Main() {
     }
 
     fetchVotes();
-  }, [posts]);
+  }, [posts, setPosts, setUsername]);
 
   return (
     <div className="main-container">

@@ -1,10 +1,10 @@
 import "@/styles/component-styles.css";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { ImageBuffer } from "@models/postType";
 
-export default function ImageCarousel({
+function ImageCarousel({
   images = [],
   maxImages,
 }: {
@@ -40,3 +40,5 @@ export default function ImageCarousel({
     </div>
   );
 }
+
+export default memo(ImageCarousel);

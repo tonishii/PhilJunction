@@ -22,13 +22,14 @@ import About from "@/pages/about";
 import ContextProviders from "@components/contextprovider";
 
 const toastDuration = 2000;
+const MemoizedToastContainer = React.memo(ToastContainer);
 
-function App() {
+export default function App() {
   return (
     <ContextProviders>
       <Router>
         <Header />
-        <ToastContainer
+        <MemoizedToastContainer
           autoClose={toastDuration}
           transition={Slide}
           theme={localStorage.getItem("theme") ?? "light"} />

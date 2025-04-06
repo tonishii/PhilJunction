@@ -1,13 +1,13 @@
 import { Search, User, BadgePlus, ArrowUpRight } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, memo } from "react";
 import { toast } from "react-toastify";
 
 import Logo from "@/components/logo";
 import { AuthContext } from "@helpers/context";
 import { makeServerURL } from "@helpers/url";
 
-export default function Header() {
+function Header() {
   const navigate = useNavigate();
   const [username] = useContext(AuthContext);
   const [profileIcon, setProfileIcon] = useState<string | null>(null);
@@ -117,3 +117,5 @@ export default function Header() {
     </header>
   );
 }
+
+export default memo(Header);

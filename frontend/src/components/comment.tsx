@@ -1,5 +1,5 @@
 import "@/styles/component-styles.css";
-import React, { useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { Ellipsis, MessageCircle, Send, Pencil } from "lucide-react";
 import { IComment } from "@/models/commentType";
 import { toast } from "react-toastify";
@@ -9,7 +9,7 @@ import { Link } from "react-router";
 import { makeServerURL } from "@helpers/url";
 import { handleDate } from "@helpers/moment";
 
-export default function Comment({
+function Comment({
   commentData,
   isReplyable = false,
   onDeleteComment,
@@ -159,6 +159,7 @@ export default function Comment({
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -306,3 +307,6 @@ export default function Comment({
     </div>
   );
 }
+
+
+export default memo(Comment);

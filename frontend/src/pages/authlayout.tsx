@@ -13,8 +13,8 @@ export default function AuthLayout() {
           <div className="auth-header">
             <Link to="/" className="header-link">
               <button className="auth-header-button">
-                <Logo />
               </button>
+              <Logo />
               <h1 className="auth-header-text">PhilJunction!</h1>
             </Link>
             <i>Your one-stop transit forum</i>
