@@ -48,7 +48,6 @@ export default function SearchPage() {
   }, [searchParams, setSearchParams]);
 
   function clear() {
-    (document.getElementById("keywords") as HTMLInputElement).value = "";
     setTags([]);
   }
 
@@ -67,9 +66,14 @@ export default function SearchPage() {
   return (
     <div className="search-container">
       <form className="search-body" onSubmit={search}>
-        <button type="submit" disabled style={{ display: "none" }} aria-hidden="true"></button>
         <label htmlFor="keywords">Keywords: </label>
-        <input type="text" id="keywords" name="keywords" className="field-clicked" defaultValue={searchParams.get("keywords") ?? ""} />
+        <input
+          type="text"
+          id="keywords"
+          name="keywords"
+          className="field-clicked"
+          defaultValue={searchParams.get("keywords") ?? ""}
+          placeholder="Add keywords..." />
         <label htmlFor="tags">Tags: </label>
         <TagInput tags={tags} setTags={setTags} />
         <label htmlFor="sort-by">Sort by: </label>

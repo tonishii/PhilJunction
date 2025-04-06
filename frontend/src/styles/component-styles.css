@@ -326,7 +326,9 @@
   background-color: var(--field1);
   border-radius: 10px;
   padding: 5px 10px;
-  height: 40px;
+  width: 100%;
+  min-height: 40px;
+  height: auto;
   gap: 5px;
   border: none;
   outline: none;
@@ -356,4 +358,23 @@
 
 .tag button svg {
   color: #F6F7EB;
+}
+
+/* Counters */
+.counter {
+  font-size: 0.8rem;
+}
+
+.counter-overflow {
+  color: #ff9100;
+}
+
+.counter-max {
+  color: #e94f37;
+}
+
+.tag-counter {
+  color: #F6F7EB;
+  margin-bottom: auto;
+  margin-left: 10px;
 }

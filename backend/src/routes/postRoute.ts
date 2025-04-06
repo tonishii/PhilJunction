@@ -23,9 +23,6 @@ function createId(length: number): string {
 router.post("/submitpost", IsLoggedIn, upload.array('images'), async (req: Request, res: Response): Promise<any> => {
   const { postTitle, postContent, tags, origin, destination } = req.body;
 
-  // console.log("HERE");
-  console.log(origin, destination);
-
   if (!postTitle || !postContent || JSON.parse(tags).length === 0) {
     return res.status(400).json({ message: 'Title, content, and tags are required.' });
   }
@@ -41,7 +38,7 @@ router.post("/submitpost", IsLoggedIn, upload.array('images'), async (req: Reque
   try {
     const { userId, username } = req.session;
 
-    const newPost = new Post({
+    const newPost: IPost = new Post({
       userId,                       // Assuming user is logged in and their ID is available
       username,
       title: postTitle,
@@ -49,9 +46,12 @@ router.post("/submitpost", IsLoggedIn, upload.array('images'), async (req: Reque
       images: images,
       tags: JSON.parse(tags),
       publicId: createId(10),
-      origin: JSON.parse(origin),
-      destination: JSON.parse(destination),
     });
+
+    if (origin && destination) {  // only add if both exist
+      newPost.origin = JSON.parse(origin);
+      newPost.destination = JSON.parse(destination);
+    }
 
     await newPost.save();
     return res.status(201).json({ message: 'Post created successfully.' });

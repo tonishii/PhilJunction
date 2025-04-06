@@ -1,14 +1,20 @@
 import "@/styles/create-post.css"
+
 import { Send, ImagePlus, X } from "lucide-react";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import ReactMarkdown from 'react-markdown';
-import TagInput from "@components/taginput";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router";
+
 import { ImageBuffer } from "@models/postType";
 import { AuthContext } from "@helpers/context";
 import { makeServerURL } from "@helpers/url";
+import TagInput from "@components/taginput";
 import RouteMap from "@components/map/routemap";
+
+const maxBodyLength = 1500;
+const maxTitleLength = 100;
+const maxTagListLength = 20;
 
 export default function CreatePost() {
   const { publicId } = useParams();
@@ -176,15 +182,15 @@ export default function CreatePost() {
               placeholder="Add a Title..."
               onChange={(e) => setTitle(e.target.value)}
               value={title}
-              maxLength={100} />
+              maxLength={maxTitleLength} />
             <span
               className={
-                `title-counter ${title.length == 100 ? "title-max" :
-                  title.length > 40 ? "title-overflow" : ""
+                `counter ${title.length == maxTitleLength ? "counter-max" :
+                  title.length > maxTitleLength * 0.666 ? "counter-overflow" : ""
                 } `}>
-              {title.length + "/40 "}
-              {title.length == 100 ? <b>Max!!</b> :
-                title.length > 40 ? <i>Overflow!</i> : ""}
+              {title.length + `/${maxTitleLength} `}
+              {title.length == maxTitleLength ? <b>Max!!</b> :
+                title.length > maxTitleLength * 0.666 ? <i>Warning!</i> : ""}
             </span>
           </div>
 
@@ -196,7 +202,18 @@ export default function CreatePost() {
                 id="editor"
                 placeholder="Start typing here..."
                 onChange={(e) => setContent(e.target.value)}
-                value={content} />
+                value={content}
+                maxLength={maxBodyLength}/>
+
+              <span
+                className={
+                  `counter ${content.length == maxBodyLength ? "counter-max" :
+                    content.length > maxBodyLength * 0.666 ? "counter-overflow" : ""
+                  }`}>
+                { content.length + `/${maxBodyLength} `}
+                { content.length == maxBodyLength ? <b>Max!!</b> :
+                  content.length > maxBodyLength * 0.666 ? <i>Warning!</i> : ""}
+              </span>
             </div>
 
             <ReactMarkdown className="create-post-MD" children={content} />
@@ -224,7 +241,13 @@ export default function CreatePost() {
           </div>
 
           <div className="create-post-footer">
-            <TagInput tags={tags} setTags={setTags} />
+            <TagInput tags={tags} setTags={setTags} disabled={tags.length >= 20}/>
+
+            <span
+              className={
+                `counter tag-counter`}>
+              {tags.length + `/${maxTagListLength} `}
+            </span>
 
             <input
               type="file"

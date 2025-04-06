@@ -21,13 +21,15 @@ import FourOFourPage from "@pages/error";
 import About from "@/pages/about";
 import ContextProviders from "@components/contextprovider";
 
+const toastDuration = 2000;
+
 function App() {
   return (
     <ContextProviders>
       <Router>
         <Header />
         <ToastContainer
-          autoClose={3000}
+          autoClose={toastDuration}
           transition={Slide}
           theme={localStorage.getItem("theme") ?? "light"} />
         <Routes>
