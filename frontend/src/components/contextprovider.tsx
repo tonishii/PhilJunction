@@ -1,7 +1,7 @@
 import { useLocalStorage } from "@/hook/storage";
 import { useState, useEffect } from "react";
 import { ThemeContext, AuthContext } from "@helpers/context";
-import { makeServerURL } from "@helpers/url";
+import { makeServerURL } from "@/helpers/url";
 
 export default function ContextProviders({ children }: { children: React.ReactNode }) {
     const [theme, setTheme] = useLocalStorage("theme", "light");
@@ -10,15 +10,19 @@ export default function ContextProviders({ children }: { children: React.ReactNo
 
     useEffect(() => {
         async function checker() {
-            const res = await fetch(makeServerURL(`checkLoggedIn`), {
-                credentials: "include"
-            })
+            try {
+                const res = await fetch(makeServerURL("checkLoggedIn"), {
+                    credentials: "include",
+                });
 
-            const resp = await res.json()
-            setUser(resp.username)
+                const resp = await res.json();
+                setUser(resp.username);
+            } catch (error) {
+                console.error(error);
+            }
         }
         checker();
-    })
+    }, [])
 
     return (
         <ThemeContext.Provider value={[theme, setTheme]}>
