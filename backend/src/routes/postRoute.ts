@@ -270,8 +270,22 @@ router.get("/searchposts", async (req: Request, res: Response) => {
       return { ...post.toObject(), images: images || [] }
     });
 
-    // console.log(data);
-    res.json(posts);
+    const postIds = posts.map(post => post.publicId);
+
+    const commentCounts = await Comment.aggregate([
+      { $match: { publicId: { $in: postIds } } },
+      { $group: { _id: "$publicId", count: { $sum: 1 } } }
+    ]);
+
+    const countMap = Object.fromEntries(commentCounts.map(c => [c._id, c.count]));
+
+    res.json({
+      posts: posts,
+      commentCounts: posts.map(post => ({
+        publicId: post.publicId,
+        count: countMap[post.publicId] || 0
+      }))
+    });
   }
   catch (error: any) {
     res.status(500).json({ message: "Internal server error.", error: error.message });
