@@ -221,7 +221,7 @@ router.post("/deletepost/:publicId", IsLoggedIn, async (req: Request, res: Respo
       return res.status(404).json({ message: "Post not found." });
     }
 
-    if (post.userId.toString() !== req.session.id) {
+    if (post.userId.toString() !== req.session.userId) {
       return res.status(401).json({ message: "Unauthorized deletion. How bout u delete ur own post?" });
     }
 
