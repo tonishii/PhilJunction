@@ -63,7 +63,7 @@ router.post("/submitpost", IsLoggedIn, upload.array('images'), async (req: Reque
 // on load front page
 router.get("/retrieveposts", async (req: Request, res: Response) => {
   try {
-    const data = await Post.find({}).sort({ postDate: -1 }).limit(10).exec();
+    const data = await Post.find({}).sort({ postDate: -1 }).limit(5).exec();
     // const user = data.forEach(async (post) => {
     //   return await User.findOne({ _id: post.userId });
     // });
@@ -96,10 +96,14 @@ router.get("/retrievemoreposts", async (req: Request, res: Response) => {
   try {
     let currLen = Number(req.query.curr_len)
     let count = await Post.countDocuments();
-    let lim = count - currLen > 10 ? 10 : count - currLen;
+    let lim = count - currLen > 5 ? 5 : count - currLen;
+    // console.log(currLen, count, lim);
 
-    // console.log(req.query.curr_len, currLen, count, lim)
-    const data = await Post.find({}).sort({ postDate: -1 }).skip(currLen).limit(lim).exec();
+    const data = await Post.find({})
+      .sort({ postDate: -1 })
+      .skip(currLen)
+      .limit(lim)
+      .exec();
 
     const postsWithImages = data.map((post) => {
       const images = post.images?.map((image) => ({
@@ -113,9 +117,11 @@ router.get("/retrievemoreposts", async (req: Request, res: Response) => {
       };
     });
 
-    res.json(postsWithImages);
-  }
-  catch (error: any) {
+    const newLen = lim + currLen;
+    // console.log(newLen, count, count > newLen);
+
+    res.json({ posts: postsWithImages, more: count > newLen});
+  } catch (error: any) {
     res.status(500).json({ message: "Internal server error.", error: error.message });
   }
 });
@@ -221,8 +227,8 @@ router.post("/deletepost/:publicId", IsLoggedIn, async (req: Request, res: Respo
       return res.status(404).json({ message: "Post not found." });
     }
 
-    if (post.userId.toString() !== req.session.id) {
-      return res.status(401).json({ message: "Unauthorized deletion. How bout u delete ur own post?" });
+    if (post.userId.toString() !== req.session.userId) {
+      return res.status(403).json({ message: "Unauthorized deletion. How bout u delete ur own post?" });
     }
 
     await Comment.deleteMany({ publicId: publicId });

@@ -8,12 +8,15 @@ export default function About() {
         <p>This web application uses the following NPM packages and third-party libraries:</p>
         <h2>Frontend Dependencies</h2>
         <ul>
+          <li>@vis.gl/react-google-maps <span className="version-nos">^1.5.2</span></li>
           <li>dotenv <span className="version-nos">^16.4.7</span></li>
+          <li>lodash.debounce <span className="version-nos">^4.0.8</span></li>
           <li>lucide-react <span className="version-nos">^0.474.0</span></li>
           <li>moment <span className="version-nos">^2.30.1</span></li>
           <li>react <span className="version-nos">^18.3.1</span></li>
           <li>react-dom <span className="version-nos">^18.3.1</span></li>
           <li>react-markdown <span className="version-nos">^9.0.3</span></li>
+          <li>react-google-recaptcha<span className="version-nos">^3.1.0</span></li>
           <li>react-router <span className="version-nos">^7.1.4</span></li>
           <li>react-toastify <span className="version-nos">^11.0.5</span></li>
           <li>vite <span className="version-nos">^6.0.5</span></li>
@@ -52,6 +55,8 @@ export default function About() {
           <li>@types/react <span className="version-nos">^18.3.18</span></li>
           <li>@types/react-dom <span className="version-nos">^18.3.5</span></li>
           <li>@vitejs/plugin-react <span className="version-nos">^4.3.4</span></li>
+          <li>@types/lodash.debounce <span className="version-nos">^4.0.9</span></li>
+          <li>@types/react-google-recaptcha <span className="version-nos">^2.1.9</span></li>
         </ul>
       </div>
     </div>

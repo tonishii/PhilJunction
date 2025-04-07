@@ -72,29 +72,29 @@ app.listen(PORT, async () => {
   console.log("[SERVER] Cookie Settings, Age:", cookieSettings.maxAge + "ms", "Secure:", cookieSettings.secure);
 
   // create default users (FOR TESTING)
-  async function createDefaultUser(username: string, email: string) {
-    const hasBeenCreated = await User.findOne({ username });
-    if (!hasBeenCreated) {
+  // async function createDefaultUser(username: string, email: string) {
+  //   const hasBeenCreated = await User.findOne({ username });
+  //   if (!hasBeenCreated) {
 
-      const response = await fetch(`http://localhost:${PORT}/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password: "1",
-          confirmPW: "1"
-        }),
-      })
+  //     const response = await fetch(`http://localhost:${PORT}/register`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         username,
+  //         email,
+  //         password: "1",
+  //         confirmPW: "1"
+  //       }),
+  //     })
 
-      if (response.ok) console.log(`successfully created ${username}.`);
-    }
-  }
+  //     if (response.ok) console.log(`successfully created ${username}.`);
+  //   }
+  // }
 
-  createDefaultUser("ANTHIMON", "anthony@gmail.com")
-  createDefaultUser("Protea", "bro@gmail.com")
+  // createDefaultUser("ANTHIMON", "anthony@gmail.com")
+  // createDefaultUser("Protea", "bro@gmail.com")
 });
 
 // shutdown DB
