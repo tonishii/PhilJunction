@@ -228,11 +228,7 @@ router.post("/deletepost/:publicId", IsLoggedIn, async (req: Request, res: Respo
     }
 
     if (post.userId.toString() !== req.session.userId) {
-<<<<<<< HEAD
       return res.status(403).json({ message: "Unauthorized deletion. How bout u delete ur own post?" });
-=======
-      return res.status(401).json({ message: "Unauthorized deletion. How bout u delete ur own post?" });
->>>>>>> 2e700165f3855a89c9d1c88b3aee2da9d1524584
     }
 
     await Comment.deleteMany({ publicId: publicId });
