@@ -1,14 +1,14 @@
-import { Search, User, BadgePlus } from "lucide-react";
+import { Search, User, BadgePlus, ArrowUpRight } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import Logo from "@/components/logo";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@/hook/context";
+import { useContext, useEffect, useState, memo } from "react";
 import { toast } from "react-toastify";
-import { makeServerURL } from "@/hook/url";
 
-export default function Header() {
+import Logo from "@/components/logo";
+import { AuthContext } from "@helpers/context";
+import { makeServerURL } from "@helpers/url";
+
+function Header() {
   const navigate = useNavigate();
-  // const [isLoggedIn,] = useLoggedIn();
   const [username] = useContext(AuthContext);
   const [profileIcon, setProfileIcon] = useState<string | null>(null);
 
@@ -84,6 +84,16 @@ export default function Header() {
         />
       </div>
 
+      <Link to="about">
+        <button className="aboutus-button">
+          <span>About us</span>
+          <ArrowUpRight
+            className="aboutus-arrow"
+            color="#4E565A"
+            size={13}/>
+        </button>
+      </Link>
+
       {
         username === null
           ?
@@ -99,7 +109,7 @@ export default function Header() {
             {profileIcon ? (<img src={profileIcon} alt="icon" className="profile-icon" />
             ) : (
               <button className="round-button">
-                <User className="icon" />
+                <User className="pulse icon" />
               </button>
             )}
           </Link>
@@ -107,3 +117,5 @@ export default function Header() {
     </header>
   );
 }
+
+export default memo(Header);

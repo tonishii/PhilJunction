@@ -1,17 +1,40 @@
 import "@/styles/auth-styles.css";
-import { AuthContext } from "@/hook/context";
-import { useContext } from "react";
+import { AuthContext } from "@/helpers/context";
+import { useContext, useRef, useState } from "react";
 
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { makeServerURL } from "@/hook/url";
+import { makeServerURL } from "@/helpers/url";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Login() {
+  const recaptcha = useRef<ReCAPTCHA | null>(null);
   const navigate = useNavigate();
+  const [isDisabled, setDisabled] = useState(false);
   const [, setUsername] = useContext(AuthContext);
 
   const login = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const captchaVal = recaptcha.current?.getValue();
+
+    if (!captchaVal) {
+      toast.error('Please complete the reCAPTCHA!');
+      return;
+    }
+
+    const res = await fetch(makeServerURL('verify'), {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ captchaVal: captchaVal }),
+    })
+
+    if (!res.ok) {
+      toast.error('reCAPTCHA validation failed!');
+      return;
+    }
 
     const formData = new FormData(e.target as HTMLFormElement);
     const trimmedData = Object.fromEntries(
@@ -21,6 +44,7 @@ export default function Login() {
     );
 
     try {
+      setDisabled(true);
       const response = await fetch(makeServerURL(`login`), {
         method: "POST",
         headers: {
@@ -40,6 +64,8 @@ export default function Login() {
       }
     } catch (error: unknown) {
       toast.error(String(error));
+    } finally {
+      setDisabled(false);
     }
   };
 
@@ -51,8 +77,16 @@ export default function Login() {
         <label htmlFor="pwrd">Password</label>
         <input type="password" id="pwrd" name="password" />
 
-        <button className="round-button auth-submit-button" type="submit">
-          Continue
+        <ReCAPTCHA
+          ref={recaptcha}
+          theme="dark"
+          sitekey={import.meta.env.VITE_APP_SITE_KEY} />
+
+        <button
+          className="round-button auth-submit-button"
+          type="submit"
+          disabled={isDisabled}>
+            Continue
         </button>
       </form>
 

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 import { Slide, ToastContainer } from "react-toastify";
+
 // Components
 import Header from "@components/header";
 
@@ -16,32 +17,33 @@ import SignUp from "@pages/signup";
 
 // Profile Pages
 import Profile from "@pages/profile";
-import RandoUser from "./pages/randouser";
-import FourOFourPage from "./pages/error";
-import ContextProviders from "./components/contextprovider";
+import FourOFourPage from "@pages/error";
+import About from "@/pages/about";
+import ContextProviders from "@components/contextprovider";
 
-function App() {
+const toastDuration = 2000;
+const MemoizedToastContainer = React.memo(ToastContainer);
+
+export default function App() {
   return (
     <ContextProviders>
       <Router>
         <Header />
-        <ToastContainer
-          autoClose={3000}
+        <MemoizedToastContainer
+          autoClose={toastDuration}
           transition={Slide}
           theme={localStorage.getItem("theme") ?? "light"} />
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="user" element={<RandoUser />} />
           <Route path="user/:username/*" element={<Profile />} />
           <Route path="search" element={<SearchPage />} />
-
+          <Route path="about" element={<About />} />
           <Route path="auth" element={<AuthLayout />}>
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<SignUp />} />
           </Route>
 
           <Route path="/post/:publicId" element={<PostWindow isEditable={true} />} />
-
           <Route path="/holler/:publicId?" element={<CreatePost />} />
           <Route path="*" element={<FourOFourPage />} />
         </Routes>

@@ -14,4 +14,6 @@ export interface IPost {
   likes: number;
   dislikes: number;
   comments: string[];
+  origin?: { id: string, place: string};
+  destination?: { id: string, place: string };
 }

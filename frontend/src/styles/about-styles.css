@@ -1,0 +1,25 @@
+.about-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.about-container {
+  margin-top: 30px;
+  background-color: var(--field1);
+  width: 700px;
+  height: auto;
+  border-radius: 10px;
+  padding: 10px 30px;
+}
+
+.about-container h1,
+.about-container h2,
+.about-container p,
+.about-container ul>li {
+  color: var(--text1);
+}
+
+.version-nos {
+  color: var(--comment1);
+  font-size: 0.6rem;
+}

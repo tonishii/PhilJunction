@@ -3,11 +3,11 @@ import SmallPostSkeleton from "@/components/skeletons/smallPostSkeleton";
 
 import { IUser } from "@/models/userType";
 import { IPost } from "@/models/postType";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { toast } from "react-toastify";
-import { makeServerURL } from "@/hook/url";
+import { makeServerURL } from "@/helpers/url";
 
-export default function UserPosts({ user }: { user: IUser; }) {
+function UserPosts({ user }: { user: IUser; }) {
   const [posts, setPosts] = useState<IPost[] | null>(null);
 
   useEffect(() => {
@@ -44,3 +44,5 @@ export default function UserPosts({ user }: { user: IUser; }) {
     </div>
   );
 }
+
+export default memo(UserPosts);

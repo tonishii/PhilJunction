@@ -1,14 +1,15 @@
 import "@/styles/component-styles.css";
-import React, { useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { Ellipsis, MessageCircle, Send, Pencil } from "lucide-react";
 import { IComment } from "@/models/commentType";
-import moment from "moment";
 import { toast } from "react-toastify";
-import { AuthContext } from "@/hook/context";
+import { AuthContext } from "@/helpers/context";
 import { Link } from "react-router";
-import { makeServerURL } from "@/hook/url";
 
-export default function Comment({
+import { makeServerURL } from "@helpers/url";
+import { handleDate } from "@helpers/moment";
+
+function Comment({
   commentData,
   isReplyable = false,
   onDeleteComment,
@@ -23,10 +24,11 @@ export default function Comment({
   const [replies, setReplies] = useState<IComment[]>([]);
 
   const [edit, setEdited] = useState(comment.body);
-  const [editVisible, setEditVisible] = useState(false);
   const [reply, setReply] = useState("");
+  const [editVisible, setEditVisible] = useState(false);
   const [replyVisible, setReplyVisible] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
+  const [isDisabled, setDisabled] = useState(false);
   const [username] = useContext(AuthContext);
 
   useEffect(() => {
@@ -65,6 +67,7 @@ export default function Comment({
     if ("key" in event && event.key !== "Enter") return;
 
     try {
+      setDisabled(true);
       const res = await fetch(makeServerURL(`submitcomment`), {
         method: "POST",
         headers: {
@@ -72,7 +75,6 @@ export default function Comment({
         },
         credentials: "include",
         body: JSON.stringify({
-          username: "ANTHIMON", // TENATIVE NO USER LOGIC
           body: reply,
           publicId: comment.publicId,
           parentId: comment.commentID as string,
@@ -86,7 +88,6 @@ export default function Comment({
         setReply("");
         setReplyVisible(false);
 
-        console.log(data.message);
         setReplies((prevReplies) => [...prevReplies, data.newReply]);
         setCommentCount?.((prev) => prev + 1);
       } else {
@@ -99,6 +100,8 @@ export default function Comment({
     } catch (error: unknown) {
       toast.error("Error occurred while submitting reply.");
       console.error(error);
+    } finally {
+      setDisabled(false);
     }
   };
 
@@ -111,6 +114,7 @@ export default function Comment({
     };
 
     try {
+      setDisabled(true);
       const res = await fetch(makeServerURL(`editcomment/${comment.commentID}`), {
         method: "POST",
         headers: {
@@ -121,6 +125,7 @@ export default function Comment({
       });
 
       const data = await res.json();
+
       if (res.ok) {
         setEdited("");
         setEditVisible(false);
@@ -141,16 +146,20 @@ export default function Comment({
     } catch (error: unknown) {
       toast.error("Error occurred while editing reply.");
       console.error(error);
+    } finally {
+      setDisabled(false);
     }
   };
 
   async function handleDelete() {
     try {
+      setDisabled(true);
       const res = await fetch(makeServerURL(`deletecomment/${comment.commentID}`), {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -172,12 +181,10 @@ export default function Comment({
     } catch (error: unknown) {
       toast.error("Error occurred while deleting comment.");
       console.error(error);
+    } finally {
+      setDisabled(false);
     }
   };
-
-  function handleDate(datePosted: Date) {
-    return moment(datePosted).fromNow();
-  }
 
   const toggleMenu = () => {
     if (menuVisible) {
@@ -219,7 +226,7 @@ export default function Comment({
           <div className="comment-sidebuttons">
             {isReplyable && (
               <div className="comment-menu">
-                <button className="reply-button" onClick={toggleReply}>
+                <button className="reply-button" onClick={toggleReply} disabled={isDisabled}>
                   <MessageCircle className="icon" />
                 </button>
 
@@ -234,7 +241,7 @@ export default function Comment({
                       onKeyUp={handleReply}
                       placeholder="Join the conversation!"
                     />
-                    <button className="reply-button" onClick={handleReply}>
+                    <button className="reply-button" onClick={handleReply} disabled={isDisabled}>
                       <Send className="icon" />
                     </button>
                   </div>
@@ -264,7 +271,7 @@ export default function Comment({
                                 onKeyUp={handleKeyUpEdit}
                                 placeholder="Edit a comment..."
                               />
-                              <button className="reply-button" onClick={handleEdit}>
+                              <button className="reply-button" onClick={handleEdit} disabled={isDisabled}>
                                 <Pencil className="icon" />
                               </button>
                             </div>
@@ -272,7 +279,7 @@ export default function Comment({
                         </div>
                       </li>
                       <li>
-                        <button onClick={handleDelete}>Delete</button>
+                        <button onClick={handleDelete} disabled={isDisabled}>Delete</button>
                       </li>
                     </ul>
                   </div>
@@ -300,3 +307,6 @@ export default function Comment({
     </div>
   );
 }
+
+
+export default memo(Comment);

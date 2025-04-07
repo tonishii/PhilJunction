@@ -3,14 +3,20 @@ import SmallPost from "@/components/smallpost";
 import PostSkeleton from "@skeleton/postSkeleton";
 import SmallPostSkeleton from "@skeleton/smallPostSkeleton";
 
-import { AuthContext } from "@/hook/context";
-import { makeServerURL } from "@/hook/url";
+import { AuthContext } from "@/helpers/context";
+import { makeServerURL } from "@/helpers/url";
 import { IPost } from "@/models/postType";
 
 import { Flame } from "lucide-react";
 import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+
+interface InitialPost {
+  publicId: string;
+  initialLikes: number;
+  initialDislikes: number;
+  initialVote: boolean;
+}
 
 export default function Main() {
   const [posts, setPosts] = useState<IPost[]>([]);
@@ -115,8 +121,6 @@ export default function Main() {
           return;
         }
 
-        console.log(data);
-
         setVotes((prevVotes) => {
           return data.reduce((
             acc: {
@@ -125,7 +129,7 @@ export default function Main() {
                 initialDislikes: number;
                 initialVote: boolean
               }
-            }, post: any) => {
+            }, post: InitialPost) => {
             acc[post.publicId] = {
               initialLikes: post.initialLikes,
               initialDislikes: post.initialDislikes,
@@ -134,15 +138,13 @@ export default function Main() {
             return { ...prevVotes, ...acc };
           }, {});
         });
-
-        console.log(votes);
       } catch (error) {
         console.error(error);
       }
     }
 
     fetchVotes();
-  }, [posts]);
+  }, [posts, setPosts, setUsername]);
 
   return (
     <div className="main-container">

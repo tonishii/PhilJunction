@@ -12,6 +12,8 @@ export interface IPost extends mongoose.Document {
   dislikes: number;
   comments: mongoose.Types.ObjectId[];
   publicId: string;
+  origin: { id: string, place: string };
+  destination: { id: string, place: string };
 }
 
 const postSchema = new mongoose.Schema({
@@ -26,6 +28,14 @@ const postSchema = new mongoose.Schema({
   likes: { type: Number, default: 0 },
   dislikes: { type: Number, default: 0 },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+  origin: {
+    id: { type: String, default: "" },
+    place: { type: String, default: "" },
+  },
+  destination: {
+    id: { type: String, default: "" },
+    place: { type: String, default: "" },
+  }
 });
 
 const Post = mongoose.model<IPost>("Post", postSchema);

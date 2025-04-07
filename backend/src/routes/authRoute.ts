@@ -12,10 +12,14 @@ router.post("/register", async (req: Request, res: Response): Promise<any> => {
     return res.status(400).json({ message: req.body });
 
   if (password !== confirmPW)
-    return res.status(400).json({ message: 'Passwords do not match.' });
+    return res.status(400).json({ message: "Passwords do not match." });
 
-  if (!(email as string).match(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/)) {
-    res.status(400).json({ message: 'Must be an email!' });
+  if (
+    !(email as string).match(
+      /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+    )
+  ) {
+    res.status(400).json({ message: "Must be an email!" });
     return;
   }
 
@@ -23,7 +27,7 @@ router.post("/register", async (req: Request, res: Response): Promise<any> => {
     const user = await User.findOne({ $or: [{ username }, { email }] }).exec();
 
     if (user)
-      return res.status(400).json({ message: 'Account already exists.' });
+      return res.status(400).json({ message: "Account already exists." });
 
     const newUser = await User.create({
       username: username,
@@ -36,11 +40,10 @@ router.post("/register", async (req: Request, res: Response): Promise<any> => {
     req.session.userId = newUser.id;
     req.session.save();
 
-    console.log("New user registered:", req.session.username);
-    return res.status(201).json({ message: 'User registered successfully' });
-  }
-  catch (error: any) {
-    console.error("Error during registration:", error);
+    console.log("[UPDATE] New user registered:", req.session.username);
+    return res.status(201).json({ message: "User registered successfully" });
+  } catch (error: any) {
+    console.error("[ERROR] Error during registration:", error);
     return res.status(500).json({ messsage: error });
   }
 });
@@ -54,7 +57,7 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
     // console.log("found at :", new Date());
 
     if (!user) {
-      return res.status(400).json({ message: 'Account does not exist.' });
+      return res.status(400).json({ message: "Account does not exist." });
     }
 
     console.log("started checking password at: ", new Date());
@@ -67,20 +70,21 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
       // console.log("started saving session to db at: ", new Date());
       req.session.save();
       // console.log("finished saving session to db at: ", new Date());
-      console.log("New user logged in:", req.session.username);
-      res.status(201).json({ message: 'User logged in successfully.' });
+      console.log("[UPDATE] New user logged in:", req.session.username);
+      res.status(201).json({ message: "User logged in successfully." });
     } else {
       res.status(401).json({ message: "Wrong password entered." });
     }
     return;
   } catch (error: any) {
-    console.log(error);
-    return res.status(500).json({ message: "Internal server error.", error: error.message });
+    console.log("[ERROR] Error during login:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error.", error: error.message });
   }
 });
 
 router.get("/checkLoggedIn", async (req: Request, res: Response) => {
-  console.log("this person is checking if they are logged in:", req.session.username);
   // console.log(req.session, req.sessionID, req.session.username);
   if (!req.session.isLoggedIn) {
     res.status(200).json({ isLoggedIn: false, username: null });
@@ -88,21 +92,41 @@ router.get("/checkLoggedIn", async (req: Request, res: Response) => {
   } else {
     res.status(200).json({ isLoggedIn: true, username: req.session.username });
   }
-})
+});
 
 router.post("/logout", async (req: Request, res: Response) => {
   const username = req.session.username;
   req.session.destroy((err) => {
     if (!err) {
-      console.log("logged-out user: ", username);
+      console.log(`[SERVER] User ${username} has logged out.`);
       res.status(200).json({ message: "Logged out successfully." });
       return;
     }
 
-    console.log("could not log user out: ", username);
-    console.log(err);
+    console.log(`[ERROR] User ${username} could not log out:`, err);
     res.status(500).json({ message: "something happened." });
   });
-})
+});
+
+router.post("/verify", async (req: Request, res: Response) => {
+  const { captchaVal } = req.body;
+
+  try {
+    const data = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.SECRET_KEY}&response=${captchaVal}`,
+      {
+        method: "POST",
+        // body: JSON.stringify({
+        //   secret: process.env.SECRET_KEY,
+        //   response: captchaVal,
+        // })
+      }
+    );
+
+    res.send(data);
+  } catch (error) {
+    console.error("[ERROR] An error occured while verifying captcha:", error);
+  }
+});
 
 export default router;

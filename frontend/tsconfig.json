@@ -12,29 +12,32 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": [
-        "*"
+        "*",
       ],
       "@components/*": [
-        "components/*"
+        "components/*",
       ],
       "@pages/*": [
-        "pages/*"
+        "pages/*",
       ],
       "@profile/*": [
-        "pages/profile/*"
+        "pages/profile/*",
       ],
       "@mockdata/*": [
-        "mockdata/*"
+        "mockdata/*",
       ],
       "@styles/*": [
-        "styles/*"
+        "styles/*",
       ],
       "@models/*": [
-        "models/*"
+        "models/*",
       ],
       "@skeleton/*": [
-        "components/skeletons/*"
+        "components/skeletons/*",
       ],
+      "@helpers/*": [
+        "helpers/*",
+      ]
     }
   },
   "include": [

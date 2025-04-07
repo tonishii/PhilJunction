@@ -20,10 +20,6 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.header-link:active {
-  transform: scale(0.9);
-}
-
 .header-button {
   cursor: pointer;
   background: transparent;
@@ -40,6 +36,8 @@
   border-radius: 50%;
   width: 40px;
   height: 40px;
+  margin-right: 10px;
+  transition: transform 0.3s ease-in-out;
 }
 
 .search-bar {
@@ -76,6 +74,7 @@
   border-radius: 20px;
   height: 40px;
   padding: 7px 10px;
+  margin-left: 10px;
   gap: 5px;
   background-color: transparent;
   color: #F6F7EB;
@@ -85,11 +84,29 @@
 
 .create-post-button span {
   border-bottom: 1px solid transparent;
-  transition: border-bottom 0.3s ease;
+  transition: border-bottom 0.15s ease;
 }
 
-.create-post-button span:hover {
+.create-post-button:hover span {
   border-bottom: 1px solid #F6F7EB;
+}
+
+.aboutus-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: hsl(65, 20%, 95%);
+  border: none;
+  border-radius: 10px;
+  height: 100%;
+  padding: 10px 15px;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease-in-out;
+}
+
+.aboutus-arrow {
+  margin-bottom: auto;
 }
 
 .login-button {
@@ -105,27 +122,30 @@
   transition: background-color 0.3s ease, transform 0.3s ease-in-out;
 }
 
-.login-button:hover {
-  background-color: hsl(65, 0%, 82%);
+.login-button:hover,
+.aboutus-button:hover {
+  background-color: hsl(65, 0%, 88%);
 }
 
-.login-button:active {
+.login-button:active,
+.aboutus-button:active,
+.header .profile-icon:active,
+.header-link:active {
   transform: scale(0.9);
 }
 
 /* Comment */
 .comment-container {
-  min-height: 90px;
   width: 100%;
   border-radius: 4px;
   margin: 20px 0px;
-  padding-left: 30px;
+  padding: 10px 0px 5px 25px;
   border-left: 3px solid var(--field2); /* #4E565A dark|light #b1a9a5 */
 }
 
 .comment-container p {
   color: var(--text1); /* #f6f7eb dark|light #090814 */
-  margin: 0px;
+  margin: 10px 0px 0px 20px;
 }
 
 .comment-header {
@@ -239,14 +259,24 @@
 
 .image-carousel {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   position: relative;
   max-height: 200px;
   width: 100%;
   margin: 1rem auto;
   gap: 5px;
+  object-fit: contain;
 }
+
+.post-body-container .image-carousel {
+  overflow: clip;
+}
+
+.post-window-main .image-carousel {
+  overflow: auto;
+}
+
 
 .post-image {
   max-width: 30%;
@@ -296,7 +326,9 @@
   background-color: var(--field1);
   border-radius: 10px;
   padding: 5px 10px;
-  height: 40px;
+  width: 100%;
+  min-height: 40px;
+  height: auto;
   gap: 5px;
   border: none;
   outline: none;
@@ -326,4 +358,23 @@
 
 .tag button svg {
   color: #F6F7EB;
+}
+
+/* Counters */
+.counter {
+  font-size: 0.8rem;
+}
+
+.counter-overflow {
+  color: #ff9100;
+}
+
+.counter-max {
+  color: #e94f37;
+}
+
+.tag-counter {
+  color: #F6F7EB;
+  margin-bottom: auto;
+  margin-left: 10px;
 }

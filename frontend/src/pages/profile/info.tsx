@@ -1,8 +1,9 @@
 import { UserRoundPen } from "lucide-react";
 import { NavLink } from "react-router";
 import { IUser } from "@/models/userType";
+import { memo } from "react";
 
-export default function ProfileInfo({ user }: { user: IUser; }) {
+function ProfileInfo({ user }: { user: IUser; }) {
   return (
     <div className="profile-info">
       <div className="profile-icon-container">
@@ -19,3 +20,5 @@ export default function ProfileInfo({ user }: { user: IUser; }) {
     </div>
   );
 }
+
+export default memo(ProfileInfo);

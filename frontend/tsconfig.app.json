@@ -32,6 +32,7 @@
       "@styles/*": ["styles/*"],
       "@models/*": ["models/*"],
       "@skeleton/*": ["components/skeletons/*"],
+      "@helpers/*": ["helpers/*"],
     }
   },
   "forceConsistentCasingInFileNames": true,

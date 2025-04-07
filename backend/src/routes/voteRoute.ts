@@ -8,7 +8,7 @@ import { Document } from "mongoose";
 
 const router: Router = express.Router();
 
-// VOTES
+// updates or creates an upvote
 router.post("/upvote/:id", IsLoggedIn, async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
@@ -73,6 +73,7 @@ router.post("/upvote/:id", IsLoggedIn, async (req: Request, res: Response): Prom
  }
 );
 
+// updates or creates an downvote
 router.post("/downvote/:id", IsLoggedIn, async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
@@ -135,6 +136,7 @@ router.post("/downvote/:id", IsLoggedIn, async (req: Request, res: Response): Pr
  }
 );
 
+// sends vote status of a user with given post pIds
 router.get("/retrievevote", async (req: Request, res: Response): Promise<any> => {
   try {
     const ids = req.query.ids;

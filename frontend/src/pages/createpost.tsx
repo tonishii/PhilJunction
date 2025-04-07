@@ -1,13 +1,20 @@
 import "@/styles/create-post.css"
+
 import { Send, ImagePlus, X } from "lucide-react";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import ReactMarkdown from 'react-markdown';
-import TagInput from "@/components/taginput";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router";
-import { ImageBuffer } from "@/models/postType";
-import { AuthContext } from "@/hook/context";
-import { makeServerURL } from "@/hook/url";
+
+import { ImageBuffer } from "@models/postType";
+import { AuthContext } from "@helpers/context";
+import { makeServerURL } from "@helpers/url";
+import TagInput from "@components/taginput";
+import RouteMap from "@components/map/routemap";
+
+const maxBodyLength = 1500;
+const maxTitleLength = 100;
+const maxTagListLength = 20;
 
 export default function CreatePost() {
   const { publicId } = useParams();
@@ -15,6 +22,9 @@ export default function CreatePost() {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
+  const [origin, setOrigin] = useState({ id: "", place: "" });
+  const [destination, setDestination] = useState({ id: "", place: "" });
+  const [isDisabled, setDisabled] = useState(false);
   const [username, setUsername] = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -26,12 +36,13 @@ export default function CreatePost() {
       const response = await fetch(makeServerURL(`retrievepost/${publicId}`));
 
       if (response.ok) {
-        const { message, post } = await response.json();
+        const { post } = await response.json();
         setTitle(post.title);
         setContent(post.body);
         setTags(post.tags);
         setImages(post.images.map((image: ImageBuffer) => image.imageUrl));
-        console.log(message);
+        setOrigin(post.origin);
+        setDestination(post.destination);
       } else {
         toast.error("An error has occured");
         console.error(response);
@@ -55,23 +66,26 @@ export default function CreatePost() {
   };
 
   async function handleSubmit() {
-    const formData = new FormData();
-
-    // Add text data
-    formData.append("postTitle", title || "");
-    formData.append("postContent", content || "");
-    formData.append("tags", JSON.stringify(tags));
-
-    console.log("Post Title:", title);
-    console.log("Post Content:", content);
-    console.log("Tags:", tags);
-
-    for (let i = 0; i < images.length; i++) {
-      const file = await imageUrlToFile(images[i]);
-      formData.append('images', file)
-    }
-
     try {
+      setDisabled(true);
+      const formData = new FormData();
+
+      // Add text data
+      formData.append("postTitle", title || "");
+      formData.append("postContent", content || "");
+      formData.append("tags", JSON.stringify(tags));
+      formData.append("origin", JSON.stringify(origin));
+      formData.append("destination", JSON.stringify(destination));
+
+      // console.log("Post Title:", title);
+      // console.log("Post Content:", content);
+      // console.log("Tags:", tags);
+
+      for (let i = 0; i < images.length; i++) {
+        const file = await imageUrlToFile(images[i]);
+        formData.append('images', file)
+      }
+
       const response = await fetch(makeServerURL(`submitpost`), {
         method: "POST",
         body: formData,
@@ -96,27 +110,30 @@ export default function CreatePost() {
         }
       }
     } catch (error: unknown) {
-
       toast.error("An error has occured.");
       console.error(error);
+    } finally {
+      setDisabled(false);
     }
   };
 
   async function handleEdit() {
-    const formData = new FormData();
-
-    formData.append("publicId", publicId || "");
-    formData.append("postTitle", title || "");
-    formData.append("postContent", content || "");
-    formData.append("tags", JSON.stringify(tags));
-
-    for (let i = 0; i < images.length; i++) {
-      const file = await imageUrlToFile(images[i]);
-      formData.append('images', file)
-    }
-
-    console.log(formData);
     try {
+      setDisabled(true);
+      const formData = new FormData();
+
+      formData.append("publicId", publicId || "");
+      formData.append("postTitle", title || "");
+      formData.append("postContent", content || "");
+      formData.append("tags", JSON.stringify(tags));
+      formData.append("origin", JSON.stringify(origin));
+      formData.append("destination", JSON.stringify(destination));
+
+      for (let i = 0; i < images.length; i++) {
+        const file = await imageUrlToFile(images[i]);
+        formData.append('images', file)
+      }
+
       const res = await fetch(makeServerURL(`updatepost`), {
         method: "POST",
         body: formData,
@@ -149,6 +166,8 @@ export default function CreatePost() {
     } catch (error: unknown) {
       toast.error("An error has occured.");
       console.error(error);
+    } finally {
+      setDisabled(false);
     }
   }
 
@@ -163,15 +182,15 @@ export default function CreatePost() {
               placeholder="Add a Title..."
               onChange={(e) => setTitle(e.target.value)}
               value={title}
-              maxLength={100} />
+              maxLength={maxTitleLength} />
             <span
               className={
-                `title-counter ${title.length == 100 ? "title-max" :
-                  title.length > 40 ? "title-overflow" : ""
+                `counter ${title.length == maxTitleLength ? "counter-max" :
+                  title.length > maxTitleLength * 0.666 ? "counter-overflow" : ""
                 } `}>
-              {title.length + "/40 "}
-              {title.length == 100 ? <b>Max!!</b> :
-                title.length > 40 ? <i>Overflow!</i> : ""}
+              {title.length + `/${maxTitleLength} `}
+              {title.length == maxTitleLength ? <b>Max!!</b> :
+                title.length > maxTitleLength * 0.666 ? <i>Warning!</i> : ""}
             </span>
           </div>
 
@@ -183,10 +202,28 @@ export default function CreatePost() {
                 id="editor"
                 placeholder="Start typing here..."
                 onChange={(e) => setContent(e.target.value)}
-                value={content} />
+                value={content}
+                maxLength={maxBodyLength}/>
+
+              <span
+                className={
+                  `counter ${content.length == maxBodyLength ? "counter-max" :
+                    content.length > maxBodyLength * 0.666 ? "counter-overflow" : ""
+                  }`}>
+                { content.length + `/${maxBodyLength} `}
+                { content.length == maxBodyLength ? <b>Max!!</b> :
+                  content.length > maxBodyLength * 0.666 ? <i>Warning!</i> : ""}
+              </span>
             </div>
 
             <ReactMarkdown className="create-post-MD" children={content} />
+
+            <RouteMap
+              origin={origin}
+              destination={destination}
+              setOrigin={setOrigin}
+              setDestination={setDestination}
+              isEditable={true} />
 
             <div className="image-preview">
               {images.map((img, index) => (
@@ -204,7 +241,13 @@ export default function CreatePost() {
           </div>
 
           <div className="create-post-footer">
-            <TagInput tags={tags} setTags={setTags} />
+            <TagInput tags={tags} setTags={setTags} disabled={tags.length >= 20}/>
+
+            <span
+              className={
+                `counter tag-counter`}>
+              {tags.length + `/${maxTagListLength} `}
+            </span>
 
             <input
               type="file"
@@ -220,8 +263,10 @@ export default function CreatePost() {
           <div className='sidebar-button'>
             <button
               className={`round-button`}
-              onClick={publicId ? handleEdit : handleSubmit}>
-              <Send className="icon" />
+              onClick={publicId ? handleEdit : handleSubmit}
+              disabled={isDisabled}>
+              <span className="create-post-text">Create</span>
+              <Send className="icon small"/>
             </button>
           </div>
 
@@ -229,7 +274,8 @@ export default function CreatePost() {
             <button
               className={`round-button`}
               onClick={() => document.getElementById("fileInput")?.click()}>
-              <ImagePlus className="icon" />
+              <span className="create-post-text">Add</span>
+              <ImagePlus className="icon small" />
             </button>
           </div>
         </div>

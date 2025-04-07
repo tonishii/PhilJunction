@@ -1,11 +1,11 @@
 import Comment from "@/components/comment"
 import { IUser } from "@/models/userType"
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { IComment } from "@/models/commentType";
 import { toast } from "react-toastify";
-import { makeServerURL } from "@/hook/url";
+import { makeServerURL } from "@/helpers/url";
 
-export default function UserComments({ user }: { user: IUser; }) {
+function UserComments({ user }: { user: IUser; }) {
   const [comments, setComments] = useState<IComment[]>([]);
 
   useEffect(() => {
@@ -30,3 +30,5 @@ export default function UserComments({ user }: { user: IUser; }) {
     </div>
   )
 }
+
+export default memo(UserComments);

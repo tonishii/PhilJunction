@@ -2,9 +2,10 @@ import '@/styles/post-styles.css'
 
 import { Link } from "react-router";
 import ReactMarkdown from 'react-markdown';
-import { IPost } from '@/models/postType';
+import { IPost } from '@models/postType';
+import { memo } from 'react';
 
-export default function SmallPost({ post }: { post: IPost; }) {
+function SmallPost({ post }: { post: IPost; }) {
   return (
     <div className="smallpost-container">
       <Link to={`/post/${post.publicId}`} className="post-link">
@@ -27,3 +28,5 @@ export default function SmallPost({ post }: { post: IPost; }) {
     </div>
   );
 }
+
+export default memo(SmallPost);

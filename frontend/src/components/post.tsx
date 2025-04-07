@@ -1,16 +1,17 @@
 import '@/styles/post-styles.css'
 
-import ImageCarousel from './imagecarousel';
 import { ThumbsUp, ThumbsDown, MessageCircle } from "lucide-react";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Link } from "react-router";
 import ReactMarkdown from 'react-markdown';
-import moment from 'moment';
-import { IPost } from '@/models/postType';
 import { toast } from 'react-toastify';
-import { makeServerURL } from '@/hook/url';
 
-export default function Post({
+import { IPost } from '@/models/postType';
+import ImageCarousel from './imagecarousel';
+import { makeServerURL } from '@helpers/url';
+import { handleDate } from '@helpers/moment';
+
+function Post({
   post,
   initialVote = null,
   initialLikes = 0,
@@ -27,13 +28,11 @@ export default function Post({
   const [likeCount, setLikeCount] = useState(initialLikes);
   const [dislikeCount, setDislikeCount] = useState(initialDislikes);
   const [commentCount] = useState(initialComments);
-
-  function handleDate(datePosted: Date): string {
-    return moment(datePosted).fromNow();
-  }
+  const [isDisabled, setDisabled] = useState(false);
 
   async function handleUpvote() {
     try {
+      setDisabled(true);
       const res = await fetch(makeServerURL(`upvote/${post.publicId}`), {
         method: "POST",
         credentials: "include",
@@ -60,11 +59,14 @@ export default function Post({
     } catch (err: unknown) {
       toast.error("A server error occured.");
       console.error(err);
+    } finally {
+      setDisabled(false);
     }
   }
 
   async function handleDownvote() {
     try {
+      setDisabled(true);
       const res = await fetch(makeServerURL(`downvote/${post.publicId}`), {
         method: "POST",
         credentials: "include",
@@ -91,6 +93,8 @@ export default function Post({
     } catch (err: unknown) {
       toast.error("A server error occured.");
       console.error(err);
+    } finally {
+      setDisabled(false);
     }
   }
 
@@ -98,7 +102,7 @@ export default function Post({
     <div className="post-container">
       <div className="post-main">
         <div className="post-header">
-          <Link to={`/post/${post.publicId}`} className="black-color">
+          <Link to={`/post/${post.publicId}`} className="black-color post-header-link">
             <h2>{post.title}</h2>
             <hr />
             <div className="post-info">
@@ -129,7 +133,8 @@ export default function Post({
           <span className='like-count'>{likeCount}</span>
           <button
             className={`round-button ${vote === true ? "selected-up" : ""}`}
-            onClick={handleUpvote}>
+            onClick={handleUpvote}
+            disabled={isDisabled}>
             <ThumbsUp className="icon" />
           </button>
         </div>
@@ -137,8 +142,9 @@ export default function Post({
         <div className="post-button">
           <button
             className={`round-button ${vote === false ? " selected-down" : ""}`}
-            onClick={handleDownvote}>
-            <ThumbsDown className="icon" />
+            onClick={handleDownvote}
+            disabled={isDisabled}>
+            <ThumbsDown className="icon"/>
           </button>
           <span className='dislike-count'>{dislikeCount}</span>
         </div>
@@ -155,3 +161,5 @@ export default function Post({
     </div>
   );
 }
+
+export default memo(Post);

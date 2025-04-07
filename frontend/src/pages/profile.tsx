@@ -9,8 +9,8 @@ import UserComments from "@profile/comments";
 import UserPosts from "@profile/posts";
 import { IUser } from "@/models/userType";
 import { toast } from "react-toastify";
-import { AuthContext } from "@/hook/context";
-import { makeServerURL } from "@/hook/url";
+import { AuthContext } from "@/helpers/context";
+import { makeServerURL } from "@/helpers/url";
 
 export default function Profile() {
   const { username } = useParams();
@@ -48,7 +48,7 @@ export default function Profile() {
     }
 
     fetchUser();
-  }, [username, navigate]);
+  }, [username, navigate, setUsername, usernameSession]);
 
   const handleLogout = async () => {
     const res = await fetch(import.meta.env.VITE_SERVER_URL + "logout", {
