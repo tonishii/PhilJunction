@@ -24,7 +24,7 @@ import { makeServerURL } from "@helpers/url";
 import { handleDate } from "@/helpers/moment";
 import PostWindowSkeleton from "@skeleton/postWindowSkeleton";
 
-export default function PostWindow({ isEditable = false }: { isEditable?: boolean; }) {
+export default function PostWindow() {
   const { publicId } = useParams();
   const [post, setPost] = useState<IPost>({} as IPost);
   const [vote, setVote] = useState<boolean | null>(null);
@@ -55,7 +55,6 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
               console.error(data.message);
               return null;
             } else {
-              console.log(data.message);
               return data.comment;
             }
           })
@@ -69,9 +68,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
         if (response.status === 404) {
           toast.info("That post you were looking for was a paper town!");
           navigate("/");
-
         } else {
-
           toast.error("An error has occured");
         }
       }
@@ -188,7 +185,6 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
       if (res.ok) {
         setCommentValue("");
 
-        console.log(data.message);
         setComments((prevComments) => [...prevComments, data.newComment]);
         setCommentCount((prev) => prev + 1);
       } else {
@@ -224,7 +220,6 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
       const data = await res.json();
 
       if (res.ok) {
-        console.log(data.message);
         navigate(-1);
       } else {
         toast.error(data.message);
@@ -254,7 +249,7 @@ export default function PostWindow({ isEditable = false }: { isEditable?: boolea
                   <Ellipsis className="icon black-color" />
                 </button>
                 <div className="edit-menu">
-                  {isEditable && menuVisible && (
+                  { menuVisible && (
                     <div className={`dropdown-menu`}>
                       <ul>
                         <li>

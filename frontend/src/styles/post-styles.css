@@ -18,6 +18,14 @@
   align-items: center;
 }
 
+.empty-posts {
+  margin-top: 60%;
+}
+
+.empty-trending {
+  width: 400px;
+}
+
 .post-container {
   display: grid;
   grid-template-columns: 500px 50px;
@@ -293,7 +301,7 @@
   border-radius: 15px;
 }
 
-.post-window-comments .empty {
+.empty {
   align-self: center;
   font-size: 1.2rem;
   font-family: Courier, monospace;

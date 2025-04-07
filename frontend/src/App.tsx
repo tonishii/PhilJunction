@@ -43,7 +43,7 @@ export default function App() {
             <Route path="signup" element={<SignUp />} />
           </Route>
 
-          <Route path="/post/:publicId" element={<PostWindow isEditable={true} />} />
+          <Route path="/post/:publicId" element={<PostWindow />} />
           <Route path="/holler/:publicId?" element={<CreatePost />} />
           <Route path="*" element={<FourOFourPage />} />
         </Routes>

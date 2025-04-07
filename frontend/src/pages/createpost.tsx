@@ -37,6 +37,12 @@ export default function CreatePost() {
 
       if (response.ok) {
         const { post } = await response.json();
+
+        if (username != post.username) {
+          toast.error("This is not your post!");
+          navigate("/post/" + publicId);
+        }
+
         setTitle(post.title);
         setContent(post.body);
         setTags(post.tags);
@@ -44,13 +50,18 @@ export default function CreatePost() {
         setOrigin(post.origin);
         setDestination(post.destination);
       } else {
-        toast.error("An error has occured");
-        console.error(response);
+        if (response.status === 404) {
+          toast.info("That post you were looking for was a paper town!");
+          navigate("/");
+        } else {
+          toast.error("An error has occured");
+          console.error(response);
+        }
       }
     }
 
     fetchData();
-  }, [publicId]);
+  }, [publicId, username, navigate]);
 
   function handleAttachImage(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files) {

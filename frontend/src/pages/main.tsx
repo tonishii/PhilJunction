@@ -9,7 +9,6 @@ import { IPost } from "@/models/postType";
 
 import { Flame } from "lucide-react";
 import { useState, useEffect, useContext } from 'react';
-import { toast } from "react-toastify";
 
 interface InitialPost {
   publicId: string;
@@ -19,9 +18,10 @@ interface InitialPost {
 }
 
 export default function Main() {
-  const [posts, setPosts] = useState<IPost[]>([]);
-  const [trendingPosts, setTrending] = useState<IPost[]>([]);
+  const [posts, setPosts] = useState<IPost[] | null>(null);
+  const [trendingPosts, setTrending] = useState<IPost[] | null>(null);
   const [commentCount, setCommentCount] = useState<{ [key: string]: number }>({});
+  const [isDisabled, setDisabled] = useState(false);
   const [votes, setVotes] =
     useState<{
       [key: string]: {
@@ -45,6 +45,11 @@ export default function Main() {
         return;
       }
 
+      if (!data) {
+        setPosts([]);
+        return;
+      }
+
       setPosts(data.map((item: { post: IPost }) => item.post));
       setCommentCount(
         data.reduce((acc: { [key: string]: number }, item: { post: IPost; commentCount: number }) => {
@@ -52,29 +57,6 @@ export default function Main() {
           return acc;
         }, {})
       );
-    } catch (error: unknown) {
-      console.error(error);
-    }
-  }
-
-  async function addPosts() {
-    try {
-      const url = new URL(makeServerURL(`retrievemoreposts`));
-      url.searchParams.set("curr_len", String(posts.length))
-      const res = await fetch(url, {
-        method: "GET"
-      });
-
-      const addMore = await res.json();
-
-      if (!res.ok) {
-        return;
-      }
-      if (!addMore.length) {
-        toast.info("No more posts to load.");
-      } else {
-        setPosts(oldposts => [...oldposts, ...addMore]);
-      }
     } catch (error: unknown) {
       console.error(error);
     }
@@ -89,11 +71,44 @@ export default function Main() {
         return;
       }
 
+      if (!trending) {
+        setTrending([]);
+        return;
+      }
+
       setTrending(trending);
     } catch (error: unknown) {
       console.error(error);
     }
   };
+
+  async function addPosts() {
+    try {
+      if (!posts) return;
+
+      const url = new URL(makeServerURL(`retrievemoreposts`));
+      url.searchParams.set("curr_len", String(posts.length))
+      const res = await fetch(url, {
+        method: "GET"
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return;
+      }
+
+      if (!data.more) {
+        setDisabled(true);
+      } else {
+        setDisabled(false);
+      }
+
+      setPosts(oldposts => [...oldposts ?? [], ...data.posts]);
+    } catch (error: unknown) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     getGeneralPosts();
@@ -101,10 +116,10 @@ export default function Main() {
   }, []);
 
   useEffect(() => {
-    if (posts.length === 0) return;
-
     async function fetchVotes() {
       try {
+        if (!posts || posts.length === 0) return;
+
         const postIds = posts.map(post => post.publicId).join(",");
         const res = await fetch(makeServerURL(`/retrievevote?ids=${postIds}`), {
           credentials: "include",
@@ -146,15 +161,22 @@ export default function Main() {
     fetchVotes();
   }, [posts, setPosts, setUsername]);
 
+  // useEffect(() => {
+  //   console.log(posts);
+  //   console.log(trendingPosts);
+  // }, [posts, trendingPosts]);
+
   return (
     <div className="main-container">
       <div className="left-container"></div>
       <div className="general-container">
-        { posts && posts.length === 0 ? (
+        { !posts ? (
           <> {
             Array.from({ length: 5 }, (_, i) => (
               <PostSkeleton key={i} />
             ))} </>
+        ) : posts.length === 0 ? (
+            <p className="empty empty-posts text1-color">No posts yet!</p>
         ) : (
           posts.map((post, i) => {
             const voteData = votes[post.publicId];
@@ -175,24 +197,33 @@ export default function Main() {
             );
           })
         )}
-        <button className="add-post-button" onClick={addPosts} onScroll={detectBottom}>Add More Posts</button>
+
+        { !isDisabled && <button
+          className="add-post-button"
+          disabled={isDisabled}
+          onClick={addPosts}
+          onScroll={detectBottom}>Add More Posts</button> }
       </div>
 
-      <div className="popular-posts-list">
-        <span className="popular-posts-header">
-          Trending Posts <Flame className="icon" />
-        </span>
-        { trendingPosts && trendingPosts.length === 0 ? (
-          <> {
-            Array.from({ length: 5 }, (_, i) => (
-              <SmallPostSkeleton key={i} />
-            ))} </>
-        ) : (
-          trendingPosts.map((post, i) => {
-            return <SmallPost key={post.publicId + i} post={post} />;
-          })
-        )}
-      </div>
+      { trendingPosts === null ? (
+        <div className="popular-posts-list">
+          <span className="popular-posts-header">
+            Trending Posts <Flame className="icon" />
+          </span>
+          {Array.from({ length: 5 }, (_, i) => (
+            <SmallPostSkeleton key={i} />
+          ))}
+        </div>
+      ) : trendingPosts?.length > 0 ? (
+        <div className="popular-posts-list">
+          <span className="popular-posts-header">
+            Trending Posts <Flame className="icon" />
+          </span>
+          {trendingPosts.map((post, i) => (
+            <SmallPost key={post.publicId + i} post={post} />
+          ))}
+        </div>
+      ) : (<div className="empty-trending"></div>)}
     </div>
   );
 }

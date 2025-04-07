@@ -135,6 +135,10 @@ a {
 
 /* Miscellaneous */
 
+.text1-color {
+    color: var(--text1);
+}
+
 .black-color {
   color: var(--black2-color);
 }

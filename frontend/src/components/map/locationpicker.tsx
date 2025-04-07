@@ -111,7 +111,6 @@ export default function LocationInput({
             <li
               key={i}
               onMouseDown={() => {
-                console.log(text);
                 onChange({ id: text.id, place: text.place });
                 clearSuggestions();
               }}
