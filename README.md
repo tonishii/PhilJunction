@@ -1,17 +1,8 @@
-# **CCAPDEV Major Course Output**
-#### Intro to Web Application Development
-
 <p align="center">
   <img src="./frontend/src/public/logo.svg" alt="Logo" width="200" height"200" />
 </p>
 
-# Overview
-Compilation of MCO submissions for **CCAPDEV AY 2024-2025, Term 2**. This forum web application caters specifically
-to Filipino transportation enthusiasts to show their interests and experience with other enthusiasts.
-
-- MCO Phase 1 (**Complete**): Front-end development
-- MCO Phase 2 (**Complete**): Back-end development
-- MCO Phase 3 (**Complete**): User authentication, Data hashing and Deployment
+A forum web application catering specifically to Filipino transportation enthusiasts to show their interests and experience with other enthusiasts.
 
 ### Contributors
 - **Libut, Simon Anthony**
@@ -76,3 +67,5 @@ Ensure that the environment is properly configured for both the frontend and bac
 
 If you encounter a *"Port already in use"* error,
 make sure the ports used by your backend and frontend (default 3001 for backend, 3000 for frontend) are not in use by other applications.
+
+CCAPDEV_MCO
